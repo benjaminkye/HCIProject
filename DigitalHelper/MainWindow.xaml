@@ -5,8 +5,90 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DigitalHelper"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        Background="Transparent"
+        AllowsTransparency="True"
+        Title="MainWindow" Height="600" Width="1000">
+    <Border Background="White" BorderBrush="Black" BorderThickness="2" CornerRadius="35">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Button Grid.Column="0" Grid.Row="0" Margin="10">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="25"/>
+                    </Style>
+                </Button.Resources>
+                <StackPanel Orientation="Vertical" >
+                    <Border Height="200" Width="200" BorderBrush="Black" BorderThickness="2">
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Text="Placeholder for image">
+                        </TextBlock>
+                    </Border>
+                    <TextBlock HorizontalAlignment="Center" FontSize="30"
+                               Text="Password Vault"/>
+                </StackPanel>
+            </Button>
 
-    </Grid>
+            <Button Grid.Column="1" Grid.Row="0" Margin="10">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="25"/>
+                    </Style>
+                </Button.Resources>
+                <StackPanel Orientation="Vertical" >
+                    <Border Height="200" Width="200" BorderBrush="Black" BorderThickness="2">
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Text="Placeholder for image">
+                        </TextBlock>
+                    </Border>
+                    <TextBlock HorizontalAlignment="Center" FontSize="30"
+                               Text="Custom Help"/>
+                </StackPanel>
+            </Button>
+
+            <Button Grid.Column="0" Grid.Row="1" Margin="10">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="25"/>
+                    </Style>
+                </Button.Resources>
+                <StackPanel Orientation="Vertical" >
+                    <Border Height="200" Width="200" BorderBrush="Black" BorderThickness="2">
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Text="Placeholder for image">
+                        </TextBlock>
+                    </Border>
+                    <TextBlock HorizontalAlignment="Center" FontSize="30"
+                               Text="Settings"/>
+                </StackPanel>
+            </Button>
+
+            <Button Name="exitButton" Grid.Column="1" Grid.Row="1" Margin="10"
+                Click="exitButton_Click">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="25"/>
+                    </Style>
+                </Button.Resources>
+                <StackPanel Orientation="Vertical" >
+                    <Border Height="200" Width="200" BorderBrush="Black" BorderThickness="2">
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                        Text="Placeholder for image">
+                        </TextBlock>
+                    </Border>
+                    <TextBlock HorizontalAlignment="Center" FontSize="30"
+                    Text="Exit"/>
+                </StackPanel>
+            </Button>
+        </Grid>
+    </Border>
 </Window>
