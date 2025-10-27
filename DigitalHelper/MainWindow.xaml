@@ -12,7 +12,10 @@
         AllowsTransparency="True"
         Title="MainWindow" Height="600" Width="1000">
     <Border Background="White" BorderBrush="Black" BorderThickness="2" CornerRadius="35">
-        <Grid>
+        <Frame x:Name="MainFrame" Source="/Views/MainMenu.xaml"
+               NavigationUIVisibility="Hidden">
+        </Frame>
+        <!--<Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
@@ -89,6 +92,6 @@
                     Text="Exit"/>
                 </StackPanel>
             </Button>
-        </Grid>
+        </Grid>-->
     </Border>
 </Window>
