@@ -28,12 +28,12 @@
                     </Style>
                 </Button.Resources>
                 <StackPanel Orientation="Vertical" >
-                    <Border Height="200" Width="200" BorderBrush="Black" BorderThickness="2">
-                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                                   Text="Placeholder for image">
-                        </TextBlock>
-                    </Border>
-                    <TextBlock HorizontalAlignment="Center" FontSize="30"
+                    <Image Height="200" Width="200" Stretch="Uniform">
+                        <Image.Source>
+                            <BitmapImage UriSource="/Resources/vault.png" DecodePixelWidth="200"></BitmapImage>
+                        </Image.Source>
+                    </Image>
+                        <TextBlock HorizontalAlignment="Center" FontSize="30"
                                Text="Password Vault"/>
                 </StackPanel>
             </Button>
@@ -45,11 +45,11 @@
                     </Style>
                 </Button.Resources>
                 <StackPanel Orientation="Vertical" >
-                    <Border Height="200" Width="200" BorderBrush="Black" BorderThickness="2">
-                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                                   Text="Placeholder for image">
-                        </TextBlock>
-                    </Border>
+                    <Image Height="200" Width="200" Stretch="Uniform">
+                        <Image.Source>
+                            <BitmapImage UriSource="/Resources/chat.png" DecodePixelWidth="200"></BitmapImage>
+                        </Image.Source>
+                    </Image>
                     <TextBlock HorizontalAlignment="Center" FontSize="30"
                                Text="Custom Help"/>
                 </StackPanel>
@@ -62,11 +62,11 @@
                     </Style>
                 </Button.Resources>
                 <StackPanel Orientation="Vertical" >
-                    <Border Height="200" Width="200" BorderBrush="Black" BorderThickness="2">
-                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                                   Text="Placeholder for image">
-                        </TextBlock>
-                    </Border>
+                    <Image Height="200" Width="200" Stretch="Uniform">
+                        <Image.Source>
+                            <BitmapImage UriSource="/Resources/settings.png" DecodePixelWidth="200"></BitmapImage>
+                        </Image.Source>
+                    </Image>
                     <TextBlock HorizontalAlignment="Center" FontSize="30"
                                Text="Settings"/>
                 </StackPanel>
@@ -80,11 +80,11 @@
                     </Style>
                 </Button.Resources>
                 <StackPanel Orientation="Vertical" >
-                    <Border Height="200" Width="200" BorderBrush="Black" BorderThickness="2">
-                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                        Text="Placeholder for image">
-                        </TextBlock>
-                    </Border>
+                    <Image Height="200" Width="200" Stretch="Uniform">
+                        <Image.Source>
+                            <BitmapImage UriSource="/Resources/exit.png" DecodePixelWidth="200"></BitmapImage>
+                        </Image.Source>
+                    </Image>
                     <TextBlock HorizontalAlignment="Center" FontSize="30"
                     Text="Exit"/>
                 </StackPanel>
