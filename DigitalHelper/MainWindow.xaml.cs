@@ -19,6 +19,8 @@ namespace DigitalHelper
         public MainWindow()
         {
             InitializeComponent();
+            MainFrame.Content = null;
+            MainFrame.Source = new Uri("/Views/MainMenu.xaml", UriKind.Relative);
             MainFrame.Navigate(new Uri("/Views/MainMenu.xaml", UriKind.Relative));
         }
 
