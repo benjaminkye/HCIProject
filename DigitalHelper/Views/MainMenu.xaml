@@ -17,6 +17,8 @@
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
+        
+        <!--Password Vault Button-->
         <Button Grid.Column="0" Grid.Row="0" Margin="10">
             <Button.Resources>
                 <Style TargetType="Border">
@@ -24,16 +26,13 @@
                 </Style>
             </Button.Resources>
             <StackPanel Orientation="Vertical" >
-                <Image Height="200" Width="200" Stretch="Uniform">
-                    <Image.Source>
-                        <BitmapImage UriSource="/Resources/vault.png" DecodePixelWidth="200"></BitmapImage>
-                    </Image.Source>
-                </Image>
-                <TextBlock HorizontalAlignment="Center" FontSize="30"
+                <Image Height="200" Width="200" Stretch="Uniform" Source="pack://application:,,,/DigitalHelper;component/Resources/vault.png"></Image>
+                <TextBlock HorizontalAlignment="Center" FontSize="30" FontWeight="SemiBold"
                                Text="Password Vault"/>
             </StackPanel>
         </Button>
 
+        <!--Custom Help Button-->
         <Button Grid.Column="1" Grid.Row="0" Margin="10">
             <Button.Resources>
                 <Style TargetType="Border">
@@ -41,16 +40,13 @@
                 </Style>
             </Button.Resources>
             <StackPanel Orientation="Vertical" >
-                <Image Height="200" Width="200" Stretch="Uniform">
-                    <Image.Source>
-                        <BitmapImage UriSource="/Resources/chat.png" DecodePixelWidth="200"></BitmapImage>
-                    </Image.Source>
-                </Image>
-                <TextBlock HorizontalAlignment="Center" FontSize="30"
+                <Image Height="200" Width="200" Stretch="Uniform" Source="pack://application:,,,/DigitalHelper;component/Resources/chat.png"></Image>
+                <TextBlock HorizontalAlignment="Center" FontSize="30" FontWeight="SemiBold"
                                Text="Custom Help"/>
             </StackPanel>
         </Button>
 
+        <!--Settings Button-->
         <Button Grid.Column="0" Grid.Row="1" Margin="10">
             <Button.Resources>
                 <Style TargetType="Border">
@@ -58,16 +54,13 @@
                 </Style>
             </Button.Resources>
             <StackPanel Orientation="Vertical" >
-                <Image Height="200" Width="200" Stretch="Uniform">
-                    <Image.Source>
-                        <BitmapImage UriSource="/Resources/settings.png" DecodePixelWidth="200"></BitmapImage>
-                    </Image.Source>
-                </Image>
-                <TextBlock HorizontalAlignment="Center" FontSize="30"
+                <Image Height="200" Width="200" Stretch="Uniform" Source="pack://application:,,,/DigitalHelper;component/Resources/settings.png"></Image>
+                <TextBlock HorizontalAlignment="Center" FontSize="30" FontWeight="SemiBold"
                                Text="Settings"/>
             </StackPanel>
         </Button>
 
+        <!--Exit Button-->
         <Button Name="exitButton" Grid.Column="1" Grid.Row="1" Margin="10"
                 Click="exitButton_Click">
             <Button.Resources>
@@ -76,12 +69,8 @@
                 </Style>
             </Button.Resources>
             <StackPanel Orientation="Vertical" >
-                <Image Height="200" Width="200" Stretch="Uniform">
-                    <Image.Source>
-                        <BitmapImage UriSource="/Resources/exit.png" DecodePixelWidth="200"></BitmapImage>
-                    </Image.Source>
-                </Image>
-                <TextBlock HorizontalAlignment="Center" FontSize="30"
+                <Image Height="200" Width="200" Stretch="Uniform" Source="pack://application:,,,/DigitalHelper;component/Resources/exit.png"></Image>
+                <TextBlock HorizontalAlignment="Center" FontSize="30" FontWeight="SemiBold"
                     Text="Exit"/>
             </StackPanel>
         </Button>
