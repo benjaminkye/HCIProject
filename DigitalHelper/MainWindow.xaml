@@ -11,8 +11,12 @@
         WindowStyle="None"
         Background="Transparent"
         AllowsTransparency="True"
+        Topmost="True"
         Title="MainWindow" Height="600" Width="1000">
-    <Border Background="White" BorderBrush="Black" BorderThickness="2" CornerRadius="35">
+    <Border Background="#F4F3F2">
+        <Border.Clip>
+            <RectangleGeometry RadiusX="35" RadiusY="35" Rect="0,0,1000,600"/>
+        </Border.Clip>
         <Frame x:Name="MainFrame"
                d:DataContext="{d:DesignInstance Type=views:MainMenu, IsDesignTimeCreatable=True}" Content="{Binding}"
                NavigationUIVisibility="Hidden">

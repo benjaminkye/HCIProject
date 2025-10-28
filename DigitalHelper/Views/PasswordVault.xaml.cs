@@ -16,23 +16,18 @@ using System.Windows.Shapes;
 namespace DigitalHelper.Views
 {
     /// <summary>
-    /// Interaction logic for MainMenu.xaml
+    /// Interaction logic for PasswordVault.xaml
     /// </summary>
-    public partial class MainMenu : Page
+    public partial class PasswordVault : Page
     {
-        public MainMenu()
+        public PasswordVault()
         {
             InitializeComponent();
         }
 
-        private void exitButton_Click(object sender, RoutedEventArgs e)
+        private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
-        }
-
-        private void PasswordVaultButton_Click(object sender, RoutedEventArgs e)
-        {
-            NavigationService.Navigate(new PasswordVault());
+            NavigationService.Navigate(new MainMenu());
         }
     }
 }
