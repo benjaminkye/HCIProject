@@ -1,0 +1,428 @@
+<Page x:Class="DigitalHelper.Views.Cards"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:DigitalHelper.Views"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="750"
+      Title="Cards">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--Top Bar-->
+        <Border Grid.Row="0" Padding="10" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="NewCardButton" 
+                        Grid.Column="0"
+                        Content="+ New Card" 
+                        Padding="15,8"
+                        Margin="0,0,10,0"
+                        Background="#4CAF50"
+                        Foreground="White"
+                        BorderThickness="0"
+                        FontSize="14"
+                        FontWeight="SemiBold"
+                        Cursor="Hand"/>
+
+                <Grid Grid.Column="1" Margin="0,0,10,0">
+                    <TextBox x:Name="SearchBox" 
+                             Padding="10,8"
+                             FontSize="14"
+                             VerticalContentAlignment="Center"
+                             BorderBrush="#CCCCCC"
+                             BorderThickness="1"/>
+                    <TextBlock x:Name="SearchPlaceholder"
+                               Text="Search cards..." 
+                               Foreground="#999999"
+                               FontSize="14"
+                               Padding="11,9"
+                               VerticalAlignment="Center"
+                               IsHitTestVisible="False"
+                               Visibility="Visible"/>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <!--Main Content-->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!--Left Section (Card List)-->
+            <Border Grid.Column="0" BorderBrush="#E0E0E0" BorderThickness="0,0,1,0">
+                <ListBox x:Name="CardListBox" 
+                         BorderThickness="0"
+                         SelectionMode="Single"
+                         Padding="0"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border Padding="15,12" BorderBrush="#F0F0F0" BorderThickness="0,0,0,1">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding CardName}" 
+                                               FontSize="16" 
+                                               FontWeight="SemiBold"
+                                               Foreground="#333333"
+                                               TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock Text="{Binding LastFourDigits}" 
+                                               FontSize="12" 
+                                               Foreground="#666666"
+                                               Margin="0,4,0,0"
+                                               TextTrimming="CharacterEllipsis"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Border>
+
+            <!-- Right Section: Details Panel -->
+            <Grid Grid.Column="1">
+                <!-- View Mode Panel -->
+                <Grid x:Name="ViewPanel" Visibility="Visible">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!--Edit Button-->
+                    <Border Grid.Row="0" Padding="20,15" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+                        <Button x:Name="EditButton"
+                                Content="Edit"
+                                HorizontalAlignment="Right"
+                                Padding="20,8"
+                                Background="#2196F3"
+                                Foreground="White"
+                                BorderThickness="0"
+                                FontSize="14"
+                                FontWeight="SemiBold"
+                                Cursor="Hand"/>
+                    </Border>
+
+                    <!--Details (Read-Only)-->
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <StackPanel Margin="20,20,20,20">
+                            <!--Card Name-->
+                            <TextBlock Text="Card Name" 
+                                       FontSize="12" 
+                                       Foreground="#666666" 
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,5"/>
+                            <TextBox x:Name="ViewCardNameTextBox" 
+                                     FontSize="14" 
+                                     Padding="10,8"
+                                     IsReadOnly="True"
+                                     BorderBrush="#CCCCCC"
+                                     Margin="0,0,0,20"
+                                     Background="#F9F9F9"/>
+
+                            <!--Card Holder Name-->
+                            <TextBlock Text="Card Holder Name" 
+                                       FontSize="12" 
+                                       Foreground="#666666" 
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,5"/>
+                            <TextBox x:Name="ViewCardHolderTextBox" 
+                                     FontSize="14" 
+                                     Padding="10,8"
+                                     IsReadOnly="True"
+                                     BorderBrush="#CCCCCC"
+                                     Margin="0,0,0,20"
+                                     Background="#F9F9F9"/>
+
+                            <!--Card Number-->
+                            <TextBlock Text="Card Number" 
+                                       FontSize="12" 
+                                       Foreground="#666666" 
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,5"/>
+                            <Grid Margin="0,0,0,20">
+                                <TextBox x:Name="ViewCardNumberTextBox"
+                                         FontSize="14" 
+                                         Padding="10,8"
+                                         IsReadOnly="True"
+                                         BorderBrush="#CCCCCC"
+                                         Background="#F9F9F9"/>
+                                <Button x:Name="ShowCardNumberButton"
+                                        Content="Show"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Margin="0,0,10,0"
+                                        Padding="10,5"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        Foreground="#2196F3"
+                                        Cursor="Hand"
+                                        FontSize="12"/>
+                            </Grid>
+
+                            <!--Expiry-->
+                            <TextBlock Text="Expiry Date" 
+                                       FontSize="12" 
+                                       Foreground="#666666" 
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,5"/>
+                            <TextBox x:Name="ViewExpiryDateTextBox" 
+                                     FontSize="14" 
+                                     Padding="10,8"
+                                     IsReadOnly="True"
+                                     BorderBrush="#CCCCCC"
+                                     Margin="0,0,0,20"
+                                     Background="#F9F9F9"/>
+
+                            <!--CVV-->
+                            <TextBlock Text="CVV" 
+                                       FontSize="12" 
+                                       Foreground="#666666" 
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,5"/>
+                            <Grid Margin="0,0,0,20">
+                                <TextBox x:Name="ViewCVVTextBox"
+                                         FontSize="14" 
+                                         Padding="10,8"
+                                         IsReadOnly="True"
+                                         BorderBrush="#CCCCCC"
+                                         Background="#F9F9F9"/>
+                                <Button x:Name="ShowCVVButton"
+                                        Content="Show"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Margin="0,0,10,0"
+                                        Padding="10,5"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        Foreground="#2196F3"
+                                        Cursor="Hand"
+                                        FontSize="12"/>
+                            </Grid>
+
+                            <!--Card Type-->
+                            <TextBlock Text="Card Type" 
+                                       FontSize="12" 
+                                       Foreground="#666666" 
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,5"/>
+                            <TextBox x:Name="ViewCardTypeTextBox" 
+                                     FontSize="14" 
+                                     Padding="10,8"
+                                     IsReadOnly="True"
+                                     BorderBrush="#CCCCCC"
+                                     Margin="0,0,0,20"
+                                     Background="#F9F9F9"/>
+                            
+                            <!--Billing Address-->
+                            <TextBlock Text="Billing Address" 
+                                       FontSize="12" 
+                                       Foreground="#666666" 
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,5"/>
+                            <TextBox x:Name="ViewBillingAddressTextBox" 
+                                     FontSize="14" 
+                                     Padding="10,8"
+                                     IsReadOnly="True"
+                                     BorderBrush="#CCCCCC"
+                                     Margin="0,0,0,20"
+                                     Background="#F9F9F9"
+                                     TextWrapping="Wrap"
+                                     MinHeight="60"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+
+                <!--Edit Mode Panel-->
+                <Grid x:Name="EditPanel" Visibility="Collapsed">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!--Title Bar-->
+                    <Border Grid.Row="0" Padding="20,15" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1" Background="#F5F5F5">
+                        <TextBlock x:Name="EditTitleTextBlock"
+                                   Text="Edit Card"
+                                   FontSize="16"
+                                   FontWeight="SemiBold"
+                                   Foreground="#333333"/>
+                    </Border>
+
+                    <!--Edit Form-->
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <StackPanel Margin="20,20,20,20">
+                            <!--Card Name-->
+                            <TextBlock Text="Card Name *" 
+                                       FontSize="12" 
+                                       Foreground="#666666" 
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,5"/>
+                            <TextBox x:Name="EditCardNameTextBox" 
+                                     FontSize="14" 
+                                     Padding="10,8"
+                                     BorderBrush="#CCCCCC"
+                                     Margin="0,0,0,20"/>
+
+                            <!--Card Holder Name-->
+                            <TextBlock Text="Card Holder Name *" 
+                                       FontSize="12" 
+                                       Foreground="#666666" 
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,5"/>
+                            <TextBox x:Name="EditCardHolderTextBox" 
+                                     FontSize="14" 
+                                     Padding="10,8"
+                                     BorderBrush="#CCCCCC"
+                                     Margin="0,0,0,20"/>
+
+                            <!--Card Number-->
+                            <TextBlock Text="Card Number *" 
+                                       FontSize="12" 
+                                       Foreground="#666666" 
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,5"/>
+                            <TextBox x:Name="EditCardNumberTextBox" 
+                                     FontSize="14" 
+                                     Padding="10,8"
+                                     BorderBrush="#CCCCCC"
+                                     Margin="0,0,0,20"
+                                     MaxLength="19"/>
+
+                            <!--Expiry Date-->
+                            <TextBlock Text="Expiry Date (MM/YY) *" 
+                                       FontSize="12" 
+                                       Foreground="#666666" 
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,5"/>
+                            <TextBox x:Name="EditExpiryDateTextBox" 
+                                     FontSize="14" 
+                                     Padding="10,8"
+                                     BorderBrush="#CCCCCC"
+                                     Margin="0,0,0,20"
+                                     MaxLength="5"/>
+
+                            <!--CVV-->
+                            <TextBlock Text="CVV *" 
+                                       FontSize="12" 
+                                       Foreground="#666666" 
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,5"/>
+                            <TextBox x:Name="EditCVVTextBox" 
+                                     FontSize="14" 
+                                     Padding="10,8"
+                                     BorderBrush="#CCCCCC"
+                                     Margin="0,0,0,20"
+                                     MaxLength="4"/>
+
+                            <!--Card Type-->
+                            <TextBlock Text="Card Type" 
+                                       FontSize="12" 
+                                       Foreground="#666666" 
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,5"/>
+                            <ComboBox x:Name="EditCardTypeComboBox" 
+                                      FontSize="14" 
+                                      Padding="10,8"
+                                      BorderBrush="#CCCCCC"
+                                      Margin="0,0,0,20">
+                                <ComboBoxItem Content="Visa"/>
+                                <ComboBoxItem Content="MasterCard"/>
+                                <ComboBoxItem Content="American Express"/>
+                                <ComboBoxItem Content="Discover"/>
+                                <ComboBoxItem Content="Other"/>
+                            </ComboBox>
+
+                            <!--Billing Address-->
+                            <TextBlock Text="Billing Address (Optional)" 
+                                       FontSize="12" 
+                                       Foreground="#666666" 
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,5"/>
+                            <TextBox x:Name="EditBillingAddressTextBox" 
+                                     FontSize="14" 
+                                     Padding="10,8"
+                                     BorderBrush="#CCCCCC"
+                                     Margin="0,0,0,20"
+                                     TextWrapping="Wrap"
+                                     AcceptsReturn="True"
+                                     MinHeight="60"/>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!--Action Buttons-->
+                    <Border Grid.Row="2" 
+                            Background="#F5F5F5" 
+                            BorderBrush="#E0E0E0" 
+                            BorderThickness="0,1,0,0"
+                            Padding="20">
+                        <Grid>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                <Button x:Name="DeleteButton"
+                                        Content="Delete"
+                                        Padding="20,10"
+                                        Background="#F44336"
+                                        Foreground="White"
+                                        BorderThickness="0"
+                                        FontSize="14"
+                                        FontWeight="SemiBold"
+                                        Cursor="Hand"
+                                        Visibility="Collapsed"/>
+                            </StackPanel>
+                            
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Button x:Name="SaveButton"
+                                        Content="Save"
+                                        Padding="25,10"
+                                        Margin="0,0,10,0"
+                                        Background="#4CAF50"
+                                        Foreground="White"
+                                        BorderThickness="0"
+                                        FontSize="14"
+                                        FontWeight="SemiBold"
+                                        Cursor="Hand"/>
+                                
+                                <Button x:Name="CancelButton"
+                                        Content="Cancel"
+                                        Padding="25,10"
+                                        Background="#757575"
+                                        Foreground="White"
+                                        BorderThickness="0"
+                                        FontSize="14"
+                                        FontWeight="SemiBold"
+                                        Cursor="Hand"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+
+                <!--Empty State Message-->
+                <StackPanel x:Name="EmptyStatePanel" 
+                            VerticalAlignment="Center" 
+                            HorizontalAlignment="Center"
+                            Visibility="Collapsed">
+                    <TextBlock Text="No card selected" 
+                               FontSize="18" 
+                               Foreground="#999999"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="Select a card from the list or create a new one" 
+                               FontSize="14" 
+                               Foreground="#BBBBBB"
+                               HorizontalAlignment="Center"
+                               Margin="0,10,0,0"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>
+

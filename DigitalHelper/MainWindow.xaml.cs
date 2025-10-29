@@ -19,11 +19,8 @@ namespace DigitalHelper
         public MainWindow()
         {
             InitializeComponent();
-        }
-
-        private void exitButton_Click(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
+            MainFrame.Content = null;
+            MainFrame.Navigate(new Uri("/Views/MainMenu.xaml", UriKind.Relative));
         }
     }
 }

@@ -1,0 +1,329 @@
+﻿<Page x:Class="DigitalHelper.Views.Logins"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:DigitalHelper.Views"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="750"
+      Title="Logins">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--Top Bar-->
+        <Border Grid.Row="0" Padding="10" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="NewLoginButton" 
+                        Grid.Column="0"
+                        Content="+ New Login" 
+                        Padding="15,8"
+                        Margin="0,0,10,0"
+                        Background="#4CAF50"
+                        Foreground="White"
+                        BorderThickness="0"
+                        FontSize="14"
+                        FontWeight="SemiBold"
+                        Cursor="Hand"/>
+
+                <Grid Grid.Column="1" Margin="0,0,10,0">
+                    <TextBox x:Name="SearchBox" 
+                             Padding="10,8"
+                             FontSize="14"
+                             VerticalContentAlignment="Center"
+                             BorderBrush="#CCCCCC"
+                             BorderThickness="1"/>
+                    <TextBlock x:Name="SearchPlaceholder"
+                               Text="Search logins..." 
+                               Foreground="#999999"
+                               FontSize="14"
+                               Padding="11,9"
+                               VerticalAlignment="Center"
+                               IsHitTestVisible="False"
+                               Visibility="Visible"/>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <!--Main Content-->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!--Left Section-->
+            <Border Grid.Column="0" BorderBrush="#E0E0E0" BorderThickness="0,0,1,0">
+                <ListBox x:Name="LoginListBox" 
+                         BorderThickness="0"
+                         SelectionMode="Single"
+                         Padding="0"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border Padding="15,12" BorderBrush="#F0F0F0" BorderThickness="0,0,0,1">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding SiteName}" 
+                                               FontSize="16" 
+                                               FontWeight="SemiBold"
+                                               Foreground="#333333"
+                                               TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock Text="{Binding Username}" 
+                                               FontSize="12" 
+                                               Foreground="#666666"
+                                               Margin="0,4,0,0"
+                                               TextTrimming="CharacterEllipsis"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Border>
+
+            <!--Right Section-->
+            <Grid Grid.Column="1">
+                <Grid x:Name="ViewPanel" Visibility="Visible">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!--Edit Button-->
+                    <Border Grid.Row="0" Padding="20,15" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+                        <Button x:Name="EditButton"
+                                Content="Edit"
+                                HorizontalAlignment="Right"
+                                Padding="20,8"
+                                Background="#2196F3"
+                                Foreground="White"
+                                BorderThickness="0"
+                                FontSize="14"
+                                FontWeight="SemiBold"
+                                Cursor="Hand"/>
+                    </Border>
+
+                    <!--Details Content (Read-Only)-->
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <StackPanel Margin="20,20,20,20">
+                            <!--Site Name-->
+                            <TextBlock Text="Site Name" 
+                                       FontSize="12" 
+                                       Foreground="#666666" 
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,5"/>
+                            <TextBox x:Name="ViewSiteNameTextBox" 
+                                     FontSize="14" 
+                                     Padding="10,8"
+                                     IsReadOnly="True"
+                                     BorderBrush="#CCCCCC"
+                                     Margin="0,0,0,20"
+                                     Background="#F9F9F9"/>
+
+                            <!--URL-->
+                            <TextBlock Text="URL" 
+                                       FontSize="12" 
+                                       Foreground="#666666" 
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,5"/>
+                            <TextBox x:Name="ViewUrlTextBox" 
+                                     FontSize="14" 
+                                     Padding="10,8"
+                                     IsReadOnly="True"
+                                     BorderBrush="#CCCCCC"
+                                     Margin="0,0,0,20"
+                                     Background="#F9F9F9"/>
+
+                            <!--Username/Email-->
+                            <TextBlock Text="Username/Email" 
+                                       FontSize="12" 
+                                       Foreground="#666666" 
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,5"/>
+                            <TextBox x:Name="ViewUsernameTextBox" 
+                                     FontSize="14" 
+                                     Padding="10,8"
+                                     IsReadOnly="True"
+                                     BorderBrush="#CCCCCC"
+                                     Margin="0,0,0,20"
+                                     Background="#F9F9F9"/>
+
+                            <!--Password-->
+                            <TextBlock Text="Password" 
+                                       FontSize="12" 
+                                       Foreground="#666666" 
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,5"/>
+                            <Grid Margin="0,0,0,20">
+                                <PasswordBox x:Name="ViewPasswordBox" 
+                                             FontSize="14" 
+                                             Padding="10,8"
+                                             IsEnabled="False"
+                                             BorderBrush="#CCCCCC"
+                                             Background="#F9F9F9"/>
+                                <TextBox x:Name="ViewPasswordTextBox"
+                                         FontSize="14" 
+                                         Padding="10,8"
+                                         IsReadOnly="True"
+                                         BorderBrush="#CCCCCC"
+                                         Background="#F9F9F9"
+                                         Visibility="Collapsed"/>
+                                <Button x:Name="ShowPasswordButton"
+                                        Content="Show"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Margin="0,0,10,0"
+                                        Padding="10,5"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        Foreground="#2196F3"
+                                        Cursor="Hand"
+                                        FontSize="12"/>
+                            </Grid>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+
+                <!--Edit Mode-->
+                <Grid x:Name="EditPanel" Visibility="Collapsed">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!--Title-->
+                    <Border Grid.Row="0" Padding="20,15" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1" Background="#F5F5F5">
+                        <TextBlock x:Name="EditTitleTextBlock"
+                                   Text="Edit Login"
+                                   FontSize="16"
+                                   FontWeight="SemiBold"
+                                   Foreground="#333333"/>
+                    </Border>
+
+                    <!--Edit Form-->
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <StackPanel Margin="20,20,20,20">
+                            <!--Site Name-->
+                            <TextBlock Text="Site Name *" 
+                                       FontSize="12" 
+                                       Foreground="#666666" 
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,5"/>
+                            <TextBox x:Name="EditSiteNameTextBox" 
+                                     FontSize="14" 
+                                     Padding="10,8"
+                                     BorderBrush="#CCCCCC"
+                                     Margin="0,0,0,20"/>
+
+                            <!--URL-->
+                            <TextBlock Text="URL" 
+                                       FontSize="12" 
+                                       Foreground="#666666" 
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,5"/>
+                            <TextBox x:Name="EditUrlTextBox" 
+                                     FontSize="14" 
+                                     Padding="10,8"
+                                     BorderBrush="#CCCCCC"
+                                     Margin="0,0,0,20"/>
+
+                            <!--Username/Email-->
+                            <TextBlock Text="Username/Email *" 
+                                       FontSize="12" 
+                                       Foreground="#666666" 
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,5"/>
+                            <TextBox x:Name="EditUsernameTextBox" 
+                                     FontSize="14" 
+                                     Padding="10,8"
+                                     BorderBrush="#CCCCCC"
+                                     Margin="0,0,0,20"/>
+
+                            <!--Password-->
+                            <TextBlock Text="Password *" 
+                                       FontSize="12" 
+                                       Foreground="#666666" 
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,5"/>
+                            <TextBox x:Name="EditPasswordTextBox" 
+                                     FontSize="14" 
+                                     Padding="10,8"
+                                     BorderBrush="#CCCCCC"
+                                     Margin="0,0,0,20"/>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!--Action Buttons-->
+                    <Border Grid.Row="2" 
+                            Background="#F5F5F5" 
+                            BorderBrush="#E0E0E0" 
+                            BorderThickness="0,1,0,0"
+                            Padding="20">
+                        <Grid>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                <Button x:Name="DeleteButton"
+                                        Content="Delete"
+                                        Padding="20,10"
+                                        Background="#F44336"
+                                        Foreground="White"
+                                        BorderThickness="0"
+                                        FontSize="14"
+                                        FontWeight="SemiBold"
+                                        Cursor="Hand"
+                                        Visibility="Collapsed"/>
+                            </StackPanel>
+                            
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Button x:Name="SaveButton"
+                                        Content="Save"
+                                        Padding="25,10"
+                                        Margin="0,0,10,0"
+                                        Background="#4CAF50"
+                                        Foreground="White"
+                                        BorderThickness="0"
+                                        FontSize="14"
+                                        FontWeight="SemiBold"
+                                        Cursor="Hand"/>
+                                
+                                <Button x:Name="CancelButton"
+                                        Content="Cancel"
+                                        Padding="25,10"
+                                        Background="#757575"
+                                        Foreground="White"
+                                        BorderThickness="0"
+                                        FontSize="14"
+                                        FontWeight="SemiBold"
+                                        Cursor="Hand"/>
+        </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+
+                <!--Empty State Message-->
+                <StackPanel x:Name="EmptyStatePanel" 
+                            VerticalAlignment="Center" 
+                            HorizontalAlignment="Center"
+                            Visibility="Collapsed">
+                    <TextBlock Text="No login selected" 
+                               FontSize="18" 
+                               Foreground="#999999"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="Select a login from the list or create a new one" 
+                               FontSize="14" 
+                               Foreground="#BBBBBB"
+                               HorizontalAlignment="Center"
+                               Margin="0,10,0,0"/>
+    </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>
