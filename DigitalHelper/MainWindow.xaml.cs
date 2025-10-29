@@ -20,13 +20,7 @@ namespace DigitalHelper
         {
             InitializeComponent();
             MainFrame.Content = null;
-            MainFrame.Source = new Uri("/Views/MainMenu.xaml", UriKind.Relative);
             MainFrame.Navigate(new Uri("/Views/MainMenu.xaml", UriKind.Relative));
         }
-
-        //private void exitButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Application.Current.Shutdown();
-        //}
     }
 }

@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace DigitalHelper.Views
 {
@@ -23,11 +12,61 @@ namespace DigitalHelper.Views
         public PasswordVault()
         {
             InitializeComponent();
+            
+            // I added this because vaultFrame was just white on load but issue was unrelated, keeping just in case
+            this.Loaded += PasswordVault_Loaded;
+        }
+
+        private void PasswordVault_Loaded(object sender, RoutedEventArgs e)
+        {
+            NavigateToLogins();
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new MainMenu());
+        }
+
+        private void LoginsButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigateToLogins();
+        }
+
+        private void CardsButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigateToCards();
+        }
+
+        private void SecureNotesButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigateToSecureNotes();
+        }
+
+        private void NavigateToLogins()
+        {
+            VaultFrame.Navigate(new Logins());
+            UpdateButtonHighlight(LoginsButton);
+        }
+
+        private void NavigateToCards()
+        {
+            VaultFrame.Navigate(new Cards());
+            UpdateButtonHighlight(CardsButton);
+        }
+
+        private void NavigateToSecureNotes()
+        {
+            VaultFrame.Navigate(new SecureNotes());
+            UpdateButtonHighlight(SecureNotesButton);
+        }
+
+        private void UpdateButtonHighlight(Button activeButton)
+        {
+            LoginsButton.Background = Brushes.Transparent;
+            CardsButton.Background = Brushes.Transparent;
+            SecureNotesButton.Background = Brushes.Transparent;
+
+            activeButton.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF3E3E42"));
         }
     }
 }

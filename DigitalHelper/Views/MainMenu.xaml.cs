@@ -27,6 +27,7 @@ namespace DigitalHelper.Views
 
         private void exitButton_Click(object sender, RoutedEventArgs e)
         {
+            // In future may need to rework to ask for minimize if not using topbar for transition to mini helper
             Application.Current.Shutdown();
         }
 
