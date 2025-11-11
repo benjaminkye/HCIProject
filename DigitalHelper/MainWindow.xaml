@@ -6,21 +6,119 @@
         xmlns:local="clr-namespace:DigitalHelper"
         xmlns:views="clr-namespace:DigitalHelper.Views"
         mc:Ignorable="d"
-        ResizeMode="CanMinimize"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         Background="Transparent"
         AllowsTransparency="True"
         Topmost="False"
-        ShowInTaskbar="False"
+        ShowInTaskbar="True"
         Title="MainWindow" Height="600" Width="1000">
     <Border Background="#F4F3F2">
         <Border.Clip>
             <RectangleGeometry RadiusX="35" RadiusY="35" Rect="0,0,1000,600"/>
         </Border.Clip>
-        <Frame x:Name="MainFrame"
-               d:DataContext="{d:DesignInstance Type=views:MainMenu, IsDesignTimeCreatable=True}" Content="{Binding}"
-               NavigationUIVisibility="Hidden">
-        </Frame>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <!-- Custom Topbar -->
+            <Border Grid.Row="0" 
+                    Background="#E8E7E6" 
+                    BorderBrush="#D0CFCE" 
+                    BorderThickness="0,0,0,1"
+                    MouseLeftButtonDown="TopBar_MouseLeftButtonDown">
+                <Grid>
+                    <StackPanel Orientation="Horizontal" 
+                                HorizontalAlignment="Right" 
+                                VerticalAlignment="Center"
+                                Margin="0,0,10,0">
+                        
+                        <!-- Minimize Button -->
+                        <Button x:Name="MinimizeButton"
+                                Content="−"
+                                Width="35"
+                                Height="30"
+                                FontSize="20"
+                                FontWeight="Bold"
+                                Cursor="Hand"
+                                Click="MinimizeButton_Click">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Foreground" Value="#666666"/>
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Background="{TemplateBinding Background}"
+                                                        CornerRadius="5"
+                                                        Padding="0,0,0,3">
+                                                    <ContentPresenter HorizontalAlignment="Center" 
+                                                                    VerticalAlignment="Center"
+                                                                    TextElement.Foreground="{TemplateBinding Foreground}"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#D0CFCE"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        
+                        <!-- Close Button -->
+                        <Button x:Name="CloseButton"
+                                Content="×"
+                                Width="35"
+                                Height="30"
+                                FontSize="24"
+                                FontWeight="Bold"
+                                Cursor="Hand"
+                                Margin="5,0,10,0"
+                                Click="CloseButton_Click">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Foreground" Value="#666666"/>
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Background="{TemplateBinding Background}"
+                                                        CornerRadius="5">
+                                                    <ContentPresenter HorizontalAlignment="Center" 
+                                                                    VerticalAlignment="Center"
+                                                                    Margin="0,-2,0,0"
+                                                                    TextElement.Foreground="{TemplateBinding Foreground}"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#E74C3C"/>
+                                            <Setter Property="Foreground" Value="White"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+            
+            <!-- Content Area -->
+            <Frame Grid.Row="1"
+                   x:Name="MainFrame"
+                   d:DataContext="{d:DesignInstance Type=views:MainMenu, IsDesignTimeCreatable=True}" 
+                   Content="{Binding}"
+                   NavigationUIVisibility="Hidden">
+            </Frame>
+        </Grid>
     </Border>
 </Window>
