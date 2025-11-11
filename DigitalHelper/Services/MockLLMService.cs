@@ -141,7 +141,7 @@ namespace DigitalHelper.Services
             {
                 MessageType = "guidance",
                 Icon = "👋",
-                Instructions = "Hello! I'm your digital helper. Click on me to return to the menu!",
+                Instructions = "Hello! I'm your digital helper. You can move me by dragging me with your mouse, toggle the menu by left-clicking me, and show/hide my messages by right clicking me!",
                 Buttons = null
             };
         }
