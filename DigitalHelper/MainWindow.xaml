@@ -6,13 +6,12 @@
         xmlns:local="clr-namespace:DigitalHelper"
         xmlns:views="clr-namespace:DigitalHelper.Views"
         mc:Ignorable="d"
-        ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         Background="Transparent"
         AllowsTransparency="True"
         Topmost="False"
-        ShowInTaskbar="False"
+        ShowInTaskbar="True"
         Title="MainWindow" Height="600" Width="1000">
     <Border Background="#F4F3F2">
         <Border.Clip>
@@ -24,7 +23,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             
-            <!--Custom Topbar-->
+            <!-- Custom Topbar -->
             <Border Grid.Row="0" 
                     Background="#E8E7E6" 
                     BorderBrush="#D0CFCE" 
@@ -36,7 +35,7 @@
                                 VerticalAlignment="Center"
                                 Margin="0,0,10,0">
                         
-                        <!--Minimize Button-->
+                        <!-- Minimize Button -->
                         <Button x:Name="MinimizeButton"
                                 Content="−"
                                 Width="35"
@@ -72,7 +71,7 @@
                             </Button.Style>
                         </Button>
                         
-                        <!--Close Button-->
+                        <!-- Close Button -->
                         <Button x:Name="CloseButton"
                                 Content="×"
                                 Width="35"
@@ -113,7 +112,7 @@
                 </Grid>
             </Border>
             
-            <!--Content Area-->
+            <!-- Content Area -->
             <Frame Grid.Row="1"
                    x:Name="MainFrame"
                    d:DataContext="{d:DesignInstance Type=views:MainMenu, IsDesignTimeCreatable=True}" 
