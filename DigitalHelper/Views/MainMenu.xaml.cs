@@ -35,5 +35,10 @@ namespace DigitalHelper.Views
         {
             NavigationService.Navigate(new PasswordVault());
         }
+
+        private void CustomHelpButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new ChatWindow());
+        }
     }
 }
