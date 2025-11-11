@@ -61,5 +61,10 @@ namespace DigitalHelper.Views
         {
             NavigationService.Navigate(new Uri("/Views/Settings.xaml", UriKind.Relative));
         }
+
+        private void CustomHelpButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new ChatWindow());
+        }
     }
 }

@@ -1,0 +1,22 @@
+<Window x:Class="DigitalHelper.ScreenOverlay"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DigitalHelper"
+        mc:Ignorable="d"
+        Title="ScreenOverlay" 
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Topmost="True"
+        ShowInTaskbar="False"
+        IsHitTestVisible="False"
+        WindowState="Maximized"
+        ResizeMode="NoResize">
+    
+    <Canvas x:Name="OverlayCanvas" Background="Transparent">
+        <!--Bounding boxes will be drawn here dynamically-->
+    </Canvas>
+</Window>
+
