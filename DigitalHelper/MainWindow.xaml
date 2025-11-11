@@ -6,12 +6,13 @@
         xmlns:local="clr-namespace:DigitalHelper"
         xmlns:views="clr-namespace:DigitalHelper.Views"
         mc:Ignorable="d"
+        ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         Background="Transparent"
         AllowsTransparency="True"
         Topmost="False"
-        ShowInTaskbar="True"
+        ShowInTaskbar="False"
         Title="MainWindow" Height="600" Width="1000">
     <Border Background="#F4F3F2">
         <Border.Clip>
