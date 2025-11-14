@@ -76,5 +76,37 @@ namespace DigitalHelper.Services
 
             return new Shot(jpeg, bmp, w, h);
         }
+        public string SaveCapture1000(string? folderPath = null, string? fileBaseName = null, string format = "jpg")
+        {
+            var shot = Capture1000();
+            if (string.IsNullOrWhiteSpace(folderPath))
+            {
+                folderPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            }
+            Directory.CreateDirectory(folderPath);
+            string ext;
+            var fmt = format.Trim().ToLowerInvariant();
+            if (fmt == "png") ext = ".png";
+            else if (fmt == "jpeg" || fmt == "jpg") ext = ".jpg";
+            else ext = ".jpg";
+            if (string.IsNullOrWhiteSpace(fileBaseName))
+            {
+                fileBaseName = "capture_" + DateTime.Now.ToString("yyyyMMdd_HHmmss");
+            }
+            var fullPath = Path.Combine(folderPath, fileBaseName + ext);
+            if (ext == ".jpg")
+            {
+                File.WriteAllBytes(fullPath, shot.jpeg1000);
+            }
+            else if (ext == ".png")
+            {
+                var encoder = new SWMI.PngBitmapEncoder();
+                encoder.Frames.Add(SWMI.BitmapFrame.Create((SWMI.BitmapSource)shot.preview1000));
+                using
+                var fs = File.Create(fullPath);
+                encoder.Save(fs);
+            }
+            return fullPath;
+        }
     }
 }

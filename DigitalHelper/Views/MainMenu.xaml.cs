@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DigitalHelper.Services;
 
 namespace DigitalHelper.Views
 {
@@ -34,6 +35,23 @@ namespace DigitalHelper.Views
         private void PasswordVaultButton_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new PasswordVault());
+        }
+
+        private void TestCapture_Click(object sender, RoutedEventArgs e)
+        {
+            var svc = new ScreenCaptureService();
+            string path = svc.SaveCapture1000();
+            MessageBox.Show($"Saved 1kx1k capture to :\n{path}");
+        }
+
+        private void CustomHelpButton_Click(object sender, RoutedEventArgs e)
+        {
+            var svc = new ScreenCaptureService();
+            string path = svc.SaveCapture1000(
+                folderPath: @"C:\Users\rishi\Documents\School\HCI",
+                fileBaseName: "ui_image",
+                format:"jpg");
+            MessageBox.Show($"Saved 1kx1k capture to :\n{path}");
         }
     }
 }
