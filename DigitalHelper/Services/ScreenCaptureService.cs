@@ -1,5 +1,7 @@
 ﻿using System.IO;
 using System.Runtime.InteropServices;
+using System.Windows;
+using System.Windows.Interop;
 using SD = System.Drawing;
 using SDI = System.Drawing.Imaging;
 using SWM = System.Windows.Media;
@@ -17,16 +19,29 @@ namespace DigitalHelper.Services
         private const int SM_CYVIRTUALSCREEN = 79;
 
         [DllImport("user32.dll")] private static extern int GetSystemMetrics(int nIndex);
+        [DllImport("user32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool SetWindowDisplayAffinity(IntPtr hWnd, uint dwAffinity);
+
 
         /// <summary>
         /// Capture screenshot, scale to 1000x1000 if specified
         /// </summary>
         public Shot Capture1000(bool scale = true)
         {
+
+            IntPtr helperHandle = new WindowInteropHelper(App.HelperWindowInstance).Handle;
+            IntPtr mainHandle = new WindowInteropHelper(App.MainWindowInstance).Handle;
+            uint WDA_EXCLUDEFROMCAPTURE = 0x00000011;
+            SetWindowDisplayAffinity(helperHandle, WDA_EXCLUDEFROMCAPTURE);
+            SetWindowDisplayAffinity(mainHandle, WDA_EXCLUDEFROMCAPTURE);
+
             int x = GetSystemMetrics(SM_XVIRTUALSCREEN);
             int y = GetSystemMetrics(SM_YVIRTUALSCREEN);
             int w = GetSystemMetrics(SM_CXVIRTUALSCREEN);
             int h = GetSystemMetrics(SM_CYVIRTUALSCREEN);
+
+
 
             if (w <= 0 || h <= 0)
             {
@@ -79,6 +94,9 @@ namespace DigitalHelper.Services
                 bmp.EndInit();
             }
             bmp.Freeze();
+
+            SetWindowDisplayAffinity(helperHandle, 0);
+            SetWindowDisplayAffinity(mainHandle, 0);
 
             return new Shot(png, bmp, w, h);
         }
