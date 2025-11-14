@@ -127,13 +127,21 @@ namespace DigitalHelper.Views
 
             var grid = new Grid();
             
-            var textBlock = new TextBlock
+            TextBlock textBlock;
+            if (isHelper)
             {
-                Text = message,
-                TextWrapping = TextWrapping.Wrap,
-                FontSize = 16,
-                Foreground = new SolidColorBrush(isHelper ? Colors.Black : Colors.White)
-            };
+                textBlock = MarkdownRenderer.RenderToTextBlock(message, 16, new SolidColorBrush(Colors.Black));
+            }
+            else
+            {
+                textBlock = new TextBlock
+                {
+                    Text = message,
+                    TextWrapping = TextWrapping.Wrap,
+                    FontSize = 16,
+                    Foreground = new SolidColorBrush(Colors.White)
+                };
+            }
 
             grid.Children.Add(textBlock);
             border.Child = grid;
@@ -151,11 +159,10 @@ namespace DigitalHelper.Views
             };
 
             var guideButton = CreateOptionButton("Guide", "📝");
-            guideButton.Click += (s, e) =>
+            guideButton.Click += async (s, e) =>
             {
                 AddUserMessage("Step-by-step guide");
-                AddHelperMessage("Great! Here's a step-by-step guide for: \"" + userTask + "\"");
-                AddHelperMessage("(Written guide will be implemented in LLM stage. For now, try Realtime Help!)");
+                await GenerateAndDisplayGuide();
             };
             buttonPanel.Children.Add(guideButton);
 
@@ -181,6 +188,75 @@ namespace DigitalHelper.Views
 
             ChatMessagesPanel.Children.Add(buttonPanel);
             ScrollToBottom();
+        }
+
+        private async System.Threading.Tasks.Task GenerateAndDisplayGuide()
+        {
+            try
+            {
+                var streamingBubble = CreateStreamingMessageBubble();
+                ChatMessagesPanel.Children.Add(streamingBubble.Border);
+                
+                streamingBubble.TextBlock.Text = "⏳ Thinking...";
+                ScrollToBottom();
+                
+                var fullText = new System.Text.StringBuilder();
+                bool firstChunk = true;
+                
+                await foreach (var chunk in LLMService.Instance.GetHelpGuideStream(userTask))
+                {
+                    if (firstChunk)
+                    {
+                        streamingBubble.TextBlock.Text = "";
+                        firstChunk = false;
+                    }
+                    
+                    fullText.Append(chunk);
+                    
+                    await Dispatcher.InvokeAsync(() =>
+                    {
+                        MarkdownRenderer.UpdateTextBlock(streamingBubble.TextBlock, fullText.ToString());
+                        ScrollToBottom();
+                    });
+                }
+
+                // Debug line
+                System.Diagnostics.Debug.WriteLine("=== RAW MARKDOWN OUTPUT ===");
+                System.Diagnostics.Debug.WriteLine(fullText.ToString());
+                System.Diagnostics.Debug.WriteLine("=== END RAW OUTPUT ===");
+            }
+            catch (Exception ex)
+            {
+                AddHelperMessage($"❌ Sorry, I encountered an error while generating the guide: {ex.Message}");
+                AddHelperMessage("Please try again or check your API key in Settings.");
+            }
+        }
+
+        private (Border Border, TextBlock TextBlock) CreateStreamingMessageBubble()
+        {
+            var textBlock = new TextBlock
+            {
+                Text = "",
+                TextWrapping = TextWrapping.Wrap,
+                FontSize = 16,
+                Foreground = new SolidColorBrush(Colors.Black)
+            };
+
+            var grid = new Grid();
+            grid.Children.Add(textBlock);
+
+            var border = new Border
+            {
+                Background = new SolidColorBrush(Colors.White),
+                CornerRadius = new CornerRadius(15),
+                Padding = new Thickness(15, 10, 15, 10),
+                Margin = new Thickness(0, 5, 100, 5),
+                HorizontalAlignment = HorizontalAlignment.Left,
+                MaxWidth = 600,
+                Child = grid
+            };
+
+            return (border, textBlock);
         }
 
         private Button CreateOptionButton(string text, string icon)

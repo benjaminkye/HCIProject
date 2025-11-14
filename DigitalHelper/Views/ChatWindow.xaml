@@ -6,7 +6,8 @@
       xmlns:local="clr-namespace:DigitalHelper.Views"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="1000"
-      Title="ChatWindow">
+      Title="ChatWindow"
+      KeepAlive="True">
 
     <Grid Background="{StaticResource BackgroundBrush}">
         <Grid.RowDefinitions>

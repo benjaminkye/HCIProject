@@ -9,12 +9,18 @@ namespace DigitalHelper.Views
     /// </summary>
     public partial class PasswordVault : Page
     {
-        public PasswordVault()
+        private Page? _main = null;
+        public PasswordVault(Page? main = null)
         {
             InitializeComponent();
-            
+
             // I added this because vaultFrame was just white on load but issue was unrelated, keeping just in case
             this.Loaded += PasswordVault_Loaded;
+
+            if (main != null)
+            {
+                _main = main;
+            }
         }
 
         private void PasswordVault_Loaded(object sender, RoutedEventArgs e)
@@ -24,7 +30,7 @@ namespace DigitalHelper.Views
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new MainMenu());
+            NavigationService.Navigate(_main);
         }
 
         private void LoginsButton_Click(object sender, RoutedEventArgs e)

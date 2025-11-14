@@ -1,7 +1,7 @@
 ﻿using System.Configuration;
 using System.Data;
 using System.Windows;
-
+using DigitalHelper.Services;
 namespace DigitalHelper
 {
     /// <summary>
@@ -14,6 +14,8 @@ namespace DigitalHelper
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+
+            LLMService.Instance.SetApiKey("PUT-API-KEY-HERE");
 
             var mainWindow = new MainWindow();
             mainWindow.Hide();
