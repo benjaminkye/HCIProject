@@ -56,8 +56,8 @@
                 Style="{StaticResource TileButtonStyle}"
                 Click="NoBackButton_Click">
             <StackPanel Orientation="Vertical">
-                <Image Height="200" Width="200" Stretch="Uniform" Source="pack://application:,,,/DigitalHelper;component/Resources/settings.png"/>
-                <TextBlock HorizontalAlignment="Center" FontSize="30" FontWeight="SemiBold" Foreground="{StaticResource TextDarkBrush}" Text="No, Go Back"/>
+                <Image Height="200" Width="200" Stretch="Uniform" Source="pack://application:,,,/DigitalHelper;component/Resources/back.png"/>
+                <TextBlock HorizontalAlignment="Center" FontSize="30" FontWeight="SemiBold" Text="No, Go Back"/>
             </StackPanel>
         </Button>
     </Grid>
