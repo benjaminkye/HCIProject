@@ -16,5 +16,7 @@ namespace DigitalHelper.Views
         {
             NavigationService.GoBack();
         }
+
+     
     }
 }
