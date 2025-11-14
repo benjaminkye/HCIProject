@@ -45,7 +45,6 @@ namespace DigitalHelper.Services
 
             if (w <= 0 || h <= 0)
             {
-
                 w = 1920; h = 1080; x = 0; y = 0;
             }
 
@@ -97,7 +96,7 @@ namespace DigitalHelper.Services
 
             SetWindowDisplayAffinity(helperHandle, 0);
             SetWindowDisplayAffinity(mainHandle, 0);
-
+            File.WriteAllBytes("debug_capture.png", png); // debug line, remove later
             return new Shot(png, bmp, w, h);
         }
 

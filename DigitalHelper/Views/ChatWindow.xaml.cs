@@ -1,11 +1,14 @@
+using DigitalHelper.Services;
+using Google.GenAI;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Net.Http;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using DigitalHelper.Services;
 
 namespace DigitalHelper.Views
 {
@@ -86,10 +89,12 @@ namespace DigitalHelper.Views
             if (isFirstMessage)
             {
                 userTask = message;
+                App.HelperWindowInstance?.SetUserTask(userTask);
                 isFirstMessage = false;
                 
                 // Helper responds with mode selection
                 AddHelperMessage("Would you like a step-by-step guide or realtime guidance?");
+                AddHelperMessage("The step-by-step guide will provide detailed instructions you can follow at your own pace, while the realtime help will analyze your screen and provide assistance if you ever feel stuck.");
                 AddModeSelectionButtons();
             }
             else
@@ -227,8 +232,8 @@ namespace DigitalHelper.Views
             }
             catch (Exception ex)
             {
-                AddHelperMessage($"❌ Sorry, I encountered an error while generating the guide: {ex.Message}");
-                AddHelperMessage("Please try again or check your API key in Settings.");
+                Trace.WriteLine($"Error generating guide: {ex.Message}");
+                AddHelperMessage($"Sorry, I encountered an error while generating the guide: {ex.Message}");
             }
         }
 
@@ -288,7 +293,7 @@ namespace DigitalHelper.Views
             return button;
         }
 
-        private void StartRealtimeHelp()
+        private async void StartRealtimeHelp()
         {
             var helperWindow = App.HelperWindowInstance;
             
@@ -298,13 +303,41 @@ namespace DigitalHelper.Views
                 return;
             }
 
-            MockLLMService.Reset();
-            var firstStep = MockLLMService.GetNextStep();
-            helperWindow.DisplayMessage(firstStep);
-
             Application.Current.MainWindow?.Hide();
             helperWindow.Show();
             helperWindow.Activate();
+
+            helperWindow.SetHelperText("⏳ Thinking... (This may take a few seconds)");
+
+            try
+            {
+                var screenCaptureService = new ScreenCaptureService();
+                var shot = screenCaptureService.Capture1000(scale: false);
+
+                var step = await LLMService.Instance.AnalyzeScreenshotAsync(
+                    shot.png1000,
+                    userTask,
+                    shot.nativeW,
+                    shot.nativeH
+                );
+
+                helperWindow.DisplayMessage(step);
+            }
+            catch (ClientError cex)
+            {
+                Trace.WriteLine($"Gemini {cex.StatusCode} error: {cex.Message}");
+                helperWindow.SetHelperText($"Error analyzing screen: {cex.Message}");
+            }
+            catch (HttpRequestException hex)
+            {
+                Trace.WriteLine($"HTTP error: {hex.Message}");
+                helperWindow.SetHelperText($"Error analyzing screen: {hex.Message}");
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine($"Unexpected error: {ex.Message}");
+                helperWindow.SetHelperText($"Unexpected error: {ex.Message}");
+            }
         }
 
         private void ScrollToBottom()

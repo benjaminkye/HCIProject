@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -28,6 +29,7 @@ namespace DigitalHelper
         private bool isDragging = false;
         private const double DragThreshold = 5.0; // Drag threshold in case users have shaky hands
         private ScreenOverlay? screenOverlay;
+        private string? currentUserTask;
 
         public HelperWindow()
         {
@@ -193,14 +195,23 @@ namespace DigitalHelper
             DisplayMessage(simpleMessage);
         }
 
-        private void HandleButtonAction(string buttonId, string action)
+        public void SetUserTask(string task)
+        {
+            currentUserTask = task;
+        }
+
+        private async void HandleButtonAction(string buttonId, string action)
         {
             switch (action)
             {
                 case "dismiss":
                 case "exit_help_mode":
-                    MockLLMService.Reset();
+                    currentUserTask = null;
                     screenOverlay?.Hide();
+                    SetHelperText("I hope I was of use! I'll be around if you need any more help!");
+                    await Task.Delay(1000);
+                    HideSpeechBubble();
+                    
                     if (mainWindow != null)
                     {
                         mainWindow.Show();
@@ -209,11 +220,39 @@ namespace DigitalHelper
                     break;
                     
                 case "take_screenshot":
-                    var nextStep = MockLLMService.GetNextStep();
-                    DisplayMessage(nextStep);
+                    // User clicked done, so repeat ss loop
+                    if (string.IsNullOrEmpty(currentUserTask))
+                    {
+                        SetHelperText("No active task. Please start a new help session.");
+                        return;
+                    }
+
+                    SetHelperText("⏳ Thinking... (This may take a few seconds)");
+
+                    try
+                    {
+                        // Small delay in case some stuff closes because of clicking on "done"
+                        await Task.Delay(1000);
+                        var screenCaptureService = new ScreenCaptureService();
+                        var shot = screenCaptureService.Capture1000(scale: false);
+
+                        var nextStep = await LLMService.Instance.AnalyzeScreenshotAsync(
+                            shot.png1000,
+                            currentUserTask,
+                            shot.nativeW,
+                            shot.nativeH
+                        );
+
+                        DisplayMessage(nextStep);
+                    }
+                    catch (Exception ex)
+                    {
+                        SetHelperText($"Error analyzing screen: {ex.Message}");
+                    }
                     break;
                     
                 case "start_realtime_help":
+                    // I don't think this happens anymore but keeping just in case
                     MockLLMService.Reset();
                     var firstStep = MockLLMService.GetNextStep();
                     DisplayMessage(firstStep);

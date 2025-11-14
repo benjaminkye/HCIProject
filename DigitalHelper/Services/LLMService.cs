@@ -1,6 +1,11 @@
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Text.Json;
 using System.Threading.Tasks;
+using DigitalHelper.Models;
 using Google.GenAI;
+using Google.GenAI.Types;
 
 namespace DigitalHelper.Services
 {
@@ -92,9 +97,144 @@ namespace DigitalHelper.Services
             {
                 if (chunk?.Candidates?[0]?.Content?.Parts?[0]?.Text != null)
                 {
-                    yield return chunk.Candidates[0].Content.Parts[0].Text;
+                    yield return chunk!.Candidates![0]!.Content!.Parts![0]!.Text!;
                 }
             }
+        }
+
+        /// <summary>
+        /// Analyzes a screenshot to provide the next step for realtime help
+        /// </summary>
+        /// <returns>HelperGuidanceMessage with instructions and bounding box</returns>
+        public async Task<HelperGuidanceMessage> AnalyzeScreenshotAsync(
+            byte[] screenshotPng,
+            string userTask,
+            int nativeWidth,
+            int nativeHeight)
+        {
+            string prompt = $"""
+                You are a patient, helpful digital assistant for elderly users who need help with technology.
+                The user needs help with the following task: "{userTask}"
+                Given this task, do the following:
+                1. Analyze the attached screenshot. This screenshot may be at any stage of the task, so use context clues to figure out what stage the user is at.
+                2. Determine the next action the user should take.
+                3. Locate UI element(s) involved. Group related elements if appropriate (username + password together) and generate coordinates for a bounding box that surrounds the target area.
+                4. Return JSON following this format (no other text):
+                {"{"}
+                    "instruction": "Instruction text here", // string
+                    "box-2d": [ymin, xmin, ymax, xmax], // 0-1000 coordinates
+                {"}"}
+                Your response MUST be ONLY raw JSON.
+                """;
+
+
+            var response = await _model!.Models.GenerateContentAsync(
+                model: "gemini-2.5-pro", // Flash faster and cheaper but worse, pro better but slower (sometimes by a lot) and more $
+                contents: new List<Content>
+                {
+                    new Content
+                    {
+                        Parts = new List<Part>
+                        {
+                            new Part
+                            {
+                                InlineData = new Blob
+                                {
+                                    MimeType = "image/png",
+                                    Data = screenshotPng
+                                }
+                            },
+                            new Part
+                            {
+                                Text = prompt
+                            }
+                        }
+                    }
+                },
+                config: new GenerateContentConfig
+                {
+                    ResponseMimeType = "application/json"
+                    //ThinkingConfig = new ThinkingConfig
+                    //{
+                    //    ThinkingBudget = -1
+                    //}
+                }
+            );
+
+            string jsonResponse = response?.Candidates?[0]?.Content?.Parts?[0]?.Text?.Trim() ?? "";
+            Trace.WriteLine(jsonResponse);
+
+            if (jsonResponse.StartsWith("```json"))
+            {
+                jsonResponse = jsonResponse.Substring(7);
+            }
+            if (jsonResponse.StartsWith("```"))
+            {
+                jsonResponse = jsonResponse.Substring(3);
+            }
+            if (jsonResponse.EndsWith("```"))
+            {
+                jsonResponse = jsonResponse.Substring(0, jsonResponse.Length - 3);
+            }
+            jsonResponse = jsonResponse.Trim();
+            
+            Trace.WriteLine("Post-processed json:");
+            Trace.WriteLine(jsonResponse);
+
+            var jsonDoc = JsonDocument.Parse(jsonResponse);
+            var root = jsonDoc.RootElement;
+            
+            string instruction = root.GetProperty("instruction").GetString() ?? "Continue with the next step.";
+            var boxArray = root.GetProperty("box-2d");
+
+            double Clamp(double v) => Math.Min(1000.0, Math.Max(0.0, v));
+            double ymin = Clamp(boxArray[0].GetDouble());
+            double xmin = Clamp(boxArray[1].GetDouble());
+            double ymax = Clamp(boxArray[2].GetDouble());
+            double xmax = Clamp(boxArray[3].GetDouble());
+
+            double scaleX = nativeWidth / 1000.0;
+            double scaleY = nativeHeight / 1000.0;
+
+            var boundingBox = new BoundingBox
+            {
+                Id = "target",
+                X = xmin * scaleX,
+                Y = ymin * scaleY,
+                Width = Math.Abs(xmax - xmin) * scaleX,
+                Height = Math.Abs(ymax - ymin) * scaleY,
+                Color = "#00FF00",
+                Style = "solid",
+                PulseAnimation = true
+            };
+
+            var message = new HelperGuidanceMessage
+            {
+                MessageType = "guidance",
+                Icon = "",
+                Instructions = instruction,
+                BoundingBoxes = new List<BoundingBox> { boundingBox },
+                Buttons = new List<HelperButton>
+                {
+                    new HelperButton
+                    {
+                        Id = "nextStep",
+                        Text = "More Help",
+                        Action = "take_screenshot",
+                        Icon = "",
+                        Style = "primary"
+                    },
+                    new HelperButton
+                    {
+                        Id = "exit",
+                        Text = "Exit",
+                        Action = "exit_help_mode",
+                        Style = "secondary"
+                    }
+                }
+            };
+
+            return message;
         }
     }
 }

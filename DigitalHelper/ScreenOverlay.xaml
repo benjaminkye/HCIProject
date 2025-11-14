@@ -12,7 +12,7 @@
         Topmost="True"
         ShowInTaskbar="False"
         IsHitTestVisible="False"
-        WindowState="Maximized"
+        WindowState="Normal"
         ResizeMode="NoResize">
     
     <Canvas x:Name="OverlayCanvas" Background="Transparent">

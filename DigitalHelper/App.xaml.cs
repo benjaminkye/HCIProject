@@ -16,7 +16,7 @@ namespace DigitalHelper
         {
             base.OnStartup(e);
 
-            LLMService.Instance.SetApiKey("PUT-API-KEY-HERE");
+            LLMService.Instance.SetApiKey("PUT_API_KEY_HERE");
             MainWindowInstance = new MainWindow();
             MainWindowInstance.Hide();
             this.MainWindow = MainWindowInstance;
