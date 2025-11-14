@@ -1,0 +1,41 @@
+<Page x:Class="DigitalHelper.Views.ExitConfirm"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" mc:Ignorable="d" d:DesignHeight="600" d:DesignWidth="1000" Title="ExitConfirm">
+    <Grid Background="#FFF0F0F0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="3*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Are you sure you want to exit DigitalHelper?" FontSize="32" FontWeight="SemiBold" TextAlignment="Center"/>
+        <!-- WE MIGHT NEED TO CHANGE -->
+        <Button Grid.Row="1" Grid.Column="0" Margin="40" Click="YesExitButton_Click">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="25"/>
+                </Style>
+            </Button.Resources>
+            <StackPanel Orientation="Vertical">
+                <Image Height="200" Width="200" Stretch="Uniform" Source="pack://application:,,,/DigitalHelper;component/Resources/exit.png"/>
+                <TextBlock HorizontalAlignment="Center" FontSize="30" FontWeight="SemiBold" Text="Yes, Exit"/>
+            </StackPanel>
+        </Button>
+        <!-- goback menu -->
+        <Button Grid.Row="1" Grid.Column="1" Margin="40" Click="NoBackButton_Click">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="25"/>
+                </Style>
+            </Button.Resources>
+            <StackPanel Orientation="Vertical">
+                <Image Height="200" Width="200" Stretch="Uniform" Source="pack://application:,,,/DigitalHelper;component/Resources/settings.png"/>
+                <TextBlock HorizontalAlignment="Center" FontSize="30" FontWeight="SemiBold" Text="No, Go Back"/>
+            </StackPanel>
+        </Button>
+    </Grid>
+</Page>

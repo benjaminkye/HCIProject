@@ -11,7 +11,7 @@ using System.Windows.Shapes;
 
 namespace DigitalHelper
 {
-    /// <summary>
+    /// <summary>s
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
