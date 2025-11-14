@@ -16,5 +16,7 @@ namespace DigitalHelper.Views
         {
             NavigationService.Navigate(new Uri("/Views/MainMenu.xaml", UriKind.Relative));
         }
+
+     
     }
 }
