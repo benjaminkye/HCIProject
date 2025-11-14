@@ -31,7 +31,16 @@ namespace DigitalHelper.Views
         private void exitButton_Click(object sender, RoutedEventArgs e)
         {
             // In future may need to rework to ask for minimize if not using topbar for transition to mini helper
-            Application.Current.Shutdown();
+            var result = MessageBox.Show(
+                "Are you sure you want to exit DigitalHelper?",
+                "Exit DigitalHelper",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                Application.Current.Shutdown();
+            }
         }
 
         private void PasswordVaultButton_Click(object sender, RoutedEventArgs e)
