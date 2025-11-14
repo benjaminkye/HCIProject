@@ -79,16 +79,16 @@
         </Button>
 
         <!--Settings Button-->
-        <Button Grid.Column="0" Grid.Row="1" Margin="10"
-                Style="{StaticResource TileButtonStyle}"
-                Click="SettingsButton_Click">
-            <StackPanel Orientation="Vertical">
-                <Image Height="200" Width="200" Stretch="Uniform" Source="pack://application:,,,/DigitalHelper;component/Resources/settings.png"/>
-                <TextBlock HorizontalAlignment="Center" 
-                           FontSize="30" 
-                           FontWeight="SemiBold"
-                           Foreground="{StaticResource TextDarkBrush}"
-                           Text="Settings"/>
+        <Button Grid.Column="0" Grid.Row="1" Margin="10">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="25"/>
+                </Style>
+            </Button.Resources>
+            <StackPanel Orientation="Vertical" >
+                <Image Height="200" Width="200" Stretch="Uniform" Source="pack://application:,,,/DigitalHelper;component/Resources/settings.png"></Image>
+                <TextBlock HorizontalAlignment="Center" FontSize="30" FontWeight="SemiBold"
+                               Text="Settings"/>
             </StackPanel>
         </Button>
         
