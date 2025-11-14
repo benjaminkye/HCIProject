@@ -62,8 +62,13 @@ namespace DigitalHelper.Views
             string path = svc.SaveCapture1000(
                 folderPath: folder,
                 fileBaseName: "ui_image",
-                format:"jpg");
+                scale: true);
             MessageBox.Show($"Saved 1kx1k capture to :\n{path}");
+        }
+        
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Views/Settings.xaml", UriKind.Relative));
         }
     }
 }
