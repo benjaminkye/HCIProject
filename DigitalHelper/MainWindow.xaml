@@ -13,7 +13,7 @@
         Topmost="False"
         ShowInTaskbar="True"
         Title="MainWindow" Height="600" Width="1000">
-    <Border Background="#E09A10">
+    <Border Background="{StaticResource WindowBorderBrush}">
         <Border.Clip>
             <RectangleGeometry RadiusX="35" RadiusY="35" Rect="0,0,1000,600"/>
         </Border.Clip>
@@ -29,8 +29,8 @@
                 
                 <!--Custom Topbar-->
                 <Border Grid.Row="0" 
-                    Background="#FCAB14" 
-                    BorderBrush="#E09A10" 
+                    Background="{StaticResource TopBarBrush}" 
+                    BorderBrush="{StaticResource WindowBorderBrush}" 
                     BorderThickness="0,0,0,2"
                     MouseLeftButtonDown="TopBar_MouseLeftButtonDown">
                 <Grid>
@@ -49,7 +49,7 @@
                             <Button.Style>
                                 <Style TargetType="Button">
                                     <Setter Property="Background" Value="Transparent"/>
-                                    <Setter Property="Foreground" Value="#666666"/>
+                                    <Setter Property="Foreground" Value="{StaticResource TextLightBrush}"/>
                                     <Setter Property="BorderThickness" Value="0"/>
                                     <Setter Property="Template">
                                         <Setter.Value>
@@ -65,11 +65,11 @@
                                     </Setter>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding Topmost, RelativeSource={RelativeSource AncestorType=Window}}" Value="True">
-                                            <Setter Property="Background" Value="#4A90E2"/>
+                                            <Setter Property="Background" Value="{StaticResource PinButtonActiveBrush}"/>
                                             <Setter Property="Foreground" Value="White"/>
                                         </DataTrigger>
                                         <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="#D0CFCE"/>
+                                            <Setter Property="Background" Value="{StaticResource PinButtonHoverBrush}"/>
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
@@ -94,7 +94,7 @@
                             <Button.Style>
                                 <Style TargetType="Button">
                                     <Setter Property="Background" Value="Transparent"/>
-                                    <Setter Property="Foreground" Value="#2C2C2C"/>
+                                    <Setter Property="Foreground" Value="{StaticResource TextMediumBrush}"/>
                                     <Setter Property="BorderThickness" Value="0"/>
                                     <Setter Property="Template">
                                         <Setter.Value>
@@ -111,7 +111,7 @@
                                     </Setter>
                                     <Style.Triggers>
                                         <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="#FDB836"/>
+                                            <Setter Property="Background" Value="{StaticResource DarkSidebarBrush}"/>
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
@@ -131,7 +131,7 @@
                             <Button.Style>
                                 <Style TargetType="Button">
                                     <Setter Property="Background" Value="Transparent"/>
-                                    <Setter Property="Foreground" Value="#2C2C2C"/>
+                                    <Setter Property="Foreground" Value="{StaticResource TextMediumBrush}"/>
                                     <Setter Property="BorderThickness" Value="0"/>
                                     <Setter Property="Template">
                                         <Setter.Value>
@@ -148,7 +148,7 @@
                                     </Setter>
                                     <Style.Triggers>
                                         <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="#E74C3C"/>
+                                            <Setter Property="Background" Value="{StaticResource CloseButtonHoverBrush}"/>
                                             <Setter Property="Foreground" Value="White"/>
                                         </Trigger>
                                     </Style.Triggers>

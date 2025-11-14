@@ -53,7 +53,7 @@
         <!--Chat Messages Area-->
         <ScrollViewer Grid.Row="1" 
                       x:Name="ChatScrollViewer"
-                      Background="#7385B7E5"
+                      Background="{StaticResource ChatBackgroundBrush}"
                       VerticalScrollBarVisibility="Auto"
                       Padding="20">
             <StackPanel x:Name="ChatMessagesPanel" 
