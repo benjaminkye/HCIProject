@@ -39,11 +39,12 @@ namespace DigitalHelper
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            var svc = new ScreenCaptureService();
-            //var desktop
-            string path = svc.SaveCapture1000();
-            MessageBox.Show($"Saved 1kx1k capture to :\n{path}");
-            //this.Hide();
+            this.Hide();
+        }
+
+        private void PinButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Topmost = !this.Topmost;
         }
     }
 }
