@@ -38,11 +38,11 @@
                             </Border>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter TargetName="border" Property="Background" Value="{StaticResource SectionBackgroundBrush}"/>
+                                    <Setter TargetName="border" Property="Background" Value="{StaticResource SecondaryLightBlueBrush}"/>
                                     <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource PrimaryBlueBrush}"/>
                                 </Trigger>
                                 <Trigger Property="IsPressed" Value="True">
-                                    <Setter TargetName="border" Property="Background" Value="{StaticResource BorderLightBrush}"/>
+                                    <Setter TargetName="border" Property="Background" Value="{StaticResource SecondaryLightBlueHoverBrush}"/>
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>

@@ -3,7 +3,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" mc:Ignorable="d" d:DesignHeight="600" d:DesignWidth="1000" Title="ExitConfirm">
-    <Grid Background="#FFF0F0F0">
+    <Grid Background="{StaticResource BackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="3*"/>
@@ -12,26 +12,49 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBlock Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Are you sure you want to exit DigitalHelper?" FontSize="32" FontWeight="SemiBold" TextAlignment="Center"/>
-        <!-- WE MIGHT NEED TO CHANGE -->
-        <Button Grid.Row="1" Grid.Column="0" Margin="40" Click="YesExitButton_Click">
-            <Button.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="25"/>
-                </Style>
-            </Button.Resources>
+        <Grid.Resources>
+            <Style x:Key="TileButtonStyle" TargetType="Button">
+                <Setter Property="Background" Value="{StaticResource ContentBackgroundBrush}"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{StaticResource BorderLightBrush}"
+                                BorderThickness="1"
+                                CornerRadius="25"
+                                Padding="{TemplateBinding Padding}">
+                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="border" Property="Background" Value="{StaticResource SecondaryLightBlueBrush}"/>
+                                    <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource PrimaryBlueBrush}"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="border" Property="Background" Value="{StaticResource SecondaryLightBlueHoverBrush}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Grid.Resources>
+        <TextBlock Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Are you sure you want to exit DigitalHelper?" FontSize="32" FontWeight="SemiBold" TextAlignment="Center" Foreground="{StaticResource TextDarkBrush}"/>
+        <Button Grid.Row="1" Grid.Column="0" Margin="40" 
+                Style="{StaticResource TileButtonStyle}"
+                Click="YesExitButton_Click">
             <StackPanel Orientation="Vertical">
                 <Image Height="200" Width="200" Stretch="Uniform" Source="pack://application:,,,/DigitalHelper;component/Resources/exit.png"/>
-                <TextBlock HorizontalAlignment="Center" FontSize="30" FontWeight="SemiBold" Text="Yes, Exit"/>
+                <TextBlock HorizontalAlignment="Center" FontSize="30" FontWeight="SemiBold" Foreground="{StaticResource TextDarkBrush}" Text="Yes, Exit"/>
             </StackPanel>
         </Button>
-        <!-- goback menu -->
-        <Button Grid.Row="1" Grid.Column="1" Margin="40" Click="NoBackButton_Click">
-            <Button.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="25"/>
-                </Style>
-            </Button.Resources>
+        <Button Grid.Row="1" Grid.Column="1" Margin="40"
+                Style="{StaticResource TileButtonStyle}"
+                Click="NoBackButton_Click">
             <StackPanel Orientation="Vertical">
                 <Image Height="200" Width="200" Stretch="Uniform" Source="pack://application:,,,/DigitalHelper;component/Resources/back.png"/>
                 <TextBlock HorizontalAlignment="Center" FontSize="30" FontWeight="SemiBold" Text="No, Go Back"/>

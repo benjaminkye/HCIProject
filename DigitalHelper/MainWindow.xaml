@@ -13,21 +13,25 @@
         Topmost="False"
         ShowInTaskbar="True"
         Title="MainWindow" Height="600" Width="1000">
-    <Border Background="#F4F3F2">
+    <Border Background="#E09A10">
         <Border.Clip>
             <RectangleGeometry RadiusX="35" RadiusY="35" Rect="0,0,1000,600"/>
         </Border.Clip>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            
-            <!--Custom Topbar-->
-            <Border Grid.Row="0" 
-                    Background="#E8E7E6" 
-                    BorderBrush="#D0CFCE" 
-                    BorderThickness="0,0,0,1"
+        <Border Background="{StaticResource BackgroundBrush}" Margin="2">
+            <Border.Clip>
+                <RectangleGeometry RadiusX="33" RadiusY="33" Rect="0,0,996,596"/>
+            </Border.Clip>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <!--Custom Topbar-->
+                <Border Grid.Row="0" 
+                    Background="#FCAB14" 
+                    BorderBrush="#E09A10" 
+                    BorderThickness="0,0,0,2"
                     MouseLeftButtonDown="TopBar_MouseLeftButtonDown">
                 <Grid>
                     <StackPanel Orientation="Horizontal" 
@@ -90,7 +94,7 @@
                             <Button.Style>
                                 <Style TargetType="Button">
                                     <Setter Property="Background" Value="Transparent"/>
-                                    <Setter Property="Foreground" Value="#666666"/>
+                                    <Setter Property="Foreground" Value="#2C2C2C"/>
                                     <Setter Property="BorderThickness" Value="0"/>
                                     <Setter Property="Template">
                                         <Setter.Value>
@@ -107,7 +111,7 @@
                                     </Setter>
                                     <Style.Triggers>
                                         <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="#D0CFCE"/>
+                                            <Setter Property="Background" Value="#FDB836"/>
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
@@ -127,7 +131,7 @@
                             <Button.Style>
                                 <Style TargetType="Button">
                                     <Setter Property="Background" Value="Transparent"/>
-                                    <Setter Property="Foreground" Value="#666666"/>
+                                    <Setter Property="Foreground" Value="#2C2C2C"/>
                                     <Setter Property="BorderThickness" Value="0"/>
                                     <Setter Property="Template">
                                         <Setter.Value>
@@ -163,5 +167,6 @@
                    NavigationUIVisibility="Hidden">
             </Frame>
         </Grid>
+        </Border>
     </Border>
 </Window>

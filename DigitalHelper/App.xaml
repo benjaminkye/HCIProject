@@ -6,23 +6,26 @@
         <!--Color Palette-->
         <SolidColorBrush x:Key="PrimaryBlueBrush" Color="#007BFF"/>
         <SolidColorBrush x:Key="PrimaryBlueHoverBrush" Color="#0056b3"/>
+        <SolidColorBrush x:Key="SecondaryBlueBrush" Color="#85B7E5"/>
+        <SolidColorBrush x:Key="SecondaryLightBlueBrush" Color="#9985B7E5"/>
+        <SolidColorBrush x:Key="SecondaryLightBlueHoverBrush" Color="#5985B7E5"/>
         <SolidColorBrush x:Key="SuccessGreenBrush" Color="#4CAF50"/>
         <SolidColorBrush x:Key="SuccessGreenHoverBrush" Color="#45a049"/>
         <SolidColorBrush x:Key="DangerRedBrush" Color="#F44336"/>
         <SolidColorBrush x:Key="DangerRedHoverBrush" Color="#da190b"/>
         <SolidColorBrush x:Key="NeutralGrayBrush" Color="#757575"/>
         <SolidColorBrush x:Key="NeutralGrayHoverBrush" Color="#616161"/>
-        <SolidColorBrush x:Key="BackgroundBrush" Color="#F4F3F2"/>
-        <SolidColorBrush x:Key="ContentBackgroundBrush" Color="#FFFFFF"/>
-        <SolidColorBrush x:Key="BorderLightBrush" Color="#E0E0E0"/>
-        <SolidColorBrush x:Key="BorderMediumBrush" Color="#CCCCCC"/>
-        <SolidColorBrush x:Key="TextDarkBrush" Color="#333333"/>
-        <SolidColorBrush x:Key="TextMediumBrush" Color="#666666"/>
-        <SolidColorBrush x:Key="TextLightBrush" Color="#999999"/>
-        <SolidColorBrush x:Key="DarkSidebarBrush" Color="#FF2D2D30"/>
-        <SolidColorBrush x:Key="SidebarHoverBrush" Color="#FF3E3E42"/>
-        <SolidColorBrush x:Key="ReadOnlyBackgroundBrush" Color="#F9F9F9"/>
-        <SolidColorBrush x:Key="SectionBackgroundBrush" Color="#F5F5F5"/>
+        <SolidColorBrush x:Key="BackgroundBrush" Color="#FEF5D4"/>
+        <SolidColorBrush x:Key="ContentBackgroundBrush" Color="#FFFEF0"/>
+        <SolidColorBrush x:Key="BorderLightBrush" Color="#F5D98A"/>
+        <SolidColorBrush x:Key="BorderMediumBrush" Color="#FCAB14"/>
+        <SolidColorBrush x:Key="TextDarkBrush" Color="#1A1A1A"/>
+        <SolidColorBrush x:Key="TextMediumBrush" Color="#2C2C2C"/>
+        <SolidColorBrush x:Key="TextLightBrush" Color="#666666"/>
+        <SolidColorBrush x:Key="DarkSidebarBrush" Color="#FDB836"/>
+        <SolidColorBrush x:Key="SidebarHoverBrush" Color="#FCAB14"/>
+        <SolidColorBrush x:Key="ReadOnlyBackgroundBrush" Color="#FFF9E6"/>
+        <SolidColorBrush x:Key="SectionBackgroundBrush" Color="#FEF5D4"/>
 
         <!--Standard Button Style-->
         <Style x:Key="StandardButtonStyle" TargetType="Button">
@@ -234,10 +237,10 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#F0F0F0"/>
+                                <Setter TargetName="border" Property="Background" Value="#FEF5D4"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#E0E0E0"/>
+                                <Setter TargetName="border" Property="Background" Value="#FDEBA9"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -248,10 +251,11 @@
         <!--Sidebar Button Style-->
         <Style x:Key="SidebarButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Foreground" Value="#1A1A1A"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
@@ -265,10 +269,10 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="{StaticResource SidebarHoverBrush}"/>
+                                <Setter TargetName="border" Property="Background" Value="#FEF5D4"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#FF4E4E52"/>
+                                <Setter TargetName="border" Property="Background" Value="#FDEBA9"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -290,6 +294,72 @@
             <Setter Property="BorderBrush" Value="{StaticResource BorderMediumBrush}"/>
             <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="Padding" Value="15,10"/>
+        </Style>
+
+        <!--ListBox Item Style-->
+        <Style TargetType="ListBoxItem">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}">
+                            <ContentPresenter/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FEF5D4"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FDEBA9"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!--ComboBox Style-->
+        <Style TargetType="ComboBox">
+            <Setter Property="Background" Value="{StaticResource ContentBackgroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderMediumBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextDarkBrush}"/>
+        </Style>
+
+        <!--ComboBoxItem Style-->
+        <Style TargetType="ComboBoxItem">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FEF5D4"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#FDEBA9"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!--TextBox Style-->
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="{StaticResource ContentBackgroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderMediumBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextDarkBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,8"/>
+        </Style>
+
+        <!--PasswordBox Style-->
+        <Style TargetType="PasswordBox">
+            <Setter Property="Background" Value="{StaticResource ContentBackgroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderMediumBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextDarkBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,8"/>
         </Style>
     </Application.Resources>
 </Application>
