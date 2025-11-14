@@ -35,5 +35,10 @@ namespace DigitalHelper.Views
         {
             NavigationService.Navigate(new PasswordVault());
         }
+
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Views/Settings.xaml", UriKind.Relative));
+        }
     }
 }
