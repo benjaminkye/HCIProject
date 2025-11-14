@@ -42,16 +42,13 @@ namespace DigitalHelper.Services
             using var canvas = new SD.Bitmap(T, T, SDI.PixelFormat.Format24bppRgb);
             using (var g2 = SD.Graphics.FromImage(canvas))
             {
-                g2.Clear(SD.Color.Black);
                 g2.InterpolationMode = SD.Drawing2D.InterpolationMode.HighQualityBicubic;
 
-                double s = Math.Min((double)T / src.Width, (double)T / src.Height);
-                int sw = (int)Math.Round(src.Width * s);
-                int sh = (int)Math.Round(src.Height * s);
-                int px = (T - sw) / 2;
-                int py = (T - sh) / 2;
-
-                g2.DrawImage(src, new SD.Rectangle(px, py, sw, sh));
+                g2.DrawImage(
+                    src,
+                    new SD.Rectangle(0,0,T,T),
+                    new SD.Rectangle(0,0,src.Width,src.Height),
+                    SD.GraphicsUnit.Pixel);
             }
 
             byte[] jpeg;
