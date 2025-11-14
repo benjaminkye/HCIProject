@@ -49,27 +49,10 @@ namespace DigitalHelper.Views
             string path = svc.SaveCapture1000();
             MessageBox.Show($"Saved 1kx1k capture to :\n{path}");
         }
-
-        private void CustomHelpButton_Click(object sender, RoutedEventArgs e)
-        {
-            var svc = new ScreenCaptureService();
-            var desktop = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-            var folder = System.IO.Path.Combine(desktop, "HCI");
-            string path = svc.SaveCapture1000(
-                folderPath: folder,
-                fileBaseName: "ui_image",
-                scale: true);
-            MessageBox.Show($"Saved 1kx1k capture to :\n{path}");
-        }
         
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new Uri("/Views/Settings.xaml", UriKind.Relative));
-        }
-
-        private void CustomHelpButton_Click(object sender, RoutedEventArgs e)
-        {
-            NavigationService.Navigate(new ChatWindow());
         }
     }
 }

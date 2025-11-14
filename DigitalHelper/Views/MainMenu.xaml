@@ -9,7 +9,6 @@
       Title="MainMenu">
 
     <Grid Background="{StaticResource BackgroundBrush}">
-    <Grid Background="{StaticResource BackgroundBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
@@ -18,7 +17,6 @@
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        
         <Grid.Resources>
             <!--Style for tile buttons with rounded corners-->
             <Style x:Key="TileButtonStyle" TargetType="Button">
@@ -29,13 +27,13 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="Button">
                             <Border x:Name="border"
-                                    Background="{TemplateBinding Background}"
-                                    BorderBrush="{StaticResource BorderLightBrush}"
-                                    BorderThickness="1"
-                                    CornerRadius="25"
-                                    Padding="{TemplateBinding Padding}">
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{StaticResource BorderLightBrush}"
+                                BorderThickness="1"
+                                CornerRadius="25"
+                                Padding="{TemplateBinding Padding}">
                                 <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                             </Border>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
@@ -51,40 +49,7 @@
                 </Setter>
             </Style>
         </Grid.Resources>
-        
-        <Grid.Resources>
-            <!--Style for tile buttons with rounded corners-->
-            <Style x:Key="TileButtonStyle" TargetType="Button">
-                <Setter Property="Background" Value="{StaticResource ContentBackgroundBrush}"/>
-                <Setter Property="BorderThickness" Value="0"/>
-                <Setter Property="Cursor" Value="Hand"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="Button">
-                            <Border x:Name="border"
-                                    Background="{TemplateBinding Background}"
-                                    BorderBrush="{StaticResource BorderLightBrush}"
-                                    BorderThickness="1"
-                                    CornerRadius="25"
-                                    Padding="{TemplateBinding Padding}">
-                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter TargetName="border" Property="Background" Value="{StaticResource SectionBackgroundBrush}"/>
-                                    <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource PrimaryBlueBrush}"/>
-                                </Trigger>
-                                <Trigger Property="IsPressed" Value="True">
-                                    <Setter TargetName="border" Property="Background" Value="{StaticResource BorderLightBrush}"/>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-        </Grid.Resources>
-        
+
         <!--Password Vault Button-->
         <Button Grid.Column="0" Grid.Row="0" Margin="10"
                 Style="{StaticResource TileButtonStyle}"
@@ -115,7 +80,8 @@
 
         <!--Settings Button-->
         <Button Grid.Column="0" Grid.Row="1" Margin="10"
-                Style="{StaticResource TileButtonStyle}">
+                Style="{StaticResource TileButtonStyle}"
+                Click="SettingsButton_Click">
             <StackPanel Orientation="Vertical">
                 <Image Height="200" Width="200" Stretch="Uniform" Source="pack://application:,,,/DigitalHelper;component/Resources/settings.png"/>
                 <TextBlock HorizontalAlignment="Center" 
