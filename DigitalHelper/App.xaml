@@ -26,6 +26,21 @@
         <SolidColorBrush x:Key="SidebarHoverBrush" Color="#FCAB14"/>
         <SolidColorBrush x:Key="ReadOnlyBackgroundBrush" Color="#FFF9E6"/>
         <SolidColorBrush x:Key="SectionBackgroundBrush" Color="#FEF5D4"/>
+        <SolidColorBrush x:Key="WindowBorderBrush" Color="#E09A10"/>
+        <SolidColorBrush x:Key="TopBarBrush" Color="#FCAB14"/>
+        <SolidColorBrush x:Key="PinButtonActiveBrush" Color="#4A90E2"/>
+        <SolidColorBrush x:Key="PinButtonHoverBrush" Color="#D0CFCE"/>
+        <SolidColorBrush x:Key="CloseButtonHoverBrush" Color="#E74C3C"/>
+        <SolidColorBrush x:Key="PrimaryBluePressedBrush" Color="#004085"/>
+        <SolidColorBrush x:Key="SuccessGreenPressedBrush" Color="#388E3C"/>
+        <SolidColorBrush x:Key="DangerRedPressedBrush" Color="#c62828"/>
+        <SolidColorBrush x:Key="NeutralGrayPressedBrush" Color="#424242"/>
+        <SolidColorBrush x:Key="HoverLightBrush" Color="#FEF5D4"/>
+        <SolidColorBrush x:Key="PressedLightBrush" Color="#FDEBA9"/>
+        <SolidColorBrush x:Key="WhiteBrush" Color="White"/>
+        <SolidColorBrush x:Key="BlackBrush" Color="Black"/>
+        <SolidColorBrush x:Key="ShadowBrush" Color="Gray"/>
+        <SolidColorBrush x:Key="ChatBackgroundBrush" Color="#7385B7E5"/>
 
         <!--Standard Button Style-->
         <Style x:Key="StandardButtonStyle" TargetType="Button">
@@ -77,7 +92,7 @@
                                 <Setter TargetName="border" Property="Background" Value="{StaticResource PrimaryBlueHoverBrush}"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#004085"/>
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource PrimaryBluePressedBrush}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -111,7 +126,7 @@
                                 <Setter TargetName="border" Property="Background" Value="{StaticResource SuccessGreenHoverBrush}"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#388E3C"/>
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource SuccessGreenPressedBrush}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -145,7 +160,7 @@
                                 <Setter TargetName="border" Property="Background" Value="{StaticResource DangerRedHoverBrush}"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#c62828"/>
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource DangerRedPressedBrush}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -179,7 +194,7 @@
                                 <Setter TargetName="border" Property="Background" Value="{StaticResource NeutralGrayHoverBrush}"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#424242"/>
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource NeutralGrayPressedBrush}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -210,7 +225,7 @@
                                 <Setter TargetName="border" Property="Background" Value="{StaticResource PrimaryBlueHoverBrush}"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#004085"/>
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource PrimaryBluePressedBrush}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -237,10 +252,10 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#FEF5D4"/>
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource HoverLightBrush}"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#FDEBA9"/>
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource PressedLightBrush}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -251,7 +266,7 @@
         <!--Sidebar Button Style-->
         <Style x:Key="SidebarButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="#1A1A1A"/>
+            <Setter Property="Foreground" Value="{StaticResource TextDarkBrush}"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="FontSize" Value="14"/>
@@ -269,10 +284,10 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#FEF5D4"/>
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource HoverLightBrush}"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#FDEBA9"/>
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource PressedLightBrush}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -312,10 +327,10 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#FEF5D4"/>
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource HoverLightBrush}"/>
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#FDEBA9"/>
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource PressedLightBrush}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -336,10 +351,10 @@
             <Setter Property="Padding" Value="10,8"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#FEF5D4"/>
+                    <Setter Property="Background" Value="{StaticResource HoverLightBrush}"/>
                 </Trigger>
                 <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="#FDEBA9"/>
+                    <Setter Property="Background" Value="{StaticResource PressedLightBrush}"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
