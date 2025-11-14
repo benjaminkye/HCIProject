@@ -11,16 +11,19 @@
   <ItemGroup>
     <None Remove="Resources\chat.png" />
     <None Remove="Resources\exit.png" />
+    <None Remove="Resources\helperDefault.png" />
     <None Remove="Resources\settings.png" />
     <None Remove="Resources\vault.png" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Google.GenAI" Version="0.5.0" />
     <PackageReference Include="System.Drawing.Common" Version="8.0.7" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Resources\chat.png" />
     <Resource Include="Resources\exit.png" />
+    <Resource Include="Resources\helperDefault.png" />
     <Resource Include="Resources\settings.png" />
     <Resource Include="Resources\vault.png" />
   </ItemGroup>

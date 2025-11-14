@@ -1,0 +1,78 @@
+﻿<Window x:Class="DigitalHelper.HelperWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DigitalHelper"
+        mc:Ignorable="d"
+        Title="HelperWindow" 
+        Height="500" 
+        Width="400"
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Topmost="True"
+        ShowInTaskbar="True"
+        ResizeMode="NoResize">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="280" MinHeight="160" MaxHeight="280"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--Speech bubble box-->
+        <Border Grid.Row="0" 
+                x:Name="SpeechBubble"
+                Background="White"
+                BorderBrush="Black"
+                BorderThickness="3"
+                CornerRadius="20"
+                Margin="15,10,15,0"
+                Padding="15"
+                MaxHeight="280"
+                Visibility="Visible">
+            <Border.Effect>
+                <DropShadowEffect Color="Gray" BlurRadius="10" ShadowDepth="3" Opacity="0.5"/>
+            </Border.Effect>
+            
+            <ScrollViewer VerticalScrollBarVisibility="Auto" 
+                          HorizontalScrollBarVisibility="Disabled"
+                          MaxHeight="245">
+                <!--Bubble content-->
+                <ContentPresenter x:Name="SpeechBubbleContent"
+                                 HorizontalAlignment="Center"
+                                 VerticalAlignment="Center"/>
+            </ScrollViewer>
+        </Border>
+
+        <!--Just the bubble "tail"-->
+        <Polygon Grid.Row="1"
+                 x:Name="SpeechBubbleTail"
+                 Points="0,0 20,25 40,0" 
+                 Fill="White"
+                 Stroke="Black"
+                 StrokeThickness="3"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Top"
+                 Margin="0,0,0,0"
+                 Visibility="Visible"/>
+
+        <!--Digital Helper robot avatar-->
+        <Border Grid.Row="2"
+                x:Name="AvatarContainer"
+                Background="Transparent"
+                Margin="20,5,20,20"
+                Height="200"
+                VerticalAlignment="Top"
+                Cursor="Hand"
+                MouseLeftButtonDown="HelperAvatar_MouseLeftButtonDown"
+                PreviewMouseRightButtonDown="HelperAvatar_MouseRightButtonDown">
+            <Image x:Name="HelperAvatar"
+                   Source="/Resources/helperDefault.png"
+                   Stretch="Uniform"/>
+        </Border>
+    </Grid>
+</Window>

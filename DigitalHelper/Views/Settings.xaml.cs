@@ -14,7 +14,7 @@ namespace DigitalHelper.Views
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new Uri("/Views/MainMenu.xaml", UriKind.Relative));
+            NavigationService.GoBack();
         }
     }
 }
