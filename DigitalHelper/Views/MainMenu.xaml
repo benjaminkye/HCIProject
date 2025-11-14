@@ -79,7 +79,9 @@
         </Button>
 
         <!--Settings Button-->
-        <Button Grid.Column="0" Grid.Row="1" Margin="10">
+        <Button Grid.Column="0" Grid.Row="1" Margin="10"
+                Style="{StaticResource TileButtonStyle}"
+                Click="SettingsButton_Click">
             <Button.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="25"/>
