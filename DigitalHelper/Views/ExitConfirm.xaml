@@ -33,7 +33,7 @@
                 </Style>
             </Button.Resources>
             <StackPanel Orientation="Vertical">
-                <Image Height="200" Width="200" Stretch="Uniform" Source="pack://application:,,,/DigitalHelper;component/Resources/settings.png"/>
+                <Image Height="200" Width="200" Stretch="Uniform" Source="pack://application:,,,/DigitalHelper;component/Resources/back.png"/>
                 <TextBlock HorizontalAlignment="Center" FontSize="30" FontWeight="SemiBold" Text="No, Go Back"/>
             </StackPanel>
         </Button>

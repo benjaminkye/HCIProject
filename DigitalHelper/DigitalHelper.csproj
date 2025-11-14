@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\back.png" />
     <None Remove="Resources\chat.png" />
     <None Remove="Resources\exit.png" />
     <None Remove="Resources\helperDefault.png" />
@@ -21,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\back.png" />
     <Resource Include="Resources\chat.png" />
     <Resource Include="Resources\exit.png" />
     <Resource Include="Resources\helperDefault.png" />
