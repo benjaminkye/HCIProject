@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Runtime.InteropServices;
 using SD = System.Drawing;
 using SDI = System.Drawing.Imaging;
@@ -11,7 +9,7 @@ namespace DigitalHelper.Services
 {
     public sealed class ScreenCaptureService
     {
-        public sealed record Shot(byte[] jpeg1000, SWM.ImageSource preview1000, int nativeW, int nativeH);
+        public sealed record Shot(byte[] png1000, SWM.ImageSource preview1000, int nativeW, int nativeH);
 
         private const int SM_XVIRTUALSCREEN = 76;
         private const int SM_YVIRTUALSCREEN = 77;
@@ -20,7 +18,10 @@ namespace DigitalHelper.Services
 
         [DllImport("user32.dll")] private static extern int GetSystemMetrics(int nIndex);
 
-        public Shot Capture1000()
+        /// <summary>
+        /// Capture screenshot, scale to 1000x1000 if specified
+        /// </summary>
+        public Shot Capture1000(bool scale = true)
         {
             int x = GetSystemMetrics(SM_XVIRTUALSCREEN);
             int y = GetSystemMetrics(SM_YVIRTUALSCREEN);
@@ -38,31 +39,39 @@ namespace DigitalHelper.Services
             {
                 g.CopyFromScreen(x, y, 0, 0, new SD.Size(w, h), SD.CopyPixelOperation.SourceCopy);
             }
-            const int T = 1000;
-            using var canvas = new SD.Bitmap(T, T, SDI.PixelFormat.Format24bppRgb);
-            using (var g2 = SD.Graphics.FromImage(canvas))
-            {
-                g2.InterpolationMode = SD.Drawing2D.InterpolationMode.HighQualityBicubic;
 
-                g2.DrawImage(
-                    src,
-                    new SD.Rectangle(0,0,T,T),
-                    new SD.Rectangle(0,0,src.Width,src.Height),
-                    SD.GraphicsUnit.Pixel);
+            byte[] png;
+            if (scale)
+            {
+                const int T = 1000;
+                using var canvas = new SD.Bitmap(T, T, SDI.PixelFormat.Format24bppRgb);
+                using (var g2 = SD.Graphics.FromImage(canvas))
+                {
+                    g2.InterpolationMode = SD.Drawing2D.InterpolationMode.HighQualityBicubic;
+                    g2.CompositingQuality = SD.Drawing2D.CompositingQuality.HighQuality;
+                    g2.SmoothingMode = SD.Drawing2D.SmoothingMode.HighQuality;
+                    g2.PixelOffsetMode = SD.Drawing2D.PixelOffsetMode.HighQuality;
+
+                    g2.DrawImage(
+                        src,
+                        new SD.Rectangle(0, 0, T, T),
+                        new SD.Rectangle(0, 0, src.Width, src.Height),
+                        SD.GraphicsUnit.Pixel);
+                }
+
+                using var ms = new MemoryStream();
+                canvas.Save(ms, SDI.ImageFormat.Png);
+                png = ms.ToArray();
             }
-
-            byte[] jpeg;
-            using (var ms = new MemoryStream())
+            else
             {
-                var enc = SDI.ImageCodecInfo.GetImageEncoders().First(e => e.FormatID == SDI.ImageFormat.Jpeg.Guid);
-                using var parms = new SDI.EncoderParameters(1);
-                parms.Param[0] = new SDI.EncoderParameter(SDI.Encoder.Quality, 70L);
-                canvas.Save(ms, enc, parms);
-                jpeg = ms.ToArray();
+                using var ms = new MemoryStream();
+                src.Save(ms, SDI.ImageFormat.Png);
+                png = ms.ToArray();
             }
 
             var bmp = new SWMI.BitmapImage();
-            using (var ms = new MemoryStream(jpeg))
+            using (var ms = new MemoryStream(png))
             {
                 bmp.BeginInit();
                 bmp.CacheOption = SWMI.BitmapCacheOption.OnLoad;
@@ -71,38 +80,27 @@ namespace DigitalHelper.Services
             }
             bmp.Freeze();
 
-            return new Shot(jpeg, bmp, w, h);
+            return new Shot(png, bmp, w, h);
         }
-        public string SaveCapture1000(string? folderPath = null, string? fileBaseName = null, string format = "jpg")
+
+        /// <summary>
+        /// Saves scaled screenshot, purely debug function
+        /// </summary>
+        public string SaveCapture1000(string? folderPath = null, string? fileBaseName = null, bool scale = true)
         {
-            var shot = Capture1000();
+            var shot = Capture1000(scale);
             if (string.IsNullOrWhiteSpace(folderPath))
             {
                 folderPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
             }
             Directory.CreateDirectory(folderPath);
-            string ext;
-            var fmt = format.Trim().ToLowerInvariant();
-            if (fmt == "png") ext = ".png";
-            else if (fmt == "jpeg" || fmt == "jpg") ext = ".jpg";
-            else ext = ".jpg";
+            string ext = ".png";
             if (string.IsNullOrWhiteSpace(fileBaseName))
             {
                 fileBaseName = "capture_" + DateTime.Now.ToString("yyyyMMdd_HHmmss");
             }
             var fullPath = Path.Combine(folderPath, fileBaseName + ext);
-            if (ext == ".jpg")
-            {
-                File.WriteAllBytes(fullPath, shot.jpeg1000);
-            }
-            else if (ext == ".png")
-            {
-                var encoder = new SWMI.PngBitmapEncoder();
-                encoder.Frames.Add(SWMI.BitmapFrame.Create((SWMI.BitmapSource)shot.preview1000));
-                using
-                var fs = File.Create(fullPath);
-                encoder.Save(fs);
-            }
+            File.WriteAllBytes(fullPath, shot.png1000);
             return fullPath;
         }
     }
