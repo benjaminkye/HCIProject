@@ -89,18 +89,6 @@
                              KeyDown="MessageInput_KeyDown"/>
                 </Border>
 
-                <!--Voice Button (Optional)-->
-                <Button Grid.Column="1"
-                        Content="🎤"
-                        FontSize="24"
-                        Width="50"
-                        Height="50"
-                        Margin="10,0,5,0"
-                        Background="Transparent"
-                        BorderThickness="0"
-                        Cursor="Hand"
-                        ToolTip="Voice input (coming soon)"/>
-
                 <!--Send Button-->
                 <Button Grid.Column="2"
                         x:Name="SendButton"

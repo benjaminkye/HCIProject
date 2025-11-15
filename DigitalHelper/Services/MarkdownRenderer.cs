@@ -38,10 +38,26 @@ namespace DigitalHelper.Services
             if (string.IsNullOrEmpty(text))
                 return;
 
-            // Regex to match formatting
-            var pattern = @"(\*\*([^\*]+?)\*\*)|(\*([^\*\n]+?)\*)|(`([^`]+?)`)";
-            var regex = new Regex(pattern);
+            var boldPattern = @"\*\*(.+?)\*\*";
+            text = ProcessFormatting(text, boldPattern, (content) =>
+            {
+                return $"{{BOLD:{content}}}";
+            });
 
+            var italicPattern = @"\*([^\*\n]+?)\*";
+            text = ProcessFormatting(text, italicPattern, (content) =>
+            {
+                return $"{{ITALIC:{content}}}";
+            });
+
+            var codePattern = @"`([^`]+?)`";
+            text = ProcessFormatting(text, codePattern, (content) =>
+            {
+                return $"{{CODE:{content}}}";
+            });
+
+            var placeholderPattern = @"\{(BOLD|ITALIC|CODE):(.+?)\}";
+            var regex = new Regex(placeholderPattern);
             int lastIndex = 0;
 
             foreach (Match match in regex.Matches(text))
@@ -52,25 +68,28 @@ namespace DigitalHelper.Services
                     textBlock.Inlines.Add(new Run(plainText));
                 }
 
-                if (match.Groups[1].Success) // bold
+                string formatType = match.Groups[1].Value;
+                string content = match.Groups[2].Value;
+
+                if (formatType == "BOLD")
                 {
-                    var boldRun = new Run(match.Groups[2].Value)
+                    var boldRun = new Run(content)
                     {
                         FontWeight = FontWeights.Bold
                     };
                     textBlock.Inlines.Add(boldRun);
                 }
-                else if (match.Groups[3].Success) // italic
+                else if (formatType == "ITALIC")
                 {
-                    var italicRun = new Run(match.Groups[4].Value)
+                    var italicRun = new Run(content)
                     {
                         FontStyle = FontStyles.Italic
                     };
                     textBlock.Inlines.Add(italicRun);
                 }
-                else if (match.Groups[5].Success) // code
+                else if (formatType == "CODE")
                 {
-                    var codeRun = new Run(match.Groups[6].Value)
+                    var codeRun = new Run(content)
                     {
                         FontFamily = new FontFamily("Consolas, Courier New"),
                         Background = new SolidColorBrush(Color.FromRgb(240, 240, 240)),
@@ -88,6 +107,12 @@ namespace DigitalHelper.Services
                 var remainingText = text.Substring(lastIndex);
                 textBlock.Inlines.Add(new Run(remainingText));
             }
+        }
+
+        private static string ProcessFormatting(string text, string pattern, Func<string, string> replacer)
+        {
+            var regex = new Regex(pattern);
+            return regex.Replace(text, match => replacer(match.Groups[1].Value));
         }
     }
 }

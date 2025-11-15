@@ -41,9 +41,13 @@ namespace DigitalHelper
             
             screenOverlay = new ScreenOverlay();
             
-            DisplayMessage(MockLLMService.GetWelcomeMessage());
+            DisplayMessage(new HelperGuidanceMessage
+            {
+                Icon = "👋",
+                Instructions = "Hello! I'm your digital helper. You can move me by dragging me with your mouse, toggle the menu by left-clicking me, and show/hide my messages by right clicking me!",
+                Buttons = null
+            });
         }
-
         private void HelperAvatar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
@@ -132,32 +136,6 @@ namespace DigitalHelper
             // Overlay will be shown automatically if there are bounding boxes in DisplayMessage
         }
 
-        /// <summary>
-        /// Hides the helper window and overlay
-        /// </summary>
-        public new void Hide()
-        {
-            base.Hide();
-            screenOverlay?.Hide();
-        }
-
-        public void DisplayMessageFromJson(string json)
-        {
-            try
-            {
-                var message = JsonSerializer.Deserialize<HelperGuidanceMessage>(json);
-                if (message != null)
-                {
-                    DisplayMessage(message);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error parsing message JSON: {ex.Message}", "Error",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
         public void DisplayMessage(HelperGuidanceMessage message)
         {
             var content = HelperMessageRenderer.RenderMessage(message, HandleButtonAction);
@@ -190,7 +168,6 @@ namespace DigitalHelper
             var simpleMessage = new HelperGuidanceMessage
             {
                 Instructions = message,
-                MessageType = "info"
             };
             DisplayMessage(simpleMessage);
         }
@@ -249,13 +226,6 @@ namespace DigitalHelper
                     {
                         SetHelperText($"Error analyzing screen: {ex.Message}");
                     }
-                    break;
-                    
-                case "start_realtime_help":
-                    // I don't think this happens anymore but keeping just in case
-                    MockLLMService.Reset();
-                    var firstStep = MockLLMService.GetNextStep();
-                    DisplayMessage(firstStep);
                     break;
                     
                 default:
