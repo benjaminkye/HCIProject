@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -29,7 +30,7 @@ namespace DigitalHelper.Services
                 mainPanel.Children.Add(CreateIcon(message.Icon));
             }
 
-            mainPanel.Children.Add(CreateInstructions(message.Instructions, message.MessageType));
+            mainPanel.Children.Add(CreateInstructions(message.Instructions));
 
             if (message.Buttons?.Count > 0)
             {
@@ -52,7 +53,7 @@ namespace DigitalHelper.Services
             return textBlock;
         }
 
-        private static UIElement CreateInstructions(string instructions, string messageType)
+        private static UIElement CreateInstructions(string instructions)
         {
             var textBlock = new TextBlock
             {
@@ -61,7 +62,7 @@ namespace DigitalHelper.Services
                 FontSize = 16, // Larger for elderly users, later get from options service once implemented
                 FontFamily = new FontFamily("Segoe UI"),
                 TextAlignment = TextAlignment.Center,
-                Foreground = GetForegroundForMessageType(messageType),
+                Foreground = (Brush)Application.Current.Resources["TextDarkBrush"],
                 Margin = new Thickness(0, 0, 0, 15),
                 LineHeight = 24
             };
@@ -161,25 +162,13 @@ namespace DigitalHelper.Services
             return panel;
         }
 
-        private static Brush GetForegroundForMessageType(string messageType)
-        {
-            return messageType switch
-            {
-                "error" => new SolidColorBrush(Color.FromRgb(220, 53, 69)),
-                "success" => new SolidColorBrush(Color.FromRgb(40, 167, 69)),
-                "warning" => new SolidColorBrush(Color.FromRgb(255, 193, 7)),
-                _ => new SolidColorBrush(Colors.Black)
-            };
-        }
-
         private static Brush GetBackgroundForButtonStyle(string style)
         {
             return style switch
             {
-                "primary" => new SolidColorBrush(Color.FromRgb(0, 123, 255)),
-                "danger" => new SolidColorBrush(Color.FromRgb(220, 53, 69)),
-                "secondary" => new SolidColorBrush(Color.FromRgb(108, 117, 125)),
-                _ => new SolidColorBrush(Color.FromRgb(0, 123, 255))
+                "primary" => new SolidColorBrush(Color.FromRgb(0, 120, 255)),
+                "secondary" => new SolidColorBrush(Color.FromRgb(110, 117, 125)),
+                _ => new SolidColorBrush(Color.FromRgb(0, 120, 255))
             };
         }
 

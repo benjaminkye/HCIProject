@@ -193,7 +193,6 @@ namespace DigitalHelper.Services
 
             var message = new HelperGuidanceMessage
             {
-                MessageType = "guidance",
                 Icon = "",
                 Instructions = instruction,
                 BoundingBoxes = new List<BoundingBox> { boundingBox },
