@@ -6,9 +6,10 @@
       xmlns:local="clr-namespace:DigitalHelper.Views"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="1000"
-      Title="MainMenu">
+      Title="MainMenu"
+      KeepAlive="True">
 
-    <Grid>
+    <Grid Background="{StaticResource BackgroundBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
@@ -17,38 +18,70 @@
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        
+        <Grid.Resources>
+            <!--Style for tile buttons with rounded corners-->
+            <Style x:Key="TileButtonStyle" TargetType="Button">
+                <Setter Property="Background" Value="{StaticResource ContentBackgroundBrush}"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{StaticResource BorderLightBrush}"
+                                BorderThickness="1"
+                                CornerRadius="25"
+                                Padding="{TemplateBinding Padding}">
+                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="border" Property="Background" Value="{StaticResource SecondaryLightBlueBrush}"/>
+                                    <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource PrimaryBlueBrush}"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="border" Property="Background" Value="{StaticResource SecondaryLightBlueHoverBrush}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Grid.Resources>
+
         <!--Password Vault Button-->
         <Button Grid.Column="0" Grid.Row="0" Margin="10"
+                Style="{StaticResource TileButtonStyle}"
                 Click="PasswordVaultButton_Click">
-            <Button.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="25"/>
-                </Style>
-            </Button.Resources>
-            <StackPanel Orientation="Vertical" >
-                <Image Height="200" Width="200" Stretch="Uniform" Source="pack://application:,,,/DigitalHelper;component/Resources/vault.png"></Image>
-                <TextBlock HorizontalAlignment="Center" FontSize="30" FontWeight="SemiBold"
-                               Text="Password Vault"/>
+            <StackPanel Orientation="Vertical">
+                <Image Height="200" Width="200" Stretch="Uniform" Source="pack://application:,,,/DigitalHelper;component/Resources/vault.png"/>
+                <TextBlock HorizontalAlignment="Center" 
+                           FontSize="30" 
+                           FontWeight="SemiBold"
+                           Foreground="{StaticResource TextDarkBrush}"
+                           Text="Password Vault"/>
             </StackPanel>
         </Button>
 
         <!--Custom Help Button-->
-        <Button Grid.Column="1" Grid.Row="0" Margin="10">
-            <Button.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="25"/>
-                </Style>
-            </Button.Resources>
-            <StackPanel Orientation="Vertical" >
-                <Image Height="200" Width="200" Stretch="Uniform" Source="pack://application:,,,/DigitalHelper;component/Resources/chat.png"></Image>
-                <TextBlock HorizontalAlignment="Center" FontSize="30" FontWeight="SemiBold"
-                               Text="Custom Help"/>
+        <Button Grid.Column="1" Grid.Row="0" Margin="10"
+                Style="{StaticResource TileButtonStyle}"
+                Click="CustomHelpButton_Click">
+            <StackPanel Orientation="Vertical">
+                <Image Height="200" Width="200" Stretch="Uniform" Source="pack://application:,,,/DigitalHelper;component/Resources/chat.png"/>
+                <TextBlock HorizontalAlignment="Center" 
+                           FontSize="30" 
+                           FontWeight="SemiBold"
+                           Foreground="{StaticResource TextDarkBrush}"
+                           Text="Custom Help"/>
             </StackPanel>
         </Button>
 
         <!--Settings Button-->
-       <Button Grid.Column="0" Grid.Row="1" Margin="10"
+        <Button Grid.Column="0" Grid.Row="1" Margin="10"
+                Style="{StaticResource TileButtonStyle}"
                 Click="SettingsButton_Click">
             <Button.Resources>
                 <Style TargetType="Border">
@@ -61,19 +94,19 @@
                                Text="Settings"/>
             </StackPanel>
         </Button>
+        
 
         <!--Exit Button-->
         <Button Name="exitButton" Grid.Column="1" Grid.Row="1" Margin="10"
+                Style="{StaticResource TileButtonStyle}"
                 Click="exitButton_Click">
-            <Button.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="25"/>
-                </Style>
-            </Button.Resources>
-            <StackPanel Orientation="Vertical" >
-                <Image Height="200" Width="200" Stretch="Uniform" Source="pack://application:,,,/DigitalHelper;component/Resources/exit.png"></Image>
-                <TextBlock HorizontalAlignment="Center" FontSize="30" FontWeight="SemiBold"
-                    Text="Exit"/>
+            <StackPanel Orientation="Vertical">
+                <Image Height="200" Width="200" Stretch="Uniform" Source="pack://application:,,,/DigitalHelper;component/Resources/exit.png"/>
+                <TextBlock HorizontalAlignment="Center" 
+                           FontSize="30" 
+                           FontWeight="SemiBold"
+                           Foreground="{StaticResource TextDarkBrush}"
+                           Text="Exit"/>
             </StackPanel>
         </Button>
     </Grid>

@@ -1,7 +1,7 @@
-﻿using System;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Runtime.InteropServices;
+using System.Windows;
+using System.Windows.Interop;
 using SD = System.Drawing;
 using SDI = System.Drawing.Imaging;
 using SWM = System.Windows.Media;
@@ -11,7 +11,7 @@ namespace DigitalHelper.Services
 {
     public sealed class ScreenCaptureService
     {
-        public sealed record Shot(byte[] jpeg1000, SWM.ImageSource preview1000, int nativeW, int nativeH);
+        public sealed record Shot(byte[] png1000, SWM.ImageSource preview1000, int nativeW, int nativeH);
 
         private const int SM_XVIRTUALSCREEN = 76;
         private const int SM_YVIRTUALSCREEN = 77;
@@ -19,17 +19,32 @@ namespace DigitalHelper.Services
         private const int SM_CYVIRTUALSCREEN = 79;
 
         [DllImport("user32.dll")] private static extern int GetSystemMetrics(int nIndex);
+        [DllImport("user32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool SetWindowDisplayAffinity(IntPtr hWnd, uint dwAffinity);
 
-        public Shot Capture1000()
+
+        /// <summary>
+        /// Capture screenshot, scale to 1000x1000 if specified
+        /// </summary>
+        public Shot Capture1000(bool scale = true)
         {
+
+            IntPtr helperHandle = new WindowInteropHelper(App.HelperWindowInstance).Handle;
+            IntPtr mainHandle = new WindowInteropHelper(App.MainWindowInstance).Handle;
+            uint WDA_EXCLUDEFROMCAPTURE = 0x00000011;
+            SetWindowDisplayAffinity(helperHandle, WDA_EXCLUDEFROMCAPTURE);
+            SetWindowDisplayAffinity(mainHandle, WDA_EXCLUDEFROMCAPTURE);
+
             int x = GetSystemMetrics(SM_XVIRTUALSCREEN);
             int y = GetSystemMetrics(SM_YVIRTUALSCREEN);
             int w = GetSystemMetrics(SM_CXVIRTUALSCREEN);
             int h = GetSystemMetrics(SM_CYVIRTUALSCREEN);
 
+
+
             if (w <= 0 || h <= 0)
             {
-
                 w = 1920; h = 1080; x = 0; y = 0;
             }
 
@@ -38,34 +53,39 @@ namespace DigitalHelper.Services
             {
                 g.CopyFromScreen(x, y, 0, 0, new SD.Size(w, h), SD.CopyPixelOperation.SourceCopy);
             }
-            const int T = 1000;
-            using var canvas = new SD.Bitmap(T, T, SDI.PixelFormat.Format24bppRgb);
-            using (var g2 = SD.Graphics.FromImage(canvas))
+
+            byte[] png;
+            if (scale)
             {
-                g2.Clear(SD.Color.Black);
-                g2.InterpolationMode = SD.Drawing2D.InterpolationMode.HighQualityBicubic;
+                const int T = 1000;
+                using var canvas = new SD.Bitmap(T, T, SDI.PixelFormat.Format24bppRgb);
+                using (var g2 = SD.Graphics.FromImage(canvas))
+                {
+                    g2.InterpolationMode = SD.Drawing2D.InterpolationMode.HighQualityBicubic;
+                    g2.CompositingQuality = SD.Drawing2D.CompositingQuality.HighQuality;
+                    g2.SmoothingMode = SD.Drawing2D.SmoothingMode.HighQuality;
+                    g2.PixelOffsetMode = SD.Drawing2D.PixelOffsetMode.HighQuality;
 
-                double s = Math.Min((double)T / src.Width, (double)T / src.Height);
-                int sw = (int)Math.Round(src.Width * s);
-                int sh = (int)Math.Round(src.Height * s);
-                int px = (T - sw) / 2;
-                int py = (T - sh) / 2;
+                    g2.DrawImage(
+                        src,
+                        new SD.Rectangle(0, 0, T, T),
+                        new SD.Rectangle(0, 0, src.Width, src.Height),
+                        SD.GraphicsUnit.Pixel);
+                }
 
-                g2.DrawImage(src, new SD.Rectangle(px, py, sw, sh));
+                using var ms = new MemoryStream();
+                canvas.Save(ms, SDI.ImageFormat.Png);
+                png = ms.ToArray();
             }
-
-            byte[] jpeg;
-            using (var ms = new MemoryStream())
+            else
             {
-                var enc = SDI.ImageCodecInfo.GetImageEncoders().First(e => e.FormatID == SDI.ImageFormat.Jpeg.Guid);
-                using var parms = new SDI.EncoderParameters(1);
-                parms.Param[0] = new SDI.EncoderParameter(SDI.Encoder.Quality, 70L);
-                canvas.Save(ms, enc, parms);
-                jpeg = ms.ToArray();
+                using var ms = new MemoryStream();
+                src.Save(ms, SDI.ImageFormat.Png);
+                png = ms.ToArray();
             }
 
             var bmp = new SWMI.BitmapImage();
-            using (var ms = new MemoryStream(jpeg))
+            using (var ms = new MemoryStream(png))
             {
                 bmp.BeginInit();
                 bmp.CacheOption = SWMI.BitmapCacheOption.OnLoad;
@@ -74,7 +94,31 @@ namespace DigitalHelper.Services
             }
             bmp.Freeze();
 
-            return new Shot(jpeg, bmp, w, h);
+            SetWindowDisplayAffinity(helperHandle, 0);
+            SetWindowDisplayAffinity(mainHandle, 0);
+            File.WriteAllBytes("debug_capture.png", png); // debug line, remove later
+            return new Shot(png, bmp, w, h);
+        }
+
+        /// <summary>
+        /// Saves scaled screenshot, purely debug function
+        /// </summary>
+        public string SaveCapture1000(string? folderPath = null, string? fileBaseName = null, bool scale = true)
+        {
+            var shot = Capture1000(scale);
+            if (string.IsNullOrWhiteSpace(folderPath))
+            {
+                folderPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            }
+            Directory.CreateDirectory(folderPath);
+            string ext = ".png";
+            if (string.IsNullOrWhiteSpace(fileBaseName))
+            {
+                fileBaseName = "capture_" + DateTime.Now.ToString("yyyyMMdd_HHmmss");
+            }
+            var fullPath = Path.Combine(folderPath, fileBaseName + ext);
+            File.WriteAllBytes(fullPath, shot.png1000);
+            return fullPath;
         }
     }
 }

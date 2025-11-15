@@ -6,20 +6,167 @@
         xmlns:local="clr-namespace:DigitalHelper"
         xmlns:views="clr-namespace:DigitalHelper.Views"
         mc:Ignorable="d"
-        ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         Background="Transparent"
         AllowsTransparency="True"
-        Topmost="True"
+        Topmost="False"
+        ShowInTaskbar="True"
         Title="MainWindow" Height="600" Width="1000">
-    <Border Background="#F4F3F2">
+    <Border Background="{StaticResource WindowBorderBrush}">
         <Border.Clip>
             <RectangleGeometry RadiusX="35" RadiusY="35" Rect="0,0,1000,600"/>
         </Border.Clip>
-        <Frame x:Name="MainFrame"
-               d:DataContext="{d:DesignInstance Type=views:MainMenu, IsDesignTimeCreatable=True}" Content="{Binding}"
-               NavigationUIVisibility="Hidden">
-        </Frame>
+        <Border Background="{StaticResource BackgroundBrush}" Margin="2">
+            <Border.Clip>
+                <RectangleGeometry RadiusX="33" RadiusY="33" Rect="0,0,996,596"/>
+            </Border.Clip>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <!--Custom Topbar-->
+                <Border Grid.Row="0" 
+                    Background="{StaticResource TopBarBrush}" 
+                    BorderBrush="{StaticResource WindowBorderBrush}" 
+                    BorderThickness="0,0,0,2"
+                    MouseLeftButtonDown="TopBar_MouseLeftButtonDown">
+                <Grid>
+                    <StackPanel Orientation="Horizontal" 
+                                HorizontalAlignment="Left" 
+                                VerticalAlignment="Center"
+                                Margin="20,0,0,0">
+                        
+                        <Button x:Name="PinButton"
+                                Content="📌"
+                                Width="35"
+                                Height="30"
+                                FontSize="16"
+                                Cursor="Hand"
+                                Click="PinButton_Click">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Foreground" Value="{StaticResource TextLightBrush}"/>
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Background="{TemplateBinding Background}"
+                                                        CornerRadius="5">
+                                                    <ContentPresenter HorizontalAlignment="Center" 
+                                                                    VerticalAlignment="Center"
+                                                                    TextElement.Foreground="{TemplateBinding Foreground}"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Topmost, RelativeSource={RelativeSource AncestorType=Window}}" Value="True">
+                                            <Setter Property="Background" Value="{StaticResource PinButtonActiveBrush}"/>
+                                            <Setter Property="Foreground" Value="White"/>
+                                        </DataTrigger>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="{StaticResource PinButtonHoverBrush}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </StackPanel>
+                    
+                    <StackPanel Orientation="Horizontal" 
+                                HorizontalAlignment="Right" 
+                                VerticalAlignment="Center"
+                                Margin="0,0,10,0">
+                        
+                        <!--Minimize Button-->
+                        <Button x:Name="MinimizeButton"
+                                Content="−"
+                                Width="35"
+                                Height="30"
+                                FontSize="20"
+                                FontWeight="Bold"
+                                Cursor="Hand"
+                                Click="MinimizeButton_Click">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Foreground" Value="{StaticResource TextMediumBrush}"/>
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Background="{TemplateBinding Background}"
+                                                        CornerRadius="5"
+                                                        Padding="0,0,0,3">
+                                                    <ContentPresenter HorizontalAlignment="Center" 
+                                                                    VerticalAlignment="Center"
+                                                                    TextElement.Foreground="{TemplateBinding Foreground}"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="{StaticResource DarkSidebarBrush}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        
+                        <!--Close Button-->
+                        <Button x:Name="CloseButton"
+                                Content="×"
+                                Width="35"
+                                Height="30"
+                                FontSize="24"
+                                FontWeight="Bold"
+                                Cursor="Hand"
+                                Margin="5,0,10,0"
+                                Click="CloseButton_Click">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Foreground" Value="{StaticResource TextMediumBrush}"/>
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Background="{TemplateBinding Background}"
+                                                        CornerRadius="5">
+                                                    <ContentPresenter HorizontalAlignment="Center" 
+                                                                    VerticalAlignment="Center"
+                                                                    Margin="0,-2,0,0"
+                                                                    TextElement.Foreground="{TemplateBinding Foreground}"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="{StaticResource CloseButtonHoverBrush}"/>
+                                            <Setter Property="Foreground" Value="White"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+            
+            <!--Content Area-->
+            <Frame Grid.Row="1"
+                   x:Name="MainFrame"
+                   d:DataContext="{d:DesignInstance Type=views:MainMenu, IsDesignTimeCreatable=True}" 
+                   Content="{Binding}"
+                   NavigationUIVisibility="Hidden">
+            </Frame>
+        </Grid>
+        </Border>
     </Border>
 </Window>

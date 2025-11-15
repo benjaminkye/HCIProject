@@ -8,14 +8,14 @@
       d:DesignHeight="450" d:DesignWidth="750"
       Title="Logins">
 
-    <Grid>
+    <Grid Background="{StaticResource BackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!--Top Bar-->
-        <Border Grid.Row="0" Padding="10" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+        <Border Grid.Row="0" Padding="10" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="0,0,0,1" Background="{StaticResource ContentBackgroundBrush}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -25,25 +25,16 @@
                 <Button x:Name="NewLoginButton" 
                         Grid.Column="0"
                         Content="+ New Login" 
-                        Padding="15,8"
                         Margin="0,0,10,0"
-                        Background="#4CAF50"
-                        Foreground="White"
-                        BorderThickness="0"
-                        FontSize="14"
-                        FontWeight="SemiBold"
-                        Cursor="Hand"/>
+                        Style="{StaticResource SuccessButtonStyle}"/>
 
                 <Grid Grid.Column="1" Margin="0,0,10,0">
                     <TextBox x:Name="SearchBox" 
-                             Padding="10,8"
-                             FontSize="14"
-                             VerticalContentAlignment="Center"
-                             BorderBrush="#CCCCCC"
-                             BorderThickness="1"/>
+                             Style="{StaticResource StandardTextBoxStyle}"
+                             VerticalContentAlignment="Center"/>
                     <TextBlock x:Name="SearchPlaceholder"
                                Text="Search logins..." 
-                               Foreground="#999999"
+                               Foreground="{StaticResource TextLightBrush}"
                                FontSize="14"
                                Padding="11,9"
                                VerticalAlignment="Center"
@@ -61,8 +52,9 @@
             </Grid.ColumnDefinitions>
 
             <!--Left Section-->
-            <Border Grid.Column="0" BorderBrush="#E0E0E0" BorderThickness="0,0,1,0">
+            <Border Grid.Column="0" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="0,0,1,0" Background="{StaticResource ContentBackgroundBrush}">
                 <ListBox x:Name="LoginListBox" 
+                         Background="{StaticResource ContentBackgroundBrush}"
                          BorderThickness="0"
                          SelectionMode="Single"
                          Padding="0"
@@ -70,16 +62,16 @@
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Border Padding="15,12" BorderBrush="#F0F0F0" BorderThickness="0,0,0,1">
+                            <Border Padding="15,12" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="0,0,0,1">
                                 <StackPanel>
                                     <TextBlock Text="{Binding SiteName}" 
                                                FontSize="16" 
                                                FontWeight="SemiBold"
-                                               Foreground="#333333"
+                                               Foreground="{StaticResource TextDarkBrush}"
                                                TextTrimming="CharacterEllipsis"/>
                                     <TextBlock Text="{Binding Username}" 
                                                FontSize="12" 
-                                               Foreground="#666666"
+                                               Foreground="{StaticResource TextMediumBrush}"
                                                Margin="0,4,0,0"
                                                TextTrimming="CharacterEllipsis"/>
                                 </StackPanel>
@@ -90,7 +82,7 @@
             </Border>
 
             <!--Right Section-->
-            <Grid Grid.Column="1">
+            <Grid Grid.Column="1" Background="{StaticResource ContentBackgroundBrush}">
                 <Grid x:Name="ViewPanel" Visibility="Visible">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -98,17 +90,12 @@
                     </Grid.RowDefinitions>
 
                     <!--Edit Button-->
-                    <Border Grid.Row="0" Padding="20,15" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+                    <Border Grid.Row="0" Padding="20,15" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="0,0,0,1">
                         <Button x:Name="EditButton"
                                 Content="Edit"
                                 HorizontalAlignment="Right"
                                 Padding="20,8"
-                                Background="#2196F3"
-                                Foreground="White"
-                                BorderThickness="0"
-                                FontSize="14"
-                                FontWeight="SemiBold"
-                                Cursor="Hand"/>
+                                Style="{StaticResource PrimaryButtonStyle}"/>
                     </Border>
 
                     <!--Details Content (Read-Only)-->
@@ -117,49 +104,49 @@
                             <!--Site Name-->
                             <TextBlock Text="Site Name" 
                                        FontSize="12" 
-                                       Foreground="#666666" 
+                                       Foreground="{StaticResource TextMediumBrush}" 
                                        FontWeight="SemiBold"
                                        Margin="0,0,0,5"/>
                             <TextBox x:Name="ViewSiteNameTextBox" 
                                      FontSize="14" 
                                      Padding="10,8"
                                      IsReadOnly="True"
-                                     BorderBrush="#CCCCCC"
+                                     BorderBrush="{StaticResource BorderMediumBrush}"
                                      Margin="0,0,0,20"
-                                     Background="#F9F9F9"/>
+                                     Background="{StaticResource ReadOnlyBackgroundBrush}"/>
 
                             <!--URL-->
                             <TextBlock Text="URL" 
                                        FontSize="12" 
-                                       Foreground="#666666" 
+                                       Foreground="{StaticResource TextMediumBrush}" 
                                        FontWeight="SemiBold"
                                        Margin="0,0,0,5"/>
                             <TextBox x:Name="ViewUrlTextBox" 
                                      FontSize="14" 
                                      Padding="10,8"
                                      IsReadOnly="True"
-                                     BorderBrush="#CCCCCC"
+                                     BorderBrush="{StaticResource BorderMediumBrush}"
                                      Margin="0,0,0,20"
-                                     Background="#F9F9F9"/>
+                                     Background="{StaticResource ReadOnlyBackgroundBrush}"/>
 
                             <!--Username/Email-->
                             <TextBlock Text="Username/Email" 
                                        FontSize="12" 
-                                       Foreground="#666666" 
+                                       Foreground="{StaticResource TextMediumBrush}" 
                                        FontWeight="SemiBold"
                                        Margin="0,0,0,5"/>
                             <TextBox x:Name="ViewUsernameTextBox" 
                                      FontSize="14" 
                                      Padding="10,8"
                                      IsReadOnly="True"
-                                     BorderBrush="#CCCCCC"
+                                     BorderBrush="{StaticResource BorderMediumBrush}"
                                      Margin="0,0,0,20"
-                                     Background="#F9F9F9"/>
+                                     Background="{StaticResource ReadOnlyBackgroundBrush}"/>
 
                             <!--Password-->
                             <TextBlock Text="Password" 
                                        FontSize="12" 
-                                       Foreground="#666666" 
+                                       Foreground="{StaticResource TextMediumBrush}" 
                                        FontWeight="SemiBold"
                                        Margin="0,0,0,5"/>
                             <Grid Margin="0,0,0,20">
@@ -167,14 +154,14 @@
                                              FontSize="14" 
                                              Padding="10,8"
                                              IsEnabled="False"
-                                             BorderBrush="#CCCCCC"
-                                             Background="#F9F9F9"/>
+                                             BorderBrush="{StaticResource BorderMediumBrush}"
+                                             Background="{StaticResource ReadOnlyBackgroundBrush}"/>
                                 <TextBox x:Name="ViewPasswordTextBox"
                                          FontSize="14" 
                                          Padding="10,8"
                                          IsReadOnly="True"
-                                         BorderBrush="#CCCCCC"
-                                         Background="#F9F9F9"
+                                         BorderBrush="{StaticResource BorderMediumBrush}"
+                                         Background="{StaticResource ReadOnlyBackgroundBrush}"
                                          Visibility="Collapsed"/>
                                 <Button x:Name="ShowPasswordButton"
                                         Content="Show"
@@ -184,7 +171,7 @@
                                         Padding="10,5"
                                         Background="Transparent"
                                         BorderThickness="0"
-                                        Foreground="#2196F3"
+                                        Foreground="{StaticResource PrimaryBlueBrush}"
                                         Cursor="Hand"
                                         FontSize="12"/>
                             </Grid>
@@ -201,12 +188,12 @@
                     </Grid.RowDefinitions>
 
                     <!--Title-->
-                    <Border Grid.Row="0" Padding="20,15" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1" Background="#F5F5F5">
+                    <Border Grid.Row="0" Padding="20,15" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="0,0,0,1" Background="{StaticResource SectionBackgroundBrush}">
                         <TextBlock x:Name="EditTitleTextBlock"
                                    Text="Edit Login"
                                    FontSize="16"
                                    FontWeight="SemiBold"
-                                   Foreground="#333333"/>
+                                   Foreground="{StaticResource TextDarkBrush}"/>
                     </Border>
 
                     <!--Edit Form-->
@@ -215,57 +202,49 @@
                             <!--Site Name-->
                             <TextBlock Text="Site Name *" 
                                        FontSize="12" 
-                                       Foreground="#666666" 
+                                       Foreground="{StaticResource TextMediumBrush}" 
                                        FontWeight="SemiBold"
                                        Margin="0,0,0,5"/>
                             <TextBox x:Name="EditSiteNameTextBox" 
-                                     FontSize="14" 
-                                     Padding="10,8"
-                                     BorderBrush="#CCCCCC"
+                                     Style="{StaticResource StandardTextBoxStyle}"
                                      Margin="0,0,0,20"/>
 
                             <!--URL-->
                             <TextBlock Text="URL" 
                                        FontSize="12" 
-                                       Foreground="#666666" 
+                                       Foreground="{StaticResource TextMediumBrush}" 
                                        FontWeight="SemiBold"
                                        Margin="0,0,0,5"/>
                             <TextBox x:Name="EditUrlTextBox" 
-                                     FontSize="14" 
-                                     Padding="10,8"
-                                     BorderBrush="#CCCCCC"
+                                     Style="{StaticResource StandardTextBoxStyle}"
                                      Margin="0,0,0,20"/>
 
                             <!--Username/Email-->
                             <TextBlock Text="Username/Email *" 
                                        FontSize="12" 
-                                       Foreground="#666666" 
+                                       Foreground="{StaticResource TextMediumBrush}" 
                                        FontWeight="SemiBold"
                                        Margin="0,0,0,5"/>
                             <TextBox x:Name="EditUsernameTextBox" 
-                                     FontSize="14" 
-                                     Padding="10,8"
-                                     BorderBrush="#CCCCCC"
+                                     Style="{StaticResource StandardTextBoxStyle}"
                                      Margin="0,0,0,20"/>
 
                             <!--Password-->
                             <TextBlock Text="Password *" 
                                        FontSize="12" 
-                                       Foreground="#666666" 
+                                       Foreground="{StaticResource TextMediumBrush}" 
                                        FontWeight="SemiBold"
                                        Margin="0,0,0,5"/>
                             <TextBox x:Name="EditPasswordTextBox" 
-                                     FontSize="14" 
-                                     Padding="10,8"
-                                     BorderBrush="#CCCCCC"
+                                     Style="{StaticResource StandardTextBoxStyle}"
                                      Margin="0,0,0,20"/>
                         </StackPanel>
                     </ScrollViewer>
 
                     <!--Action Buttons-->
                     <Border Grid.Row="2" 
-                            Background="#F5F5F5" 
-                            BorderBrush="#E0E0E0" 
+                            Background="{StaticResource SectionBackgroundBrush}" 
+                            BorderBrush="{StaticResource BorderLightBrush}" 
                             BorderThickness="0,1,0,0"
                             Padding="20">
                         <Grid>
@@ -273,12 +252,7 @@
                                 <Button x:Name="DeleteButton"
                                         Content="Delete"
                                         Padding="20,10"
-                                        Background="#F44336"
-                                        Foreground="White"
-                                        BorderThickness="0"
-                                        FontSize="14"
-                                        FontWeight="SemiBold"
-                                        Cursor="Hand"
+                                        Style="{StaticResource DangerButtonStyle}"
                                         Visibility="Collapsed"/>
                             </StackPanel>
                             
@@ -287,22 +261,12 @@
                                         Content="Save"
                                         Padding="25,10"
                                         Margin="0,0,10,0"
-                                        Background="#4CAF50"
-                                        Foreground="White"
-                                        BorderThickness="0"
-                                        FontSize="14"
-                                        FontWeight="SemiBold"
-                                        Cursor="Hand"/>
+                                        Style="{StaticResource SuccessButtonStyle}"/>
                                 
                                 <Button x:Name="CancelButton"
                                         Content="Cancel"
                                         Padding="25,10"
-                                        Background="#757575"
-                                        Foreground="White"
-                                        BorderThickness="0"
-                                        FontSize="14"
-                                        FontWeight="SemiBold"
-                                        Cursor="Hand"/>
+                                        Style="{StaticResource NeutralButtonStyle}"/>
         </StackPanel>
                         </Grid>
                     </Border>
@@ -315,11 +279,11 @@
                             Visibility="Collapsed">
                     <TextBlock Text="No login selected" 
                                FontSize="18" 
-                               Foreground="#999999"
+                               Foreground="{StaticResource TextLightBrush}"
                                HorizontalAlignment="Center"/>
                     <TextBlock Text="Select a login from the list or create a new one" 
                                FontSize="14" 
-                               Foreground="#BBBBBB"
+                               Foreground="{StaticResource TextLightBrush}"
                                HorizontalAlignment="Center"
                                Margin="0,10,0,0"/>
     </StackPanel>
