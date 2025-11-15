@@ -14,29 +14,12 @@ namespace DigitalHelper.Services
     /// </summary>
     public class LLMService
     {
-        private static LLMService? _instance;
-        private static readonly object _lock = new();
+        private static readonly Lazy<LLMService> _instance = new Lazy<LLMService>(() => new LLMService());
 
         private string? _apiKey;
         private Client? _model;
 
-        public static LLMService Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    lock (_lock)
-                    {
-                        if (_instance == null)
-                        {
-                            _instance = new LLMService();
-                        }
-                    }
-                }
-                return _instance;
-            }
-        }
+        public static LLMService Instance => _instance.Value;
 
         private LLMService()
         {
