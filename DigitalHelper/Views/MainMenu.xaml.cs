@@ -1,5 +1,7 @@
-﻿using System;
+﻿using DigitalHelper.Services;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +22,7 @@ namespace DigitalHelper.Views
     /// </summary>
     public partial class MainMenu : Page
     {
+        private ChatWindow chatWindow = new ChatWindow();
         public MainMenu()
         {
             InitializeComponent();
@@ -27,13 +30,31 @@ namespace DigitalHelper.Views
 
         private void exitButton_Click(object sender, RoutedEventArgs e)
         {
-            // In future may need to rework to ask for minimize if not using topbar for transition to mini helper
-            Application.Current.Shutdown();
+            //keep NavigationService?.Navigate(new ExitConfirm());
+            NavigationService?.Navigate(new ExitConfirm());
         }
 
         private void PasswordVaultButton_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new PasswordVault());
+            NavigationService.Navigate(new PasswordVault(this));
+        }
+
+        private void CustomHelpButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(chatWindow);
+        }
+
+        private void TestCapture_Click(object sender, RoutedEventArgs e)
+        {
+            var svc = new ScreenCaptureService();
+            //var desktop
+            string path = svc.SaveCapture1000();
+            MessageBox.Show($"Saved 1kx1k capture to :\n{path}");
+        }
+        
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Views/Settings.xaml", UriKind.Relative));
         }
     }
 }

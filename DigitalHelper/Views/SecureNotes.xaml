@@ -8,14 +8,14 @@
       d:DesignHeight="450" d:DesignWidth="750"
       Title="SecureNotes">
 
-    <Grid>
+    <Grid Background="{StaticResource BackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!--Top Bar-->
-        <Border Grid.Row="0" Padding="10" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+        <Border Grid.Row="0" Padding="10" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="0,0,0,1" Background="{StaticResource ContentBackgroundBrush}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -25,26 +25,17 @@
                 <Button x:Name="NewNoteButton" 
                         Grid.Column="0"
                         Content="+ New Note" 
-                        Padding="15,8"
                         Margin="0,0,10,0"
-                        Background="#4CAF50"
-                        Foreground="White"
-                        BorderThickness="0"
-                        FontSize="14"
-                        FontWeight="SemiBold"
-                        Cursor="Hand"/>
+                        Style="{StaticResource SuccessButtonStyle}"/>
 
                 <Grid Grid.Column="1" Margin="0,0,10,0">
                     <TextBox x:Name="SearchBox" 
-                             Padding="10,8"
-                             FontSize="14"
-                             VerticalContentAlignment="Center"
-                             BorderBrush="#CCCCCC"
-                             BorderThickness="1"/>
+                             Style="{StaticResource StandardTextBoxStyle}"
+                             VerticalContentAlignment="Center"/>
                     <TextBlock x:Name="SearchPlaceholder"
                                Text="Search notes..." 
-                               Foreground="#999999"
-                               FontSize="14"
+                               Foreground="{StaticResource TextLightBrush}"
+                               FontSize="{DynamicResource BodyFontSize}"
                                Padding="11,9"
                                VerticalAlignment="Center"
                                IsHitTestVisible="False"
@@ -61,8 +52,9 @@
             </Grid.ColumnDefinitions>
 
             <!--Left Section-->
-            <Border Grid.Column="0" BorderBrush="#E0E0E0" BorderThickness="0,0,1,0">
+            <Border Grid.Column="0" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="0,0,1,0" Background="{StaticResource ContentBackgroundBrush}">
                 <ListBox x:Name="NoteListBox" 
+                         Background="{StaticResource ContentBackgroundBrush}"
                          BorderThickness="0"
                          SelectionMode="Single"
                          Padding="0"
@@ -70,21 +62,21 @@
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Border Padding="15,12" BorderBrush="#F0F0F0" BorderThickness="0,0,0,1">
+                            <Border Padding="15,12" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="0,0,0,1">
                                 <StackPanel>
                                     <TextBlock Text="{Binding Title}" 
-                                               FontSize="16" 
+                                               FontSize="{DynamicResource HeadingFontSize}" 
                                                FontWeight="SemiBold"
-                                               Foreground="#333333"
+                                               Foreground="{StaticResource TextDarkBrush}"
                                                TextTrimming="CharacterEllipsis"/>
                                     <TextBlock Text="{Binding ContentPreview}" 
-                                               FontSize="12" 
-                                               Foreground="#666666"
+                                               FontSize="{DynamicResource BodyFontSize}" 
+                                               Foreground="{StaticResource TextMediumBrush}"
                                                Margin="0,4,0,0"
                                                TextTrimming="CharacterEllipsis"/>
                                     <TextBlock Text="{Binding FormattedModifiedDate}" 
-                                               FontSize="11" 
-                                               Foreground="#999999"
+                                               FontSize="{DynamicResource BodyFontSize}" 
+                                               Foreground="{StaticResource TextLightBrush}"
                                                Margin="0,4,0,0"/>
                                 </StackPanel>
                             </Border>
@@ -94,7 +86,7 @@
             </Border>
 
             <!--Right Section-->
-            <Grid Grid.Column="1">
+            <Grid Grid.Column="1" Background="{StaticResource ContentBackgroundBrush}">
                 <!--View Mode-->
                 <Grid x:Name="ViewPanel" Visibility="Visible">
                     <Grid.RowDefinitions>
@@ -103,17 +95,12 @@
                     </Grid.RowDefinitions>
 
                     <!--Edit Button-->
-                    <Border Grid.Row="0" Padding="20,15" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+                    <Border Grid.Row="0" Padding="20,15" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="0,0,0,1">
                         <Button x:Name="EditButton"
                                 Content="Edit"
                                 HorizontalAlignment="Right"
                                 Padding="20,8"
-                                Background="#2196F3"
-                                Foreground="White"
-                                BorderThickness="0"
-                                FontSize="14"
-                                FontWeight="SemiBold"
-                                Cursor="Hand"/>
+                                Style="{StaticResource PrimaryButtonStyle}"/>
                     </Border>
 
                     <!--Details (Read-Only)-->
@@ -121,17 +108,17 @@
                         <StackPanel Margin="20,20,20,20">
                             <!--Title-->
                             <TextBlock Text="Title" 
-                                       FontSize="12" 
-                                       Foreground="#666666" 
+                                       FontSize="{DynamicResource BodyFontSize}" 
+                                       Foreground="{StaticResource TextMediumBrush}" 
                                        FontWeight="SemiBold"
                                        Margin="0,0,0,5"/>
                             <TextBox x:Name="ViewTitleTextBox" 
-                                     FontSize="16" 
+                                     FontSize="{DynamicResource HeadingFontSize}" 
                                      Padding="10,8"
                                      IsReadOnly="True"
-                                     BorderBrush="#CCCCCC"
+                                     BorderBrush="{StaticResource BorderMediumBrush}"
                                      Margin="0,0,0,20"
-                                     Background="#F9F9F9"
+                                     Background="{StaticResource ReadOnlyBackgroundBrush}"
                                      FontWeight="SemiBold"/>
 
                             <!--Dates-->
@@ -143,37 +130,37 @@
                                 
                                 <StackPanel Grid.Column="0" Margin="0,0,10,0">
                                     <TextBlock Text="Created" 
-                                               FontSize="11" 
-                                               Foreground="#999999" 
+                                               FontSize="{DynamicResource BodyFontSize}" 
+                                               Foreground="{StaticResource TextLightBrush}" 
                                                Margin="0,0,0,3"/>
                                     <TextBlock x:Name="ViewCreatedDateTextBlock" 
-                                               FontSize="12" 
-                                               Foreground="#666666"/>
+                                               FontSize="{DynamicResource BodyFontSize}" 
+                                               Foreground="{StaticResource TextMediumBrush}"/>
                                 </StackPanel>
                                 
                                 <StackPanel Grid.Column="1">
                                     <TextBlock Text="Modified" 
-                                               FontSize="11" 
-                                               Foreground="#999999" 
+                                               FontSize="{DynamicResource BodyFontSize}" 
+                                               Foreground="{StaticResource TextLightBrush}" 
                                                Margin="0,0,0,3"/>
                                     <TextBlock x:Name="ViewModifiedDateTextBlock" 
-                                               FontSize="12" 
-                                               Foreground="#666666"/>
+                                               FontSize="{DynamicResource BodyFontSize}" 
+                                               Foreground="{StaticResource TextMediumBrush}"/>
                                 </StackPanel>
                             </Grid>
 
                             <!--Content-->
                             <TextBlock Text="Content" 
-                                       FontSize="12" 
-                                       Foreground="#666666" 
+                                       FontSize="{DynamicResource BodyFontSize}" 
+                                       Foreground="{StaticResource TextMediumBrush}" 
                                        FontWeight="SemiBold"
                                        Margin="0,0,0,5"/>
                             <TextBox x:Name="ViewContentTextBox" 
-                                     FontSize="14" 
+                                     FontSize="{DynamicResource BodyFontSize}" 
                                      Padding="10,8"
                                      IsReadOnly="True"
-                                     BorderBrush="#CCCCCC"
-                                     Background="#F9F9F9"
+                                     BorderBrush="{StaticResource BorderMediumBrush}"
+                                     Background="{StaticResource ReadOnlyBackgroundBrush}"
                                      TextWrapping="Wrap"
                                      AcceptsReturn="True"
                                      MinHeight="200"
@@ -191,12 +178,12 @@
                     </Grid.RowDefinitions>
 
                     <!--Title Bar-->
-                    <Border Grid.Row="0" Padding="20,15" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1" Background="#F5F5F5">
+                    <Border Grid.Row="0" Padding="20,15" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="0,0,0,1" Background="{StaticResource SectionBackgroundBrush}">
                         <TextBlock x:Name="EditTitleTextBlock"
                                    Text="Edit Note"
-                                   FontSize="16"
+                                   FontSize="{DynamicResource HeadingFontSize}"
                                    FontWeight="SemiBold"
-                                   Foreground="#333333"/>
+                                   Foreground="{StaticResource TextDarkBrush}"/>
                     </Border>
 
                     <!--Edit Form-->
@@ -204,26 +191,22 @@
                         <StackPanel Margin="20,20,20,20">
                             <!--Title-->
                             <TextBlock Text="Title *" 
-                                       FontSize="12" 
-                                       Foreground="#666666" 
+                                       FontSize="{DynamicResource BodyFontSize}" 
+                                       Foreground="{StaticResource TextMediumBrush}" 
                                        FontWeight="SemiBold"
                                        Margin="0,0,0,5"/>
                             <TextBox x:Name="EditNoteTitleTextBox" 
-                                     FontSize="14" 
-                                     Padding="10,8"
-                                     BorderBrush="#CCCCCC"
+                                     Style="{StaticResource StandardTextBoxStyle}"
                                      Margin="0,0,0,20"/>
 
                             <!--Content-->
                             <TextBlock Text="Content *" 
-                                       FontSize="12" 
-                                       Foreground="#666666" 
+                                       FontSize="{DynamicResource BodyFontSize}" 
+                                       Foreground="{StaticResource TextMediumBrush}" 
                                        FontWeight="SemiBold"
                                        Margin="0,0,0,5"/>
                             <TextBox x:Name="EditContentTextBox" 
-                                     FontSize="14" 
-                                     Padding="10,8"
-                                     BorderBrush="#CCCCCC"
+                                     Style="{StaticResource StandardTextBoxStyle}"
                                      Margin="0,0,0,20"
                                      TextWrapping="Wrap"
                                      AcceptsReturn="True"
@@ -234,8 +217,8 @@
 
                     <!--Action Buttons-->
                     <Border Grid.Row="2" 
-                            Background="#F5F5F5" 
-                            BorderBrush="#E0E0E0" 
+                            Background="{StaticResource SectionBackgroundBrush}" 
+                            BorderBrush="{StaticResource BorderLightBrush}" 
                             BorderThickness="0,1,0,0"
                             Padding="20">
                         <Grid>
@@ -243,12 +226,7 @@
                                 <Button x:Name="DeleteButton"
                                         Content="Delete"
                                         Padding="20,10"
-                                        Background="#F44336"
-                                        Foreground="White"
-                                        BorderThickness="0"
-                                        FontSize="14"
-                                        FontWeight="SemiBold"
-                                        Cursor="Hand"
+                                        Style="{StaticResource DangerButtonStyle}"
                                         Visibility="Collapsed"/>
                             </StackPanel>
                             
@@ -257,22 +235,12 @@
                                         Content="Save"
                                         Padding="25,10"
                                         Margin="0,0,10,0"
-                                        Background="#4CAF50"
-                                        Foreground="White"
-                                        BorderThickness="0"
-                                        FontSize="14"
-                                        FontWeight="SemiBold"
-                                        Cursor="Hand"/>
+                                        Style="{StaticResource SuccessButtonStyle}"/>
                                 
                                 <Button x:Name="CancelButton"
                                         Content="Cancel"
                                         Padding="25,10"
-                                        Background="#757575"
-                                        Foreground="White"
-                                        BorderThickness="0"
-                                        FontSize="14"
-                                        FontWeight="SemiBold"
-                                        Cursor="Hand"/>
+                                        Style="{StaticResource NeutralButtonStyle}"/>
                             </StackPanel>
                         </Grid>
                     </Border>
@@ -284,12 +252,12 @@
                             HorizontalAlignment="Center"
                             Visibility="Collapsed">
                     <TextBlock Text="No note selected" 
-                               FontSize="18" 
-                               Foreground="#999999"
+                               FontSize="{DynamicResource HeadingFontSize}" 
+                               Foreground="{StaticResource TextLightBrush}"
                                HorizontalAlignment="Center"/>
                     <TextBlock Text="Select a note from the list or create a new one" 
-                               FontSize="14" 
-                               Foreground="#BBBBBB"
+                               FontSize="{DynamicResource BodyFontSize}" 
+                               Foreground="{StaticResource TextLightBrush}"
                                HorizontalAlignment="Center"
                                Margin="0,10,0,0"/>
                 </StackPanel>
