@@ -83,10 +83,10 @@
                             <ColumnDefinition Width="200"/>
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0">
-                            <TextBlock Text="Highlight Color" FontSize="{DynamicResource HeadingFontSize}" FontWeight="SemiBold" Foreground="{DynamicResource TextDarkBrush}"/>
-                            <TextBlock Text="Choose the color for highlighted elements" FontSize="{DynamicResource BodyFontSize}" Foreground="{DynamicResource TextMediumBrush}" Margin="0,5,0,0"/>
+                            <TextBlock Text="Border Color" FontSize="{DynamicResource HeadingFontSize}" FontWeight="SemiBold" Foreground="{DynamicResource TextDarkBrush}"/>
+                            <TextBlock Text="Choose the color for guidance outlines on screen" FontSize="{DynamicResource BodyFontSize}" Foreground="{DynamicResource TextMediumBrush}" Margin="0,5,0,0"/>
                         </StackPanel>
-                        <ComboBox x:Name="HighlightColorComboBox" Grid.Column="1" VerticalAlignment="Center" Height="35" FontSize="{DynamicResource BodyFontSize}" SelectionChanged="HighlightColorComboBox_SelectionChanged">
+                        <ComboBox x:Name="BorderColorComboBox" Grid.Column="1" VerticalAlignment="Center" Height="35" FontSize="{DynamicResource BodyFontSize}" SelectionChanged="BorderColorComboBox_SelectionChanged">
                             <ComboBoxItem Content="Blue"/>
                             <ComboBoxItem Content="Green"/>
                             <ComboBoxItem Content="Red"/>
@@ -103,7 +103,7 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0">
                             <TextBlock Text="Border Thickness" FontSize="{DynamicResource HeadingFontSize}" FontWeight="SemiBold" Foreground="{DynamicResource TextDarkBrush}"/>
-                            <TextBlock Text="Adjust the thickness of borders" FontSize="{DynamicResource BodyFontSize}" Foreground="{DynamicResource TextMediumBrush}" Margin="0,5,0,0"/>
+                            <TextBlock Text="Adjust the thickness of guidance outlines on screen" FontSize="{DynamicResource BodyFontSize}" Foreground="{DynamicResource TextMediumBrush}" Margin="0,5,0,0"/>
                         </StackPanel>
                         <Slider x:Name="BorderThicknessSlider" Grid.Column="1" VerticalAlignment="Center" Minimum="1" Maximum="5" Value="1" TickFrequency="1" IsSnapToTickEnabled="True" ValueChanged="BorderThicknessSlider_ValueChanged"/>
                     </Grid>

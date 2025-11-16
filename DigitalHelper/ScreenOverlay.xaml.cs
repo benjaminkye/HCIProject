@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -14,6 +13,8 @@ namespace DigitalHelper
     /// </summary>
     public partial class ScreenOverlay : Window
     {
+        private BoundingBox? currentBoundingBox;
+
         public ScreenOverlay()
         {
             InitializeComponent();
@@ -24,29 +25,59 @@ namespace DigitalHelper
             this.Height = SystemParameters.VirtualScreenHeight;
         }
 
-        public void DisplayBoundingBoxes(List<BoundingBox> boundingBoxes)
+        public void DisplayBoundingBox(BoundingBox boundingBox)
+        {
+            currentBoundingBox = boundingBox;
+            RedrawBoundingBox();
+        }
+
+        public void RefreshBoundingBox()
+        {
+            if (currentBoundingBox != null)
+            {
+                RedrawBoundingBox();
+            }
+        }
+
+        private void RedrawBoundingBox()
         {
             OverlayCanvas.Children.Clear();
 
-            if (boundingBoxes == null || boundingBoxes.Count == 0)
+            if (currentBoundingBox == null)
             {
                 return;
             }
 
-            foreach (var box in boundingBoxes)
-            {
-                DrawBoundingBox(box);
-            }
+            DrawBoundingBox(currentBoundingBox);
         }
 
         private void DrawBoundingBox(BoundingBox box)
         {
+            Brush strokeBrush;
+            if (Application.Current.Resources.Contains("AppBorderColorBrush"))
+            {
+                strokeBrush = Application.Current.Resources["AppBorderColorBrush"] as Brush ?? Brushes.Blue;
+            }
+            else
+            {
+                strokeBrush = Brushes.Blue;
+            }
+
+            double thickness = 4;
+            if (Application.Current.Properties.Contains("App.BorderThicknessOption"))
+            {
+                if (Application.Current.Properties["App.BorderThicknessOption"] is double d)
+                {
+                    thickness = d;
+                }
+            }
+
             var rectangle = new Rectangle
             {
                 Width = box.Width,
                 Height = box.Height,
-                Stroke = GetBrushFromHex(box.Color),
-                StrokeThickness = 4,
+                Stroke = strokeBrush,
+                StrokeThickness = thickness,
                 StrokeDashArray = box.Style == "dashed" ? new DoubleCollection { 5, 3 } : null,
                 Fill = Brushes.Transparent
             };
@@ -60,33 +91,6 @@ namespace DigitalHelper
             {
                 AddPulseAnimation(rectangle);
             }
-
-            if (!string.IsNullOrEmpty(box.Label))
-            {
-                DrawLabel(box);
-            }
-        }
-
-        private void DrawLabel(BoundingBox box)
-        {
-            var label = new Border
-            {
-                Background = GetBrushFromHex(box.Color),
-                CornerRadius = new CornerRadius(4),
-                Padding = new Thickness(8, 4, 8, 4),
-                Child = new TextBlock
-                {
-                    Text = box.Label,
-                    Foreground = Brushes.White,
-                    FontSize = 16,
-                    FontWeight = FontWeights.Bold
-                }
-            };
-
-            Canvas.SetLeft(label, box.X);
-            Canvas.SetTop(label, box.Y - 35);
-
-            OverlayCanvas.Children.Add(label);
         }
 
         private void AddPulseAnimation(UIElement element)
@@ -103,21 +107,10 @@ namespace DigitalHelper
             element.BeginAnimation(UIElement.OpacityProperty, animation);
         }
 
-        private Brush GetBrushFromHex(string hex)
-        {
-            try
-            {
-                var result = new BrushConverter().ConvertFrom(hex);
-                return (result as Brush) ?? Brushes.LimeGreen;
-            }
-            catch
-            {
-                return Brushes.LimeGreen; // Default color, can specify with options later
-            }
-        }
 
-        public void ClearBoundingBoxes()
+        public void ClearBoundingBox()
         {
+            currentBoundingBox = null;
             OverlayCanvas.Children.Clear();
         }
     }

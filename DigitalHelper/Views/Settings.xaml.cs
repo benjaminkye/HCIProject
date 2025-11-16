@@ -9,8 +9,8 @@ namespace DigitalHelper.Views
         bool _isInitializing;
         const string FontSizeOptionKey = "App.FontSizeOption";
         const string ThemeOptionKey = "App.ThemeOption";
-        const string HighlightOptionKey = "App.HighlightOption";
-        const string BorderOptionKey = "App.BorderThicknessOption";
+        const string BorderColorOptionKey = "App.BorderColorOption";
+        const string BorderThicknessOptionKey = "App.BorderThicknessOption";
         public Settings()
         {
             _isInitializing = true;
@@ -40,27 +40,26 @@ namespace DigitalHelper.Views
                 }
                 ThemeComboBox.SelectedIndex = index;
             }
-            if (HighlightColorComboBox != null)
+            if (BorderColorComboBox != null)
             {
                 int index = 0;
-                if (Application.Current.Properties.Contains(HighlightOptionKey))
+                if (Application.Current.Properties.Contains(BorderColorOptionKey))
                 {
-                    string text = Application.Current.Properties[HighlightOptionKey] as string ?? "Blue";
-                    index = HighlightLabelToIndex(text);
+                    string text = Application.Current.Properties[BorderColorOptionKey] as string ?? "Blue";
+                    index = BorderColorLabelToIndex(text);
                 }
-                HighlightColorComboBox.SelectedIndex = index;
+                BorderColorComboBox.SelectedIndex = index;
             }
             if (BorderThicknessSlider != null)
             {
-                if (Application.Current.Properties.Contains(BorderOptionKey))
+                if (Application.Current.Properties.Contains(BorderThicknessOptionKey))
                 {
-                    if (Application.Current.Properties[BorderOptionKey] is double d) BorderThicknessSlider.Value = d;
-                    else BorderThicknessSlider.Value = 1;
+                    if (Application.Current.Properties[BorderThicknessOptionKey] is double d) BorderThicknessSlider.Value = d;
+                    else BorderThicknessSlider.Value = 4;
                 }
                 else
                 {
-                    if (Application.Current.Resources["AppBorderThickness"] is Thickness t) BorderThicknessSlider.Value = t.Left;
-                    else BorderThicknessSlider.Value = 1;
+                    BorderThicknessSlider.Value = 4;
                 }
             }
         }
@@ -81,7 +80,7 @@ namespace DigitalHelper.Views
             if (string.Equals(text, "Auto", StringComparison.OrdinalIgnoreCase)) return 2;
             return 0;
         }
-        int HighlightLabelToIndex(string text)
+        int BorderColorLabelToIndex(string text)
         {
             text = text.Trim();
             if (string.Equals(text, "Blue", StringComparison.OrdinalIgnoreCase)) return 0;
@@ -105,10 +104,10 @@ namespace DigitalHelper.Views
             if (_isInitializing) return;
             ApplyThemeFromCombo();
         }
-        void HighlightColorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        void BorderColorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (_isInitializing) return;
-            ApplyHighlightFromCombo();
+            ApplyBorderColorFromCombo();
         }
         void BorderThicknessSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
@@ -198,33 +197,29 @@ namespace DigitalHelper.Views
             SetBrush("ReadOnlyBackgroundBrush", Color.FromRgb(35, 35, 35));
             SetBrush("SectionBackgroundBrush", Color.FromRgb(30, 30, 30));
         }
-        void ApplyHighlightFromCombo()
+        void ApplyBorderColorFromCombo()
         {
-            if (HighlightColorComboBox.SelectedItem is not ComboBoxItem item) return;
+            if (BorderColorComboBox.SelectedItem is not ComboBoxItem item) return;
             string text = (item.Content?.ToString() ?? string.Empty).Trim();
-            Application.Current.Properties[HighlightOptionKey] = text;
-            Color baseColor;
-            if (string.Equals(text, "Green", StringComparison.OrdinalIgnoreCase)) baseColor = Color.FromRgb(76, 175, 80);
-            else if (string.Equals(text, "Red", StringComparison.OrdinalIgnoreCase)) baseColor = Color.FromRgb(244, 67, 54);
-            else if (string.Equals(text, "Purple", StringComparison.OrdinalIgnoreCase)) baseColor = Color.FromRgb(156, 39, 176);
-            else if (string.Equals(text, "Orange", StringComparison.OrdinalIgnoreCase)) baseColor = Color.FromRgb(244, 162, 97);
-            else baseColor = Color.FromRgb(0, 123, 255);
-            Color hover = Lighten(baseColor, 0.15);
-            Color pressed = Darken(baseColor, 0.2);
-            Color secondary = Lighten(baseColor, 0.35);
-            Color secondaryHover = Lighten(baseColor, 0.45);
-            SetBrush("PrimaryBlueBrush", baseColor);
-            SetBrush("PrimaryBlueHoverBrush", hover);
-            SetBrush("PrimaryBluePressedBrush", pressed);
-            SetBrush("SecondaryBlueBrush", secondary);
-            SetBrush("SecondaryLightBlueBrush", secondary);
-            SetBrush("SecondaryLightBlueHoverBrush", secondaryHover);
+            Application.Current.Properties[BorderColorOptionKey] = text;
+            Color borderColor;
+            if (string.Equals(text, "Green", StringComparison.OrdinalIgnoreCase)) borderColor = Color.FromRgb(76, 175, 80);
+            else if (string.Equals(text, "Red", StringComparison.OrdinalIgnoreCase)) borderColor = Color.FromRgb(244, 67, 54);
+            else if (string.Equals(text, "Purple", StringComparison.OrdinalIgnoreCase)) borderColor = Color.FromRgb(156, 39, 176);
+            else if (string.Equals(text, "Orange", StringComparison.OrdinalIgnoreCase)) borderColor = Color.FromRgb(244, 162, 97);
+            else borderColor = Color.FromRgb(0, 123, 255);
+            SetBrush("AppBorderColorBrush", borderColor);
+            RefreshOverlayIfActive();
         }
         void ApplyBorderThicknessFromSlider()
         {
             double v = BorderThicknessSlider.Value;
-            Application.Current.Resources["AppBorderThickness"] = new Thickness(v);
-            Application.Current.Properties[BorderOptionKey] = v;
+            Application.Current.Properties[BorderThicknessOptionKey] = v;
+            RefreshOverlayIfActive();
+        }
+        void RefreshOverlayIfActive()
+        {
+            App.HelperWindowInstance?.ScreenOverlayInstance?.RefreshBoundingBox();
         }
         static void SetBrush(string key, Color color)
         {
@@ -246,24 +241,6 @@ namespace DigitalHelper.Views
             {
                 Application.Current.Resources[key] = new SolidColorBrush(color);
             }
-        }
-        static Color Lighten(Color color, double factor)
-        {
-            if (factor < 0) factor = 0;
-            if (factor > 1) factor = 1;
-            byte r = (byte)(color.R + (255 - color.R) * factor);
-            byte g = (byte)(color.G + (255 - color.G) * factor);
-            byte b = (byte)(color.B + (255 - color.B) * factor);
-            return Color.FromRgb(r, g, b);
-        }
-        static Color Darken(Color color, double factor)
-        {
-            if (factor < 0) factor = 0;
-            if (factor > 1) factor = 1;
-            byte r = (byte)(color.R * (1 - factor));
-            byte g = (byte)(color.G * (1 - factor));
-            byte b = (byte)(color.B * (1 - factor));
-            return Color.FromRgb(r, g, b);
         }
     }
 }
