@@ -63,6 +63,7 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="200"/>
                         </Grid.ColumnDefinitions>
+                        
                         <StackPanel Grid.Column="0">
                             <TextBlock Text="Theme" FontSize="{DynamicResource HeadingFontSize}" FontWeight="SemiBold" Foreground="{DynamicResource TextDarkBrush}"/>
                             <TextBlock Text="Choose your preferred color scheme" FontSize="{DynamicResource BodyFontSize}" Foreground="{DynamicResource TextMediumBrush}" Margin="0,5,0,0"/>
@@ -74,32 +75,7 @@
                         </ComboBox>
                     </Grid>
                 </Border>
-                <Border Background="{DynamicResource ContentBackgroundBrush}" CornerRadius="15" Margin="0,10,0,10" Padding="25">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0">
-                            <TextBlock Text="Text-to-Speech (TTS)" FontSize="{DynamicResource HeadingFontSize}" FontWeight="SemiBold" Foreground="{DynamicResource TextDarkBrush}"/>
-                            <TextBlock Text="Enable voice reading of text content" FontSize="{DynamicResource BodyFontSize}" Foreground="{DynamicResource TextMediumBrush}" Margin="0,5,0,0"/>
-                        </StackPanel>
-                        <CheckBox Grid.Column="1" VerticalAlignment="Center" IsChecked="False"/>
-                    </Grid>
-                </Border>
-                <Border Background="{DynamicResource ContentBackgroundBrush}" CornerRadius="15" Margin="0,10,0,10" Padding="25">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0">
-                            <TextBlock Text="Automatic Feedback" FontSize="{DynamicResource HeadingFontSize}" FontWeight="SemiBold" Foreground="{DynamicResource TextDarkBrush}"/>
-                            <TextBlock Text="Send usage data to improve the application" FontSize="{DynamicResource BodyFontSize}" Foreground="{DynamicResource TextMediumBrush}" Margin="0,5,0,0"/>
-                        </StackPanel>
-                        <CheckBox Grid.Column="1" VerticalAlignment="Center" IsChecked="False"/>
-                    </Grid>
-                </Border>
+
                 <Border Background="{DynamicResource ContentBackgroundBrush}" CornerRadius="15" Margin="0,10,0,10" Padding="25">
                     <Grid>
                         <Grid.ColumnDefinitions>

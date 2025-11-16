@@ -9,7 +9,6 @@ namespace DigitalHelper.Models
     /// </summary>
     public class HelperGuidanceMessage
     {
-        public string MessageType { get; set; } = "guidance"; // guidance, success, error, warning, prompt
         public string? Icon { get; set; }
         public string Instructions { get; set; } = string.Empty;
         public List<BoundingBox>? BoundingBoxes { get; set; }
@@ -41,7 +40,7 @@ namespace DigitalHelper.Models
         public string Text { get; set; } = string.Empty;
         public string Action { get; set; } = string.Empty;
         public string? Icon { get; set; }
-        public string Style { get; set; } = "primary"; // primary, secondary, danger
+        public string Style { get; set; } = "primary"; // primary, secondary
     }
 }
 
