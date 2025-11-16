@@ -7,6 +7,9 @@
         <system:Double x:Key="BodyFontSize">14</system:Double>
         <system:Double x:Key="HeadingFontSize">18</system:Double>
         <system:Double x:Key="TitleFontSize">30</system:Double>
+        <system:Double x:Key="IconFontSize">32.2</system:Double>
+        <system:Double x:Key="BodyLineHeight">21</system:Double>
+        <system:Double x:Key="ButtonIconFontSize">15.4</system:Double>
         <Thickness x:Key="AppBorderThickness">1</Thickness>
         <!--Color Palette-->
         <SolidColorBrush x:Key="PrimaryBlueBrush" Color="#007BFF"/>

@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -29,7 +30,7 @@ namespace DigitalHelper.Services
                 mainPanel.Children.Add(CreateIcon(message.Icon));
             }
 
-            mainPanel.Children.Add(CreateInstructions(message.Instructions, message.MessageType));
+            mainPanel.Children.Add(CreateInstructions(message.Instructions));
 
             if (message.Buttons?.Count > 0)
             {
@@ -44,27 +45,28 @@ namespace DigitalHelper.Services
             var textBlock = new TextBlock
             {
                 Text = icon,
-                FontSize = 32,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 Margin = new Thickness(0, 5, 0, 10)
             };
-
+            
+            textBlock.SetResourceReference(TextBlock.FontSizeProperty, "IconFontSize");
             return textBlock;
         }
 
-        private static UIElement CreateInstructions(string instructions, string messageType)
+        private static UIElement CreateInstructions(string instructions)
         {
             var textBlock = new TextBlock
             {
                 Text = instructions,
                 TextWrapping = TextWrapping.Wrap,
-                FontSize = 16, // Larger for elderly users, later get from options service once implemented
                 FontFamily = new FontFamily("Segoe UI"),
                 TextAlignment = TextAlignment.Center,
-                Foreground = GetForegroundForMessageType(messageType),
-                Margin = new Thickness(0, 0, 0, 15),
-                LineHeight = 24
+                Margin = new Thickness(0, 0, 0, 15)
             };
+            
+            textBlock.SetResourceReference(TextBlock.FontSizeProperty, "BodyFontSize");
+            textBlock.SetResourceReference(TextBlock.ForegroundProperty, "TextDarkBrush");
+            textBlock.SetResourceReference(TextBlock.LineHeightProperty, "BodyLineHeight");
 
             return textBlock;
         }
@@ -98,7 +100,6 @@ namespace DigitalHelper.Services
                 MinHeight = 40,
                 Margin = new Thickness(5),
                 Padding = new Thickness(15, 8, 15, 8),
-                FontSize = 14,
                 FontWeight = FontWeights.SemiBold,
                 Cursor = System.Windows.Input.Cursors.Hand,
                 Background = GetBackgroundForButtonStyle(buttonDef.Style),
@@ -112,6 +113,8 @@ namespace DigitalHelper.Services
                     Opacity = 0.3
                 }
             };
+            
+            button.SetResourceReference(Button.FontSizeProperty, "BodyFontSize");
 
             var border = new Border
             {
@@ -145,12 +148,13 @@ namespace DigitalHelper.Services
                 HorizontalAlignment = HorizontalAlignment.Center
             };
 
-            panel.Children.Add(new TextBlock
+            var iconTextBlock = new TextBlock
             {
                 Text = buttonDef.Icon + " ",
-                FontSize = 16,
                 VerticalAlignment = VerticalAlignment.Center
-            });
+            };
+            iconTextBlock.SetResourceReference(TextBlock.FontSizeProperty, "ButtonIconFontSize");
+            panel.Children.Add(iconTextBlock);
 
             panel.Children.Add(new TextBlock
             {
@@ -161,25 +165,13 @@ namespace DigitalHelper.Services
             return panel;
         }
 
-        private static Brush GetForegroundForMessageType(string messageType)
-        {
-            return messageType switch
-            {
-                "error" => new SolidColorBrush(Color.FromRgb(220, 53, 69)),
-                "success" => new SolidColorBrush(Color.FromRgb(40, 167, 69)),
-                "warning" => new SolidColorBrush(Color.FromRgb(255, 193, 7)),
-                _ => new SolidColorBrush(Colors.Black)
-            };
-        }
-
         private static Brush GetBackgroundForButtonStyle(string style)
         {
             return style switch
             {
-                "primary" => new SolidColorBrush(Color.FromRgb(0, 123, 255)),
-                "danger" => new SolidColorBrush(Color.FromRgb(220, 53, 69)),
-                "secondary" => new SolidColorBrush(Color.FromRgb(108, 117, 125)),
-                _ => new SolidColorBrush(Color.FromRgb(0, 123, 255))
+                "primary" => new SolidColorBrush(Color.FromRgb(0, 120, 255)),
+                "secondary" => new SolidColorBrush(Color.FromRgb(110, 117, 125)),
+                _ => new SolidColorBrush(Color.FromRgb(0, 120, 255))
             };
         }
 

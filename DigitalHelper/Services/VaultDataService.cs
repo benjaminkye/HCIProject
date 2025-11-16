@@ -7,8 +7,7 @@ namespace DigitalHelper.Services
 {
     public class VaultDataService
     {
-        private static VaultDataService? _instance;
-        private static readonly object _lock = new object();
+        private static readonly Lazy<VaultDataService> _instance = new Lazy<VaultDataService>(() => new VaultDataService());
         
         private VaultData _vaultData;
         private readonly string _dataFilePath;
@@ -23,23 +22,7 @@ namespace DigitalHelper.Services
             LoadData();
         }
 
-        public static VaultDataService Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    lock (_lock)
-                    {
-                        if (_instance == null)
-                        {
-                            _instance = new VaultDataService();
-                        }
-                    }
-                }
-                return _instance;
-            }
-        }
+        public static VaultDataService Instance => _instance.Value;
 
         public VaultData Data => _vaultData;
 

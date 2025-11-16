@@ -72,7 +72,7 @@ namespace DigitalHelper.Views
             CardsButton.Background = Brushes.Transparent;
             SecureNotesButton.Background = Brushes.Transparent;
 
-            var highlight = Application.Current.Resources["PrimaryBlueBrush"] as Brush ?? Brushes.Transparent;
+            var highlight = Application.Current.Resources["BorderLightBrush"] as Brush ?? Brushes.Transparent;
 
             activeButton.Background = highlight;
         }
