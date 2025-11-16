@@ -1,53 +1,63 @@
 <Page x:Class="DigitalHelper.Views.Settings"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:DigitalHelper.Views"
-      mc:Ignorable="d" 
-      d:DesignHeight="600" d:DesignWidth="1000"
-      Title="Settings">
-
-    <Grid Background="#F4F3F2">
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:local="clr-namespace:DigitalHelper.Views" mc:Ignorable="d" d:DesignHeight="600" d:DesignWidth="1000" Title="Settings">
+    <Grid Background="{DynamicResource BackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="80"/>
         </Grid.RowDefinitions>
-
-       <Border Grid.Row="0" Background="White" Margin="20,20,20,0" CornerRadius="15">
-    <Grid>
-        <Button x:Name="BackButton" 
-                Content="← Back" 
-                FontSize="16"
-                FontWeight="SemiBold"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                Width="125"
-                Height="40"
-                Margin="20,0,0,0"
-                BorderThickness="0"
-                Cursor="Hand"
-                Background= "#FFFFFF"
-        
-                Click="BackButton_Click">
-                
-            
-        </Button>
-        
-        <TextBlock Text="Settings" 
-                  FontSize="32" 
-                  FontWeight="Bold" 
-                  Foreground="#333333"
-                  VerticalAlignment="Center" 
-                  HorizontalAlignment="Center"/>
-    </Grid>
-</Border>
-
+        <Border Grid.Row="0" Background="{DynamicResource ContentBackgroundBrush}" Margin="20,20,20,0" CornerRadius="15">
+            <Grid>
+                <Button x:Name="BackButton" Content="← Back" FontSize="{DynamicResource BodyFontSize}" FontWeight="SemiBold" HorizontalAlignment="Left" VerticalAlignment="Center" Width="125" Height="40" Margin="20,0,0,0" Background="{DynamicResource PrimaryBlueBrush}" Foreground="White" BorderThickness="0" Cursor="Hand" Click="BackButton_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="{DynamicResource PrimaryBlueBrush}"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="10">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="{DynamicResource PrimaryBlueHoverBrush}"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <TextBlock Text="Settings" FontSize="{DynamicResource TitleFontSize}" FontWeight="Bold" Foreground="{DynamicResource TextDarkBrush}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Grid>
+        </Border>
         <ScrollViewer Grid.Row="1" Margin="20,10,20,10" VerticalScrollBarVisibility="Auto">
             <StackPanel>
-                
-                <Border Background="White" CornerRadius="15" Margin="0,10,0,10" Padding="25">
+                <!-- Font Size -->
+                <Border Background="{DynamicResource ContentBackgroundBrush}" CornerRadius="15" Margin="0,10,0,10" Padding="25">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="200"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Font Size" FontSize="{DynamicResource HeadingFontSize}" FontWeight="SemiBold" Foreground="{DynamicResource TextDarkBrush}"/>
+                            <TextBlock Text="Adjust the text size throughout the application" FontSize="{DynamicResource BodyFontSize}" Foreground="{DynamicResource TextMediumBrush}" Margin="0,5,0,0"/>
+                        </StackPanel>
+                        <ComboBox x:Name="FontSizeComboBox" Grid.Column="1" VerticalAlignment="Center" Height="35" FontSize="{DynamicResource BodyFontSize}" SelectionChanged="FontSizeComboBox_SelectionChanged">
+                            <ComboBoxItem Content="Small"/>
+                            <ComboBoxItem Content="Medium"/>
+                            <ComboBoxItem Content="Large"/>
+                            <ComboBoxItem Content="Extra Large"/>
+                        </ComboBox>
+                    </Grid>
+                </Border>
+                <Border Background="{DynamicResource ContentBackgroundBrush}" CornerRadius="15" Margin="0,10,0,10" Padding="25">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -55,107 +65,50 @@
                         </Grid.ColumnDefinitions>
                         
                         <StackPanel Grid.Column="0">
-                            <TextBlock Text="Font Size" FontSize="18" FontWeight="SemiBold" Foreground="#333333"/>
-                            <TextBlock Text="Adjust the text size throughout the application" 
-                                      FontSize="12" 
-                                      Foreground="#666666" 
-                                      Margin="0,5,0,0"/>
+                            <TextBlock Text="Theme" FontSize="{DynamicResource HeadingFontSize}" FontWeight="SemiBold" Foreground="{DynamicResource TextDarkBrush}"/>
+                            <TextBlock Text="Choose your preferred color scheme" FontSize="{DynamicResource BodyFontSize}" Foreground="{DynamicResource TextMediumBrush}" Margin="0,5,0,0"/>
                         </StackPanel>
-                        
-                        <ComboBox Grid.Column="1" 
-                                 VerticalAlignment="Center" 
-                                 Height="35"
-                                 FontSize="14">
-                            <ComboBoxItem Content="Small" />
-                            <ComboBoxItem Content="Medium" IsSelected="True"/>
-                            <ComboBoxItem Content="Large" />
-                            <ComboBoxItem Content="Extra Large" />
+                        <ComboBox x:Name="ThemeComboBox" Grid.Column="1" VerticalAlignment="Center" Height="35" FontSize="{DynamicResource BodyFontSize}" SelectionChanged="ThemeComboBox_SelectionChanged">
+                            <ComboBoxItem Content="Light"/>
+                            <ComboBoxItem Content="Dark"/>
+                            <ComboBoxItem Content="Auto"/>
                         </ComboBox>
                     </Grid>
                 </Border>
 
-                <Border Background="White" CornerRadius="15" Margin="0,10,0,10" Padding="25">
+                <Border Background="{DynamicResource ContentBackgroundBrush}" CornerRadius="15" Margin="0,10,0,10" Padding="25">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="200"/>
                         </Grid.ColumnDefinitions>
-
                         <StackPanel Grid.Column="0">
-                            <TextBlock Text="Theme" FontSize="18" FontWeight="SemiBold" Foreground="#333333"/>
-                            <TextBlock Text="Choose your preferred color scheme" 
-                                      FontSize="12" 
-                                      Foreground="#666666" 
-                                      Margin="0,5,0,0"/>
+                            <TextBlock Text="Highlight Color" FontSize="{DynamicResource HeadingFontSize}" FontWeight="SemiBold" Foreground="{DynamicResource TextDarkBrush}"/>
+                            <TextBlock Text="Choose the color for highlighted elements" FontSize="{DynamicResource BodyFontSize}" Foreground="{DynamicResource TextMediumBrush}" Margin="0,5,0,0"/>
                         </StackPanel>
-
-                        <ComboBox Grid.Column="1" 
-                                 VerticalAlignment="Center" 
-                                 Height="35"
-                                 FontSize="14">
-                            <ComboBoxItem Content="Light" IsSelected="True"/>
-                            <ComboBoxItem Content="Dark" />
-                            <ComboBoxItem Content="Auto" />
+                        <ComboBox x:Name="HighlightColorComboBox" Grid.Column="1" VerticalAlignment="Center" Height="35" FontSize="{DynamicResource BodyFontSize}" SelectionChanged="HighlightColorComboBox_SelectionChanged">
+                            <ComboBoxItem Content="Blue"/>
+                            <ComboBoxItem Content="Green"/>
+                            <ComboBoxItem Content="Red"/>
+                            <ComboBoxItem Content="Purple"/>
+                            <ComboBoxItem Content="Orange"/>
                         </ComboBox>
                     </Grid>
                 </Border>
-
-                <Border Background="White" CornerRadius="15" Margin="0,10,0,10" Padding="25">
+                <Border Background="{DynamicResource ContentBackgroundBrush}" CornerRadius="15" Margin="0,10,0,10" Padding="25">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="200"/>
                         </Grid.ColumnDefinitions>
-                        
                         <StackPanel Grid.Column="0">
-                            <TextBlock Text="Highlight Color" FontSize="18" FontWeight="SemiBold" Foreground="#333333"/>
-                            <TextBlock Text="Choose the color for highlighted elements" 
-                                      FontSize="12" 
-                                      Foreground="#666666" 
-                                      Margin="0,5,0,0"/>
+                            <TextBlock Text="Border Thickness" FontSize="{DynamicResource HeadingFontSize}" FontWeight="SemiBold" Foreground="{DynamicResource TextDarkBrush}"/>
+                            <TextBlock Text="Adjust the thickness of borders" FontSize="{DynamicResource BodyFontSize}" Foreground="{DynamicResource TextMediumBrush}" Margin="0,5,0,0"/>
                         </StackPanel>
-                        
-                        <ComboBox Grid.Column="1" 
-                                 VerticalAlignment="Center" 
-                                 Height="35"
-                                 FontSize="14">
-                            <ComboBoxItem Content="Blue" IsSelected="True"/>
-                            <ComboBoxItem Content="Green" />
-                            <ComboBoxItem Content="Red" />
-                            <ComboBoxItem Content="Purple" />
-                            <ComboBoxItem Content="Orange" />
-                        </ComboBox>
+                        <Slider x:Name="BorderThicknessSlider" Grid.Column="1" VerticalAlignment="Center" Minimum="1" Maximum="5" Value="1" TickFrequency="1" IsSnapToTickEnabled="True" ValueChanged="BorderThicknessSlider_ValueChanged"/>
                     </Grid>
                 </Border>
-
-                <Border Background="White" CornerRadius="15" Margin="0,10,0,10" Padding="25">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="200"/>
-                        </Grid.ColumnDefinitions>
-                        
-                        <StackPanel Grid.Column="0">
-                            <TextBlock Text="Border Thickness" FontSize="18" FontWeight="SemiBold" Foreground="#333333"/>
-                            <TextBlock Text="Adjust the thickness of borders" 
-                                      FontSize="12" 
-                                      Foreground="#666666" 
-                                      Margin="0,5,0,0"/>
-                        </StackPanel>
-                        
-                        <Slider Grid.Column="1" 
-                               VerticalAlignment="Center" 
-                               Minimum="1" 
-                               Maximum="5" 
-                               Value="2"
-                               TickFrequency="1"
-                               IsSnapToTickEnabled="True"/>
-                    </Grid>
-                </Border>
-
             </StackPanel>
         </ScrollViewer>
-
-        
     </Grid>
 </Page>

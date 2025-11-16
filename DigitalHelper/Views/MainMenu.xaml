@@ -9,7 +9,7 @@
       Title="MainMenu"
       KeepAlive="True">
 
-    <Grid Background="{StaticResource BackgroundBrush}">
+    <Grid Background="{DynamicResource BackgroundBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
@@ -58,7 +58,7 @@
             <StackPanel Orientation="Vertical">
                 <Image Height="200" Width="200" Stretch="Uniform" Source="pack://application:,,,/DigitalHelper;component/Resources/vault.png"/>
                 <TextBlock HorizontalAlignment="Center" 
-                           FontSize="30" 
+                           FontSize="{DynamicResource TitleFontSize}" 
                            FontWeight="SemiBold"
                            Foreground="{StaticResource TextDarkBrush}"
                            Text="Password Vault"/>
@@ -72,7 +72,7 @@
             <StackPanel Orientation="Vertical">
                 <Image Height="200" Width="200" Stretch="Uniform" Source="pack://application:,,,/DigitalHelper;component/Resources/chat.png"/>
                 <TextBlock HorizontalAlignment="Center" 
-                           FontSize="30" 
+                           FontSize="{DynamicResource TitleFontSize}" 
                            FontWeight="SemiBold"
                            Foreground="{StaticResource TextDarkBrush}"
                            Text="Custom Help"/>
@@ -90,7 +90,7 @@
             </Button.Resources>
             <StackPanel Orientation="Vertical" >
                 <Image Height="200" Width="200" Stretch="Uniform" Source="pack://application:,,,/DigitalHelper;component/Resources/settings.png"></Image>
-                <TextBlock HorizontalAlignment="Center" FontSize="30" FontWeight="SemiBold"
+                <TextBlock HorizontalAlignment="Center" FontSize="{DynamicResource TitleFontSize}" FontWeight="SemiBold"
                                Text="Settings"/>
             </StackPanel>
         </Button>
@@ -103,7 +103,7 @@
             <StackPanel Orientation="Vertical">
                 <Image Height="200" Width="200" Stretch="Uniform" Source="pack://application:,,,/DigitalHelper;component/Resources/exit.png"/>
                 <TextBlock HorizontalAlignment="Center" 
-                           FontSize="30" 
+                           FontSize="{DynamicResource TitleFontSize}" 
                            FontWeight="SemiBold"
                            Foreground="{StaticResource TextDarkBrush}"
                            Text="Exit"/>

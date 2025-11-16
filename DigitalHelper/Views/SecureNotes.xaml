@@ -35,7 +35,7 @@
                     <TextBlock x:Name="SearchPlaceholder"
                                Text="Search notes..." 
                                Foreground="{StaticResource TextLightBrush}"
-                               FontSize="14"
+                               FontSize="{DynamicResource BodyFontSize}"
                                Padding="11,9"
                                VerticalAlignment="Center"
                                IsHitTestVisible="False"
@@ -65,17 +65,17 @@
                             <Border Padding="15,12" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="0,0,0,1">
                                 <StackPanel>
                                     <TextBlock Text="{Binding Title}" 
-                                               FontSize="16" 
+                                               FontSize="{DynamicResource HeadingFontSize}" 
                                                FontWeight="SemiBold"
                                                Foreground="{StaticResource TextDarkBrush}"
                                                TextTrimming="CharacterEllipsis"/>
                                     <TextBlock Text="{Binding ContentPreview}" 
-                                               FontSize="12" 
+                                               FontSize="{DynamicResource BodyFontSize}" 
                                                Foreground="{StaticResource TextMediumBrush}"
                                                Margin="0,4,0,0"
                                                TextTrimming="CharacterEllipsis"/>
                                     <TextBlock Text="{Binding FormattedModifiedDate}" 
-                                               FontSize="11" 
+                                               FontSize="{DynamicResource BodyFontSize}" 
                                                Foreground="{StaticResource TextLightBrush}"
                                                Margin="0,4,0,0"/>
                                 </StackPanel>
@@ -108,12 +108,12 @@
                         <StackPanel Margin="20,20,20,20">
                             <!--Title-->
                             <TextBlock Text="Title" 
-                                       FontSize="12" 
+                                       FontSize="{DynamicResource BodyFontSize}" 
                                        Foreground="{StaticResource TextMediumBrush}" 
                                        FontWeight="SemiBold"
                                        Margin="0,0,0,5"/>
                             <TextBox x:Name="ViewTitleTextBox" 
-                                     FontSize="16" 
+                                     FontSize="{DynamicResource HeadingFontSize}" 
                                      Padding="10,8"
                                      IsReadOnly="True"
                                      BorderBrush="{StaticResource BorderMediumBrush}"
@@ -130,33 +130,33 @@
                                 
                                 <StackPanel Grid.Column="0" Margin="0,0,10,0">
                                     <TextBlock Text="Created" 
-                                               FontSize="11" 
+                                               FontSize="{DynamicResource BodyFontSize}" 
                                                Foreground="{StaticResource TextLightBrush}" 
                                                Margin="0,0,0,3"/>
                                     <TextBlock x:Name="ViewCreatedDateTextBlock" 
-                                               FontSize="12" 
+                                               FontSize="{DynamicResource BodyFontSize}" 
                                                Foreground="{StaticResource TextMediumBrush}"/>
                                 </StackPanel>
                                 
                                 <StackPanel Grid.Column="1">
                                     <TextBlock Text="Modified" 
-                                               FontSize="11" 
+                                               FontSize="{DynamicResource BodyFontSize}" 
                                                Foreground="{StaticResource TextLightBrush}" 
                                                Margin="0,0,0,3"/>
                                     <TextBlock x:Name="ViewModifiedDateTextBlock" 
-                                               FontSize="12" 
+                                               FontSize="{DynamicResource BodyFontSize}" 
                                                Foreground="{StaticResource TextMediumBrush}"/>
                                 </StackPanel>
                             </Grid>
 
                             <!--Content-->
                             <TextBlock Text="Content" 
-                                       FontSize="12" 
+                                       FontSize="{DynamicResource BodyFontSize}" 
                                        Foreground="{StaticResource TextMediumBrush}" 
                                        FontWeight="SemiBold"
                                        Margin="0,0,0,5"/>
                             <TextBox x:Name="ViewContentTextBox" 
-                                     FontSize="14" 
+                                     FontSize="{DynamicResource BodyFontSize}" 
                                      Padding="10,8"
                                      IsReadOnly="True"
                                      BorderBrush="{StaticResource BorderMediumBrush}"
@@ -181,7 +181,7 @@
                     <Border Grid.Row="0" Padding="20,15" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="0,0,0,1" Background="{StaticResource SectionBackgroundBrush}">
                         <TextBlock x:Name="EditTitleTextBlock"
                                    Text="Edit Note"
-                                   FontSize="16"
+                                   FontSize="{DynamicResource HeadingFontSize}"
                                    FontWeight="SemiBold"
                                    Foreground="{StaticResource TextDarkBrush}"/>
                     </Border>
@@ -191,7 +191,7 @@
                         <StackPanel Margin="20,20,20,20">
                             <!--Title-->
                             <TextBlock Text="Title *" 
-                                       FontSize="12" 
+                                       FontSize="{DynamicResource BodyFontSize}" 
                                        Foreground="{StaticResource TextMediumBrush}" 
                                        FontWeight="SemiBold"
                                        Margin="0,0,0,5"/>
@@ -201,7 +201,7 @@
 
                             <!--Content-->
                             <TextBlock Text="Content *" 
-                                       FontSize="12" 
+                                       FontSize="{DynamicResource BodyFontSize}" 
                                        Foreground="{StaticResource TextMediumBrush}" 
                                        FontWeight="SemiBold"
                                        Margin="0,0,0,5"/>
@@ -252,11 +252,11 @@
                             HorizontalAlignment="Center"
                             Visibility="Collapsed">
                     <TextBlock Text="No note selected" 
-                               FontSize="18" 
+                               FontSize="{DynamicResource HeadingFontSize}" 
                                Foreground="{StaticResource TextLightBrush}"
                                HorizontalAlignment="Center"/>
                     <TextBlock Text="Select a note from the list or create a new one" 
-                               FontSize="14" 
+                               FontSize="{DynamicResource BodyFontSize}" 
                                Foreground="{StaticResource TextLightBrush}"
                                HorizontalAlignment="Center"
                                Margin="0,10,0,0"/>

@@ -45,11 +45,11 @@ namespace DigitalHelper.Services
             var textBlock = new TextBlock
             {
                 Text = icon,
-                FontSize = 32,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 Margin = new Thickness(0, 5, 0, 10)
             };
-
+            
+            textBlock.SetResourceReference(TextBlock.FontSizeProperty, "IconFontSize");
             return textBlock;
         }
 
@@ -59,13 +59,14 @@ namespace DigitalHelper.Services
             {
                 Text = instructions,
                 TextWrapping = TextWrapping.Wrap,
-                FontSize = 16, // Larger for elderly users, later get from options service once implemented
                 FontFamily = new FontFamily("Segoe UI"),
                 TextAlignment = TextAlignment.Center,
-                Foreground = (Brush)Application.Current.Resources["TextDarkBrush"],
-                Margin = new Thickness(0, 0, 0, 15),
-                LineHeight = 24
+                Margin = new Thickness(0, 0, 0, 15)
             };
+            
+            textBlock.SetResourceReference(TextBlock.FontSizeProperty, "BodyFontSize");
+            textBlock.SetResourceReference(TextBlock.ForegroundProperty, "TextDarkBrush");
+            textBlock.SetResourceReference(TextBlock.LineHeightProperty, "BodyLineHeight");
 
             return textBlock;
         }
@@ -99,7 +100,6 @@ namespace DigitalHelper.Services
                 MinHeight = 40,
                 Margin = new Thickness(5),
                 Padding = new Thickness(15, 8, 15, 8),
-                FontSize = 14,
                 FontWeight = FontWeights.SemiBold,
                 Cursor = System.Windows.Input.Cursors.Hand,
                 Background = GetBackgroundForButtonStyle(buttonDef.Style),
@@ -113,6 +113,8 @@ namespace DigitalHelper.Services
                     Opacity = 0.3
                 }
             };
+            
+            button.SetResourceReference(Button.FontSizeProperty, "BodyFontSize");
 
             var border = new Border
             {
@@ -146,12 +148,13 @@ namespace DigitalHelper.Services
                 HorizontalAlignment = HorizontalAlignment.Center
             };
 
-            panel.Children.Add(new TextBlock
+            var iconTextBlock = new TextBlock
             {
                 Text = buttonDef.Icon + " ",
-                FontSize = 16,
                 VerticalAlignment = VerticalAlignment.Center
-            });
+            };
+            iconTextBlock.SetResourceReference(TextBlock.FontSizeProperty, "ButtonIconFontSize");
+            panel.Children.Add(iconTextBlock);
 
             panel.Children.Add(new TextBlock
             {

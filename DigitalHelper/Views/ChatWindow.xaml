@@ -1,111 +1,44 @@
 <Page x:Class="DigitalHelper.Views.ChatWindow"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:DigitalHelper.Views"
-      mc:Ignorable="d" 
-      d:DesignHeight="600" d:DesignWidth="1000"
-      Title="ChatWindow"
-      KeepAlive="True">
-
-    <Grid Background="{StaticResource BackgroundBrush}">
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:local="clr-namespace:DigitalHelper.Views" mc:Ignorable="d" d:DesignHeight="600" d:DesignWidth="1000" Title="ChatWindow" KeepAlive="True">
+    <Grid Background="{DynamicResource BackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-
-        <!--Top Bar with Back and New Chat-->
-        <Border Grid.Row="0" 
-                Background="{StaticResource ContentBackgroundBrush}"
-                BorderBrush="{StaticResource BorderMediumBrush}"
-                BorderThickness="0,0,0,1"
-                Height="70">
+        <Border Grid.Row="0" Background="{StaticResource ContentBackgroundBrush}" BorderBrush="{StaticResource BorderMediumBrush}" BorderThickness="0,0,0,1" Height="70">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
-
-                <!--Back Button-->
-                <Button Grid.Column="0" 
-                        Content="← Back"
-                        Click="BackButton_Click"
-                        Style="{StaticResource TransparentButtonStyle}"
-                        HorizontalAlignment="Left"
-                        Margin="0,0,0,0"
-                        Padding="30,5"/>
-
-                <!--Title-->
-
-                <!--Start New Chat Button-->
-                <Button Grid.Column="1"
-                        x:Name="NewChatButton"
-                        Content="Start a New Chat"
-                        Click="NewChatButton_Click"
-                        Style="{StaticResource PrimaryButtonStyle}"
-                        Margin="0,5,0,5"/>
+                <Button Grid.Column="0" Content="← Back" Click="BackButton_Click" Style="{StaticResource TransparentButtonStyle}" HorizontalAlignment="Left" Margin="0,0,0,0" Padding="30,5"/>
+                <Button Grid.Column="1" x:Name="NewChatButton" Content="Start a New Chat" Click="NewChatButton_Click" Style="{StaticResource PrimaryButtonStyle}" Margin="0,5,0,5"/>
             </Grid>
         </Border>
-
-        <!--Chat Messages Area-->
-        <ScrollViewer Grid.Row="1" 
-                      x:Name="ChatScrollViewer"
-                      Background="{StaticResource ChatBackgroundBrush}"
-                      VerticalScrollBarVisibility="Auto"
-                      Padding="20">
-            <StackPanel x:Name="ChatMessagesPanel" 
-                        Orientation="Vertical">
-                <!--Chat messages will be added here dynamically-->
-            </StackPanel>
+        <ScrollViewer Grid.Row="1" x:Name="ChatScrollViewer" Background="{StaticResource ChatBackgroundBrush}" VerticalScrollBarVisibility="Auto" Padding="20">
+            <StackPanel x:Name="ChatMessagesPanel" Orientation="Vertical"></StackPanel>
         </ScrollViewer>
-
-        <!--Input Area at Bottom-->
-        <Border Grid.Row="2" 
-                Background="{StaticResource ContentBackgroundBrush}"
-                BorderBrush="{StaticResource BorderMediumBrush}"
-                BorderThickness="0,1,0,0"
-                Padding="20">
+        <Border Grid.Row="2" Background="{StaticResource ContentBackgroundBrush}" BorderBrush="{StaticResource BorderMediumBrush}" BorderThickness="0,1,0,0" Padding="20">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-
-                <!--Text Input-->
-                <Border Grid.Column="0"
-                        Style="{StaticResource RoundedInputStyle}">
-                    <TextBox x:Name="MessageInput"
-                             Text="Type your request here..."
-                             FontSize="16"
-                             BorderThickness="0"
-                             Background="Transparent"
-                             VerticalAlignment="Center"
-                             GotFocus="MessageInput_GotFocus"
-                             LostFocus="MessageInput_LostFocus"
-                             KeyDown="MessageInput_KeyDown"/>
+                <Border Grid.Column="0" Style="{StaticResource RoundedInputStyle}">
+                    <TextBox x:Name="MessageInput" Text="Type your request here..." FontSize="{DynamicResource BodyFontSize}" BorderThickness="0" Background="Transparent" VerticalAlignment="Center" GotFocus="MessageInput_GotFocus" LostFocus="MessageInput_LostFocus" KeyDown="MessageInput_KeyDown"/>
                 </Border>
-
-                <!--Send Button-->
-                <Button Grid.Column="2"
-                        x:Name="SendButton"
-                        Click="SendButton_Click"
-                        Width="50"
-                        Height="50"
-                        Margin="5,0,0,0"
-                        Background="{StaticResource PrimaryBlueBrush}"
-                        Style="{StaticResource RoundedButtonStyle}">
-                    <TextBlock Text="➤" 
-                               FontSize="20" 
-                               Foreground="White"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Center"/>
+                <Button Grid.Column="1" Content="🎤" FontSize="{DynamicResource BodyFontSize}" Width="50" Height="50" Margin="10,0,5,0" Background="Transparent" BorderThickness="0" Cursor="Hand" ToolTip="Voice input (coming soon)"/>
+                <Button Grid.Column="2" x:Name="SendButton" Click="SendButton_Click" Width="50" Height="50" Margin="5,0,0,0" Background="{StaticResource PrimaryBlueBrush}" Style="{StaticResource RoundedButtonStyle}">
+                    <TextBlock Text="➤" FontSize="{DynamicResource BodyFontSize}" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Button>
             </Grid>
         </Border>
     </Grid>
 </Page>
-
