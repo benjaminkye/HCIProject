@@ -57,7 +57,7 @@
                         </ComboBox>
                     </Grid>
                 </Border>
-                <Border Background="{DynamicResource ContentBackgroundBrush}" CornerRadius="15" Margin="0,10,0,10" Padding="25">
+                <Border Background="{DynamicResource ContentBackgroundBrush}" CornerRadius="15" Margin="0,10,0,10" Padding="25" Visibility="Collapsed">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
