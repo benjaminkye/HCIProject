@@ -149,6 +149,11 @@ namespace DigitalHelper.Views
             Application.Current.Resources["BodyFontSize"] = body;
             Application.Current.Resources["HeadingFontSize"] = heading;
             Application.Current.Resources["TitleFontSize"] = title;
+            
+            Application.Current.Resources["IconFontSize"] = body * 2.3;
+            Application.Current.Resources["BodyLineHeight"] = body * 1.5;
+            Application.Current.Resources["ButtonIconFontSize"] = body * 1.1;
+            
             Application.Current.Properties[FontSizeOptionKey] = text;
         }
         void ApplyThemeFromCombo()
