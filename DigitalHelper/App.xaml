@@ -11,6 +11,7 @@
         <system:Double x:Key="BodyLineHeight">21</system:Double>
         <system:Double x:Key="ButtonIconFontSize">15.4</system:Double>
         <Thickness x:Key="AppBorderThickness">1</Thickness>
+        <SolidColorBrush x:Key="AppBorderColorBrush" Color="#007BFF"/>
         <!--Color Palette-->
         <SolidColorBrush x:Key="PrimaryBlueBrush" Color="#007BFF"/>
         <SolidColorBrush x:Key="PrimaryBlueHoverBrush" Color="#0056b3"/>

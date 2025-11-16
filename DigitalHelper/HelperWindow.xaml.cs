@@ -31,6 +31,8 @@ namespace DigitalHelper
         private ScreenOverlay? screenOverlay;
         private string? currentUserTask;
 
+        public ScreenOverlay? ScreenOverlayInstance => screenOverlay;
+
         public HelperWindow()
         {
             InitializeComponent();
@@ -147,14 +149,14 @@ namespace DigitalHelper
             
             if (screenOverlay != null)
             {
-                if (message.BoundingBoxes != null && message.BoundingBoxes.Count > 0)
+                if (message.BoundingBox != null)
                 {
-                    screenOverlay.DisplayBoundingBoxes(message.BoundingBoxes);
+                    screenOverlay.DisplayBoundingBox(message.BoundingBox);
                     screenOverlay.Show();
                 }
                 else
                 {
-                    screenOverlay.ClearBoundingBoxes();
+                    screenOverlay.ClearBoundingBox();
                     screenOverlay.Hide();
                 }
             }

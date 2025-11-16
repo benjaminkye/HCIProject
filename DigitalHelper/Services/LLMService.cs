@@ -1,11 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text.Json;
-using System.Threading.Tasks;
 using DigitalHelper.Models;
 using Google.GenAI;
 using Google.GenAI.Types;
+using System.Diagnostics;
+using System.Text.Json;
 
 namespace DigitalHelper.Services
 {
@@ -112,7 +109,7 @@ namespace DigitalHelper.Services
 
 
             var response = await _model!.Models.GenerateContentAsync(
-                model: "gemini-2.5-pro", // Flash faster and cheaper but worse, pro better but slower (sometimes by a lot) and more $
+                model: "gemini-2.5-flash", // Flash faster and cheaper but worse, pro better but slower (sometimes by a lot) and more $
                 contents: new List<Content>
                 {
                     new Content
@@ -186,7 +183,7 @@ namespace DigitalHelper.Services
                 Y = ymin * scaleY,
                 Width = Math.Abs(xmax - xmin) * scaleX,
                 Height = Math.Abs(ymax - ymin) * scaleY,
-                Color = "#00FF00",
+                Color = "#00FF00", // Get from settings now but too lazy to refactor atp
                 Style = "solid",
                 PulseAnimation = true
             };
@@ -195,7 +192,7 @@ namespace DigitalHelper.Services
             {
                 Icon = "",
                 Instructions = instruction,
-                BoundingBoxes = new List<BoundingBox> { boundingBox },
+                BoundingBox = boundingBox,
                 Buttons = new List<HelperButton>
                 {
                     new HelperButton

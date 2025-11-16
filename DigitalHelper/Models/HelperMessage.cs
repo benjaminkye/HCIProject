@@ -11,7 +11,7 @@ namespace DigitalHelper.Models
     {
         public string? Icon { get; set; }
         public string Instructions { get; set; } = string.Empty;
-        public List<BoundingBox>? BoundingBoxes { get; set; }
+        public BoundingBox? BoundingBox { get; set; }
         public List<HelperButton>? Buttons { get; set; }
     }
 
