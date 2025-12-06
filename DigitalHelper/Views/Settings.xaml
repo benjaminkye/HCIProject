@@ -6,33 +6,13 @@
 	xmlns:local="clr-namespace:DigitalHelper.Views" mc:Ignorable="d" d:DesignHeight="600" d:DesignWidth="1000" Title="Settings">
     <Grid Background="{DynamicResource BackgroundBrush}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="80"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="80"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Border Grid.Row="0" Background="{DynamicResource ContentBackgroundBrush}" Margin="20,20,20,0" CornerRadius="15">
+        <Border Grid.Row="0" Background="{StaticResource ContentBackgroundBrush}" BorderBrush="{StaticResource BorderMediumBrush}" BorderThickness="0,0,0,1" Height="70">
             <Grid>
-                <Button x:Name="BackButton" Content="← Back" FontSize="{DynamicResource BodyFontSize}" FontWeight="SemiBold" HorizontalAlignment="Left" VerticalAlignment="Center" Width="125" Height="40" Margin="20,0,0,0" Background="{DynamicResource PrimaryBlueBrush}" Foreground="White" BorderThickness="0" Cursor="Hand" Click="BackButton_Click">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="Background" Value="{DynamicResource PrimaryBlueBrush}"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Background="{TemplateBinding Background}" CornerRadius="10">
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="{DynamicResource PrimaryBlueHoverBrush}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
+                <Button Grid.Column="0" Content="← Back" Click="BackButton_Click" Style="{StaticResource TransparentButtonStyle}" HorizontalAlignment="Left" Margin="0,0,0,0" Padding="30,5"/>
                 <TextBlock Text="Preferences" FontSize="{DynamicResource TitleFontSize}" FontWeight="Bold" Foreground="{DynamicResource TextDarkBrush}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Grid>
         </Border>
