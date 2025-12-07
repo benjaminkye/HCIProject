@@ -38,6 +38,19 @@
         </Border>
         <ScrollViewer Grid.Row="1" Margin="20,10,20,10" VerticalScrollBarVisibility="Auto">
             <StackPanel>
+                <Border Background="{DynamicResource ContentBackgroundBrush}" CornerRadius="15" Margin="0,10,0,20" Padding="25" BorderBrush="{DynamicResource AppBorderColorBrush}" BorderThickness="{DynamicResource AppBorderThickness}">
+                    <StackPanel>
+                        <TextBlock Text="Live Preview" FontSize="{DynamicResource HeadingFontSize}" FontWeight="SemiBold" Foreground="{DynamicResource TextDarkBrush}"/>
+                        <TextBlock Text="This sample updates instantly as you change the options." FontSize="{DynamicResource BodyFontSize}" Foreground="{DynamicResource TextMediumBrush}" Margin="0,5,0,15" TextWrapping="Wrap"/>
+                        <Border Background="{DynamicResource BackgroundBrush}" CornerRadius="10" Padding="18" BorderBrush="{DynamicResource AppBorderColorBrush}" BorderThickness="{DynamicResource AppBorderThickness}">
+                            <StackPanel>
+                                <TextBlock Text="Sample Heading" FontSize="{DynamicResource HeadingFontSize}" FontWeight="SemiBold" Foreground="{DynamicResource TextDarkBrush}"/>
+                                <TextBlock Text="Sample body text shows your current font size. The border around this card reflects your thickness setting." FontSize="{DynamicResource BodyFontSize}" Foreground="{DynamicResource TextMediumBrush}" TextWrapping="Wrap" Margin="0,6,0,0"/>
+                                <Button Content="Sample Button" Style="{StaticResource PrimaryButtonStyle}" Margin="0,14,0,0" Height="44"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
                 <!-- Font Size -->
                 <Border Background="{DynamicResource ContentBackgroundBrush}" CornerRadius="15" Margin="0,10,0,10" Padding="25">
                     <Grid>

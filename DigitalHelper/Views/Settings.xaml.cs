@@ -18,6 +18,13 @@ namespace DigitalHelper.Views
             InitializeControls();
             _isInitializing = false;
         }
+        void ApplySelectedSettingsToResources()
+        {
+            if (FontSizeComboBox != null) ApplyFontSizeFromCombo();
+            if (ThemeComboBox != null) ApplyThemeFromCombo();
+            if (BorderColorComboBox != null) ApplyBorderColorFromCombo();
+            if (BorderThicknessSlider != null) ApplyBorderThicknessFromSlider();
+        }
         void InitializeControls()
         {
             if (FontSizeComboBox != null)
@@ -62,6 +69,11 @@ namespace DigitalHelper.Views
                     BorderThicknessSlider.Value = 4;
                 }
             }
+            ApplySelectedSettingsToResources();
+            ApplyThemeFromCombo();
+            ApplyFontSizeFromCombo();
+            ApplyBorderColorFromCombo();
+            ApplyBorderThicknessFromSlider();
         }
         int FontSizeLabelToIndex(string text)
         {
@@ -209,12 +221,14 @@ namespace DigitalHelper.Views
             else if (string.Equals(text, "Orange", StringComparison.OrdinalIgnoreCase)) borderColor = Color.FromRgb(244, 162, 97);
             else borderColor = Color.FromRgb(0, 123, 255);
             SetBrush("AppBorderColorBrush", borderColor);
+            SetBrush("BorderMediumBrush", borderColor);
             RefreshOverlayIfActive();
         }
         void ApplyBorderThicknessFromSlider()
         {
             double v = BorderThicknessSlider.Value;
             Application.Current.Properties[BorderThicknessOptionKey] = v;
+            Application.Current.Resources["AppBorderThickness"] = new Thickness(v);
             RefreshOverlayIfActive();
         }
         void RefreshOverlayIfActive()
