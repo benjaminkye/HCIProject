@@ -235,7 +235,7 @@ namespace DigitalHelper.Views
         {
             double v = BorderThicknessSlider.Value;
             Application.Current.Properties[BorderThicknessOptionKey] = v;
-            Application.Current.Resources["AppBorderThickness"] = new Thickness(v);
+            //Application.Current.Resources["AppBorderThickness"] = new Thickness(v);
             
             if (PreviewRectangle != null)
             {
