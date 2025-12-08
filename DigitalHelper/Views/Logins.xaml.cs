@@ -4,6 +4,8 @@ using System.Windows;
 using System.Windows.Controls;
 using DigitalHelper.Models;
 using DigitalHelper.Services;
+using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 namespace DigitalHelper.Views
 {
@@ -12,6 +14,7 @@ namespace DigitalHelper.Views
     /// </summary>
     public partial class Logins : Page
     {
+        private static bool IsValidEmail(string email) => !string.IsNullOrWhiteSpace(email) && Regex.IsMatch(email, @"^\w+([-+.']\w+)*@(\[*\w+)([-.]\w+)*\.\w+([-.]\w+\])*$");
         private ObservableCollection<LoginItem> filteredLogins;
         private bool isPasswordVisible = false;
         private LoginItem? currentEditingLogin = null;
@@ -201,69 +204,61 @@ namespace DigitalHelper.Views
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            // Validate input
             if (string.IsNullOrWhiteSpace(EditSiteNameTextBox.Text))
             {
-                MessageBox.Show("Please enter a site name.", "Validation Error", 
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Please enter a site name.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 EditSiteNameTextBox.Focus();
                 return;
             }
-
-            if (string.IsNullOrWhiteSpace(EditUsernameTextBox.Text))
+            var usernameInput = EditUsernameTextBox.Text.Trim();
+            if (string.IsNullOrWhiteSpace(usernameInput))
             {
-                MessageBox.Show("Please enter a username or email.", "Validation Error", 
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Please enter a username.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 EditUsernameTextBox.Focus();
                 return;
             }
-
+            if (usernameInput.Contains("@"))
+            {
+                if(!IsValidEmail(usernameInput))
+                {
+                    MessageBox.Show("Please enter a valid email address.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    EditUsernameTextBox.Focus();
+                    return;
+                }
+            }
             if (string.IsNullOrWhiteSpace(EditPasswordTextBox.Text))
             {
-                MessageBox.Show("Please enter a password.", "Validation Error", 
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Please enter a password.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 EditPasswordTextBox.Focus();
                 return;
             }
-
             LoginItem? itemToSelect = null;
-            
             if (isAddingNew)
             {
-                // Create new login
                 var newLogin = new LoginItem
                 {
                     SiteName = EditSiteNameTextBox.Text.Trim(),
                     Url = EditUrlTextBox.Text.Trim(),
-                    Username = EditUsernameTextBox.Text.Trim(),
+                    Username = usernameInput,
                     Password = EditPasswordTextBox.Text
                 };
-                
                 VaultDataService.Instance.Data.Logins.Add(newLogin);
                 RefreshFilteredLogins();
                 SaveData();
-                
                 itemToSelect = newLogin;
             }
             else if (currentEditingLogin != null)
             {
-                // Update existing login
                 currentEditingLogin.SiteName = EditSiteNameTextBox.Text.Trim();
                 currentEditingLogin.Url = EditUrlTextBox.Text.Trim();
-                currentEditingLogin.Username = EditUsernameTextBox.Text.Trim();
+                currentEditingLogin.Username = usernameInput;
                 currentEditingLogin.Password = EditPasswordTextBox.Text;
-                
                 RefreshFilteredLogins();
                 SaveData();
-                
                 itemToSelect = currentEditingLogin;
             }
-            
-            // Switching back to view mode
             ViewPanel.Visibility = Visibility.Visible;
             EditPanel.Visibility = Visibility.Collapsed;
-            
-            // Reselect prev item
             if (itemToSelect != null)
             {
                 LoginListBox.SelectedItem = itemToSelect;
