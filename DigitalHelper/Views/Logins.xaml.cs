@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -221,9 +221,17 @@ namespace DigitalHelper.Views
             {
                 if(!IsValidEmail(usernameInput))
                 {
-                    MessageBox.Show("Please enter a valid email address.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    EditUsernameTextBox.Focus();
-                    return;
+                    var result = MessageBox.Show(
+                        "The username contains an '@' symbol but doesn't appear to be a valid email address. This could be intentional (some usernames contain '@'), or you may have made a typo. Would you like to save anyways?",
+                        "Possible Invalid Email",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question);
+                    
+                    if (result == MessageBoxResult.No)
+                    {
+                        EditUsernameTextBox.Focus();
+                        return;
+                    }
                 }
             }
             if (string.IsNullOrWhiteSpace(EditPasswordTextBox.Text))
