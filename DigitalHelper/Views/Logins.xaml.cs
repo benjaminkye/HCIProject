@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using DigitalHelper.Models;
 using DigitalHelper.Services;
 using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 namespace DigitalHelper.Views
 {
@@ -13,8 +14,7 @@ namespace DigitalHelper.Views
     /// </summary>
     public partial class Logins : Page
     {
-        private static readonly EmailAddressAttribute EmailValidator = new EmailAddressAttribute();
-        private static bool IsValidEmail(string email) => !string.IsNullOrWhiteSpace(email) && EmailValidator.IsValid(email);
+        private static bool IsValidEmail(string email) => !string.IsNullOrWhiteSpace(email) && Regex.IsMatch(email, @"^\w+([-+.']\w+)*@(\[*\w+)([-.]\w+)*\.\w+([-.]\w+\])*$");
         private ObservableCollection<LoginItem> filteredLogins;
         private bool isPasswordVisible = false;
         private LoginItem? currentEditingLogin = null;
@@ -216,6 +216,15 @@ namespace DigitalHelper.Views
                 MessageBox.Show("Please enter a username.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 EditUsernameTextBox.Focus();
                 return;
+            }
+            if (usernameInput.Contains("@"))
+            {
+                if(!IsValidEmail(usernameInput))
+                {
+                    MessageBox.Show("Please enter a valid email address.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    EditUsernameTextBox.Focus();
+                    return;
+                }
             }
             if (string.IsNullOrWhiteSpace(EditPasswordTextBox.Text))
             {
