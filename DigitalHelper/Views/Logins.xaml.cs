@@ -38,6 +38,8 @@ namespace DigitalHelper.Views
             SaveButton.Click += SaveButton_Click;
             CancelButton.Click += CancelButton_Click;
             DeleteButton.Click += DeleteButton_Click;
+            EditPasswordTextBox.TextChanged += EditPasswordTextBox_TextChanged;
+            EditRetypePasswordTextBox.TextChanged += EditRetypePasswordTextBox_TextChanged;
             
             // Select first item by default if available
             if (filteredLogins.Count > 0)
@@ -169,6 +171,8 @@ namespace DigitalHelper.Views
             EditUrlTextBox.Text = "";
             EditUsernameTextBox.Text = "";
             EditPasswordTextBox.Text = "";
+            EditRetypePasswordTextBox.Text = "";
+            PasswordMatchError.Visibility = Visibility.Collapsed;
             
             EditTitleTextBlock.Text = "Add New Login";
             DeleteButton.Visibility = Visibility.Collapsed;
@@ -191,6 +195,8 @@ namespace DigitalHelper.Views
                 EditUrlTextBox.Text = selectedLogin.Url;
                 EditUsernameTextBox.Text = selectedLogin.Username;
                 EditPasswordTextBox.Text = selectedLogin.Password;
+                EditRetypePasswordTextBox.Text = selectedLogin.Password;
+                PasswordMatchError.Visibility = Visibility.Collapsed;
                 
                 EditTitleTextBlock.Text = "Edit Login";
                 DeleteButton.Visibility = Visibility.Visible;
@@ -238,6 +244,12 @@ namespace DigitalHelper.Views
             {
                 MessageBox.Show("Please enter a password.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 EditPasswordTextBox.Focus();
+                return;
+            }
+            if (EditPasswordTextBox.Text != EditRetypePasswordTextBox.Text)
+            {
+                MessageBox.Show("Passwords do not match.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                EditRetypePasswordTextBox.Focus();
                 return;
             }
             LoginItem? itemToSelect = null;
@@ -330,6 +342,35 @@ namespace DigitalHelper.Views
                     
                     UpdateEmptyState();
                 }
+            }
+        }
+
+        private void EditPasswordTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ValidatePasswordMatch();
+        }
+
+        private void EditRetypePasswordTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ValidatePasswordMatch();
+        }
+
+        private void ValidatePasswordMatch()
+        {
+            if (!string.IsNullOrEmpty(EditPasswordTextBox.Text) && !string.IsNullOrEmpty(EditRetypePasswordTextBox.Text))
+            {
+                if (EditPasswordTextBox.Text != EditRetypePasswordTextBox.Text)
+                {
+                    PasswordMatchError.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    PasswordMatchError.Visibility = Visibility.Collapsed;
+                }
+            }
+            else
+            {
+                PasswordMatchError.Visibility = Visibility.Collapsed;
             }
         }
     }
