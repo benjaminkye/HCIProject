@@ -8,7 +8,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="80"/>
+            <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
         <Border Grid.Row="0" Background="{DynamicResource ContentBackgroundBrush}" Margin="20,20,20,0" CornerRadius="15">
             <Grid>
@@ -38,6 +38,21 @@
         </Border>
         <ScrollViewer Grid.Row="1" Margin="20,10,20,10" VerticalScrollBarVisibility="Auto">
             <StackPanel>
+                <Border Background="{DynamicResource ContentBackgroundBrush}" CornerRadius="15" Margin="0,10,0,20" Padding="25" BorderBrush="Transparent" BorderThickness="0">
+                    <StackPanel>
+                        <TextBlock Text="Live Preview" FontSize="{DynamicResource HeadingFontSize}" FontWeight="SemiBold" Foreground="{DynamicResource TextDarkBrush}"/>
+                        <TextBlock Text="This preview shows your current font size and what the guidance outlines will look like on screen during realtime help." FontSize="{DynamicResource BodyFontSize}" Foreground="{DynamicResource TextMediumBrush}" Margin="0,5,0,15" TextWrapping="Wrap"/>
+                        <Border Background="{DynamicResource BackgroundBrush}" CornerRadius="10" Padding="20">
+                            <StackPanel>
+                                <TextBlock Text="Sample Heading" FontSize="{DynamicResource HeadingFontSize}" FontWeight="SemiBold" Foreground="{DynamicResource TextDarkBrush}" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Sample body text shows your current font size." FontSize="{DynamicResource BodyFontSize}" Foreground="{DynamicResource TextMediumBrush}" HorizontalAlignment="Center" Margin="0,5,0,15"/>
+                                <Grid Height="100">
+                                    <Rectangle x:Name="PreviewRectangle" Width="200" Height="80" HorizontalAlignment="Center" VerticalAlignment="Center" Stroke="{DynamicResource AppBorderColorBrush}" StrokeThickness="4" Fill="Transparent"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
                 <!-- Font Size -->
                 <Border Background="{DynamicResource ContentBackgroundBrush}" CornerRadius="15" Margin="0,10,0,10" Padding="25">
                     <Grid>
@@ -84,7 +99,7 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0">
                             <TextBlock Text="Border Color" FontSize="{DynamicResource HeadingFontSize}" FontWeight="SemiBold" Foreground="{DynamicResource TextDarkBrush}"/>
-                            <TextBlock Text="Choose the color for guidance outlines on screen" FontSize="{DynamicResource BodyFontSize}" Foreground="{DynamicResource TextMediumBrush}" Margin="0,5,0,0"/>
+                            <TextBlock Text="Choose the color for guidance outlines shown on screen during realtime help" FontSize="{DynamicResource BodyFontSize}" Foreground="{DynamicResource TextMediumBrush}" Margin="0,5,0,0"/>
                         </StackPanel>
                         <ComboBox x:Name="BorderColorComboBox" Grid.Column="1" VerticalAlignment="Center" Height="35" FontSize="{DynamicResource BodyFontSize}" SelectionChanged="BorderColorComboBox_SelectionChanged">
                             <ComboBoxItem Content="Blue"/>
@@ -103,7 +118,7 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0">
                             <TextBlock Text="Border Thickness" FontSize="{DynamicResource HeadingFontSize}" FontWeight="SemiBold" Foreground="{DynamicResource TextDarkBrush}"/>
-                            <TextBlock Text="Adjust the thickness of guidance outlines on screen" FontSize="{DynamicResource BodyFontSize}" Foreground="{DynamicResource TextMediumBrush}" Margin="0,5,0,0"/>
+                            <TextBlock Text="Adjust the thickness of guidance outlines shown on screen during realtime help" FontSize="{DynamicResource BodyFontSize}" Foreground="{DynamicResource TextMediumBrush}" Margin="0,5,0,0"/>
                         </StackPanel>
                         <Slider x:Name="BorderThicknessSlider" Grid.Column="1" VerticalAlignment="Center" Minimum="1" Maximum="5" Value="1" TickFrequency="1" IsSnapToTickEnabled="True" ValueChanged="BorderThicknessSlider_ValueChanged"/>
                     </Grid>
