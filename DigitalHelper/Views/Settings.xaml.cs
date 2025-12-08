@@ -2,7 +2,6 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 namespace DigitalHelper.Views
 {
     public partial class Settings : Page
@@ -17,15 +16,7 @@ namespace DigitalHelper.Views
             _isInitializing = true;
             InitializeComponent();
             InitializeControls();
-            ApplyPulseAnimationToPreview();
             _isInitializing = false;
-        }
-        void ApplySelectedSettingsToResources()
-        {
-            if (FontSizeComboBox != null) ApplyFontSizeFromCombo();
-            if (ThemeComboBox != null) ApplyThemeFromCombo();
-            if (BorderColorComboBox != null) ApplyBorderColorFromCombo();
-            if (BorderThicknessSlider != null) ApplyBorderThicknessFromSlider();
         }
         void InitializeControls()
         {
@@ -70,16 +61,6 @@ namespace DigitalHelper.Views
                 {
                     BorderThicknessSlider.Value = 4;
                 }
-            }
-            ApplySelectedSettingsToResources();
-            ApplyThemeFromCombo();
-            ApplyFontSizeFromCombo();
-            ApplyBorderColorFromCombo();
-            ApplyBorderThicknessFromSlider();
-
-            if (PreviewRectangle != null && BorderThicknessSlider != null)
-            {
-                PreviewRectangle.StrokeThickness = BorderThicknessSlider.Value;
             }
         }
         int FontSizeLabelToIndex(string text)
@@ -228,42 +209,18 @@ namespace DigitalHelper.Views
             else if (string.Equals(text, "Orange", StringComparison.OrdinalIgnoreCase)) borderColor = Color.FromRgb(244, 162, 97);
             else borderColor = Color.FromRgb(0, 123, 255);
             SetBrush("AppBorderColorBrush", borderColor);
-            //SetBrush("BorderMediumBrush", borderColor);
             RefreshOverlayIfActive();
         }
         void ApplyBorderThicknessFromSlider()
         {
             double v = BorderThicknessSlider.Value;
             Application.Current.Properties[BorderThicknessOptionKey] = v;
-            Application.Current.Resources["AppBorderThickness"] = new Thickness(v);
-            
-            if (PreviewRectangle != null)
-            {
-                PreviewRectangle.StrokeThickness = v;
-            }
-            
             RefreshOverlayIfActive();
         }
         void RefreshOverlayIfActive()
         {
             App.HelperWindowInstance?.ScreenOverlayInstance?.RefreshBoundingBox();
         }
-        void ApplyPulseAnimationToPreview()
-        {
-            if (PreviewRectangle != null)
-            {
-                var animation = new DoubleAnimation
-                {
-                    From = 1.0,
-                    To = 0.5,
-                    Duration = TimeSpan.FromSeconds(1),
-                    AutoReverse = true,
-                    RepeatBehavior = RepeatBehavior.Forever
-                };
-                PreviewRectangle.BeginAnimation(UIElement.OpacityProperty, animation);
-            }
-        }
-        
         static void SetBrush(string key, Color color)
         {
             object existing = Application.Current.Resources[key];

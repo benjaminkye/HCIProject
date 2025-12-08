@@ -130,7 +130,7 @@
                                      Background="{StaticResource ReadOnlyBackgroundBrush}"/>
 
                             <!--Username/Email-->
-                            <TextBlock Text="Username" 
+                            <TextBlock Text="Username/Email" 
                                        FontSize="{DynamicResource BodyFontSize}" 
                                        Foreground="{StaticResource TextMediumBrush}" 
                                        FontWeight="SemiBold"
