@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "Digital Helper Browser Bridge",
+  "version": "1.0.0",
+  "description": "Helper extension for Digital Helper App",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "tabs"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Digital Helper Connection Status"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["styles.css"],
+      "run_at": "document_idle"
+    }
+  ]
+}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -30,6 +31,7 @@ namespace DigitalHelper
         private const double DragThreshold = 5.0; // Drag threshold in case users have shaky hands
         private ScreenOverlay? screenOverlay;
         private string? currentUserTask;
+        private string? currentBrowserHighlightSelector; 
 
         public ScreenOverlay? ScreenOverlayInstance => screenOverlay;
 
@@ -147,6 +149,17 @@ namespace DigitalHelper
             SpeechBubble.Visibility = Visibility.Visible;
             SpeechBubbleTail.Visibility = Visibility.Visible;
             
+            if (!string.IsNullOrEmpty(message.BrowserElementSelector))
+            {
+                currentBrowserHighlightSelector = message.BrowserElementSelector;
+                Trace.WriteLine($"[HelperWindow] Stored browser highlight selector: {currentBrowserHighlightSelector}");
+            }
+            else if (message.BoundingBox == null)
+            {
+                Trace.WriteLine($"[HelperWindow] Clearing browser highlight selector (was: {currentBrowserHighlightSelector})");
+                currentBrowserHighlightSelector = null;
+            }
+            
             if (screenOverlay != null)
             {
                 if (message.BoundingBox != null)
@@ -186,7 +199,15 @@ namespace DigitalHelper
                 case "dismiss":
                 case "exit_help_mode":
                     currentUserTask = null;
+                    currentBrowserHighlightSelector = null;
                     screenOverlay?.Hide();
+                    
+                    var bridge = BrowserBridgeService.Instance;
+                    if (bridge.IsConnected)
+                    {
+                        await bridge.ClearHighlightAsync();
+                    }
+                    
                     SetHelperText("I hope I was of use! I'll be around if you need any more help!");
                     await Task.Delay(1000);
                     HideSpeechBubble();
@@ -215,14 +236,82 @@ namespace DigitalHelper
                         var screenCaptureService = new ScreenCaptureService();
                         var shot = screenCaptureService.Capture1000(scale: false);
 
+                        DomSummary? domContext = null;
+                        var browserBridge = BrowserBridgeService.Instance;
+                        Trace.WriteLine($"Browser bridge connected: {browserBridge.IsConnected}");
+                        if (browserBridge.IsConnected)
+                        {
+                            Trace.WriteLine("Requesting DOM summary from browser...");
+                            domContext = await browserBridge.RequestDomSummaryAsync();
+                            if (domContext != null)
+                            {
+                                Trace.WriteLine($"DOM summary received: {domContext.Elements.Count} top-level elements from {domContext.Url}");
+                            }
+                            else
+                            {
+                                Trace.WriteLine("DOM summary returned null (timeout or error)");
+                            }
+                        }
+                        else
+                        {
+                            Trace.WriteLine("Browser extension not connected - skipping DOM context");
+                        }
+
                         var nextStep = await LLMService.Instance.AnalyzeScreenshotAsync(
                             shot.png1000,
                             currentUserTask,
                             shot.nativeW,
-                            shot.nativeH
+                            shot.nativeH,
+                            domContext
                         );
 
-                        DisplayMessage(nextStep);
+                        if (!string.IsNullOrEmpty(nextStep.BrowserElementSelector) && browserBridge.IsConnected)
+                        {
+                            currentBrowserHighlightSelector = nextStep.BrowserElementSelector;
+
+                            string borderColor = "#00FF00";
+                            if (Application.Current.Resources.Contains("AppBorderColorBrush"))
+                            {
+                                if (Application.Current.Resources["AppBorderColorBrush"] is SolidColorBrush brush)
+                                {
+                                    borderColor = $"#{brush.Color.R:X2}{brush.Color.G:X2}{brush.Color.B:X2}";
+                                }
+                            }
+
+                            double borderThickness = 4.0;
+                            if (Application.Current.Properties.Contains("App.BorderThicknessOption"))
+                            {
+                                if (Application.Current.Properties["App.BorderThicknessOption"] is double d)
+                                {
+                                    borderThickness = d;
+                                }
+                            }
+
+                            await browserBridge.HighlightElementAsync(
+                                nextStep.BrowserElementSelector,
+                                borderColor,
+                                borderThickness
+                            );
+
+                            screenOverlay?.Hide();
+                            var messageWithoutBox = new HelperGuidanceMessage
+                            {
+                                Icon = nextStep.Icon,
+                                Instructions = nextStep.Instructions,
+                                BoundingBox = null,
+                                Buttons = nextStep.Buttons
+                            };
+                            DisplayMessage(messageWithoutBox);
+                        }
+                        else
+                        {
+                            currentBrowserHighlightSelector = null;
+                            if (browserBridge.IsConnected)
+                            {
+                                await browserBridge.ClearHighlightAsync();
+                            }
+                            DisplayMessage(nextStep);
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -245,6 +334,52 @@ namespace DigitalHelper
         {
             SpeechBubble.Visibility = Visibility.Visible;
             SpeechBubbleTail.Visibility = Visibility.Visible;
+        }
+
+        public async Task RefreshBrowserHighlightAsync()
+        {
+            Trace.WriteLine($"[HelperWindow] RefreshBrowserHighlightAsync called. Current selector: {currentBrowserHighlightSelector ?? "null"}");
+            
+            if (string.IsNullOrEmpty(currentBrowserHighlightSelector))
+            {
+                Trace.WriteLine("[HelperWindow] No browser highlight active - skipping refresh");
+                return;
+            }
+
+            var browserBridge = BrowserBridgeService.Instance;
+            if (!browserBridge.IsConnected)
+            {
+                Trace.WriteLine("[HelperWindow] Browser not connected - skipping refresh");
+                return;
+            }
+
+            string borderColor = "#00FF00";
+            if (Application.Current.Resources.Contains("AppBorderColorBrush"))
+            {
+                if (Application.Current.Resources["AppBorderColorBrush"] is SolidColorBrush brush)
+                {
+                    borderColor = $"#{brush.Color.R:X2}{brush.Color.G:X2}{brush.Color.B:X2}";
+                }
+            }
+
+            double borderThickness = 4.0;
+            if (Application.Current.Properties.Contains("App.BorderThicknessOption"))
+            {
+                if (Application.Current.Properties["App.BorderThicknessOption"] is double d)
+                {
+                    borderThickness = d;
+                }
+            }
+
+            Trace.WriteLine($"[HelperWindow] Refreshing browser highlight: selector={currentBrowserHighlightSelector}, color={borderColor}, thickness={borderThickness}");
+            
+            await browserBridge.HighlightElementAsync(
+                currentBrowserHighlightSelector,
+                borderColor,
+                borderThickness
+            );
+            
+            Trace.WriteLine("[HelperWindow] Browser highlight refresh complete");
         }
     }
 }
