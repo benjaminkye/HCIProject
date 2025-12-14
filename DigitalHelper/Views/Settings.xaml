@@ -22,7 +22,7 @@
                     <StackPanel>
                         <TextBlock Text="Live Preview" FontSize="{DynamicResource HeadingFontSize}" FontWeight="SemiBold" Foreground="{DynamicResource TextDarkBrush}"/>
                         <TextBlock Text="This preview shows your current font size and what the guidance outlines will look like on screen during realtime help." FontSize="{DynamicResource BodyFontSize}" Foreground="{DynamicResource TextMediumBrush}" Margin="0,5,0,15" TextWrapping="Wrap"/>
-                        <Border Background="{DynamicResource BackgroundBrush}" CornerRadius="10" Padding="20">
+                        <Border BorderBrush="Transparent" CornerRadius="10" Padding="20">
                             <StackPanel>
                                 <TextBlock Text="Sample Heading" FontSize="{DynamicResource HeadingFontSize}" FontWeight="SemiBold" Foreground="{DynamicResource TextDarkBrush}" HorizontalAlignment="Center"/>
                                 <TextBlock Text="Sample body text shows your current font size." FontSize="{DynamicResource BodyFontSize}" Foreground="{DynamicResource TextMediumBrush}" HorizontalAlignment="Center" Margin="0,5,0,15"/>
@@ -33,25 +33,7 @@
                         </Border>
                     </StackPanel>
                 </Border>
-                <!-- Font Size -->
-                <Border Background="{DynamicResource ContentBackgroundBrush}" CornerRadius="15" Margin="0,10,0,10" Padding="25">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="200"/>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0">
-                            <TextBlock Text="Font Size" FontSize="{DynamicResource HeadingFontSize}" FontWeight="SemiBold" Foreground="{DynamicResource TextDarkBrush}"/>
-                            <TextBlock Text="Adjust the text size throughout the application" FontSize="{DynamicResource BodyFontSize}" Foreground="{DynamicResource TextMediumBrush}" Margin="0,5,0,0"/>
-                        </StackPanel>
-                        <ComboBox x:Name="FontSizeComboBox" Grid.Column="1" VerticalAlignment="Center" Height="35" FontSize="{DynamicResource BodyFontSize}" SelectionChanged="FontSizeComboBox_SelectionChanged">
-                            <ComboBoxItem Content="Small"/>
-                            <ComboBoxItem Content="Medium"/>
-                            <ComboBoxItem Content="Large"/>
-                            <ComboBoxItem Content="Extra Large"/>
-                        </ComboBox>
-                    </Grid>
-                </Border>
+                
                 <Border Background="{DynamicResource ContentBackgroundBrush}" CornerRadius="15" Margin="0,10,0,10" Padding="25" Visibility="Collapsed">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -101,6 +83,40 @@
                             <TextBlock Text="Adjust the thickness of guidance outlines shown on screen during realtime help" FontSize="{DynamicResource BodyFontSize}" Foreground="{DynamicResource TextMediumBrush}" Margin="0,5,0,0"/>
                         </StackPanel>
                         <Slider x:Name="BorderThicknessSlider" Grid.Column="1" VerticalAlignment="Center" Minimum="1" Maximum="5" Value="1" TickFrequency="1" IsSnapToTickEnabled="True" ValueChanged="BorderThicknessSlider_ValueChanged"/>
+                    </Grid>
+                </Border>
+                
+                <!-- Font Size -->
+                <Border Background="{DynamicResource ContentBackgroundBrush}" CornerRadius="15" Margin="0,10,0,10" Padding="25">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="200"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Font Size" FontSize="{DynamicResource HeadingFontSize}" FontWeight="SemiBold" Foreground="{DynamicResource TextDarkBrush}"/>
+                            <TextBlock Text="Adjust the text size throughout the application" FontSize="{DynamicResource BodyFontSize}" Foreground="{DynamicResource TextMediumBrush}" Margin="0,5,0,0"/>
+                        </StackPanel>
+                        <ComboBox x:Name="FontSizeComboBox" Grid.Column="1" VerticalAlignment="Center" Height="35" FontSize="{DynamicResource BodyFontSize}" SelectionChanged="FontSizeComboBox_SelectionChanged">
+                            <ComboBoxItem Content="Small"/>
+                            <ComboBoxItem Content="Medium"/>
+                            <ComboBoxItem Content="Large"/>
+                            <ComboBoxItem Content="Extra Large"/>
+                        </ComboBox>
+                    </Grid>
+                </Border>
+                <!-- Browser Zoom Sync -->
+                <Border Background="{DynamicResource ContentBackgroundBrush}" CornerRadius="15" Margin="0,10,0,10" Padding="25">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Sync Browser Zoom" FontSize="{DynamicResource HeadingFontSize}" FontWeight="SemiBold" Foreground="{DynamicResource TextDarkBrush}"/>
+                            <TextBlock Text="Automatically adjust browser zoom level when you change the font size (requires browser extension)" FontSize="{DynamicResource BodyFontSize}" Foreground="{DynamicResource TextMediumBrush}" Margin="0,5,0,0" TextWrapping="Wrap"/>
+                        </StackPanel>
+                        <CheckBox x:Name="BrowserZoomSyncCheckBox" Grid.Column="1" VerticalAlignment="Center" Checked="BrowserZoomSyncCheckBox_Changed" Unchecked="BrowserZoomSyncCheckBox_Changed" Width="30" Height="30"/>
                     </Grid>
                 </Border>
             </StackPanel>

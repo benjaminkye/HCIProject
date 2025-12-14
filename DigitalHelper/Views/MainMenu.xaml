@@ -61,7 +61,7 @@
                            FontSize="{DynamicResource TitleFontSize}" 
                            FontWeight="SemiBold"
                            Foreground="{StaticResource TextDarkBrush}"
-                           Text="Password Vault"/>
+                           Text="Secure Vault"/>
             </StackPanel>
         </Button>
 

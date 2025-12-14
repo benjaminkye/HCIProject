@@ -90,8 +90,30 @@ namespace DigitalHelper.Services
             byte[] screenshotPng,
             string userTask,
             int nativeWidth,
-            int nativeHeight)
+            int nativeHeight,
+            DomSummary? domContext = null)
         {
+            string domContextSection = "";
+            if (domContext != null)
+            {
+                Trace.WriteLine($"DOM context available: {domContext.Elements.Count} elements from {domContext.Url}");
+                var domJson = System.Text.Json.JsonSerializer.Serialize(domContext, new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
+                domContextSection = $"""
+                
+                Additionally, here is a hierarchical summary of interactive DOM elements on the current browser page:
+                {domJson}
+                
+                The DOM structure is nested - parent elements contain their children. For example, a form element may contain multiple input fields and a button.
+                When selecting an element to highlight, prefer grouping related elements (e.g., highlight a login form that contains both username and password inputs, rather than just one input).
+                
+                If the target element is in the browser DOM, include its CSS selector in your response.
+                """;
+            }
+            else
+            {
+                Trace.WriteLine("✗ No DOM context available (browser extension not connected or not on a web page)");
+            }
+
             string prompt = $"""
                 You are a patient, helpful digital assistant for elderly users who need help with technology.
                 The user needs help with the following task: "{userTask}"
@@ -99,10 +121,12 @@ namespace DigitalHelper.Services
                 1. Analyze the attached screenshot. This screenshot may be at any stage of the task, so use context clues to figure out what stage the user is at.
                 2. Determine the next action the user should take.
                 3. Locate UI element(s) involved. Group related elements if appropriate (username + password together) and generate coordinates for a bounding box that surrounds the target area.
+                {domContextSection}
                 4. Return JSON following this format (no other text):
                 {"{"}
                     "instruction": "Instruction text here", // string
                     "box-2d": [ymin, xmin, ymax, xmax], // 0-1000 coordinates
+                    "browser_element_selector": "form.login-form" // CSS selector if element is in browser DOM
                 {"}"}
                 Your response MUST be ONLY raw JSON.
                 """;
@@ -188,11 +212,18 @@ namespace DigitalHelper.Services
                 PulseAnimation = true
             };
 
+            string? browserElementSelector = null;
+            if (root.TryGetProperty("browser_element_selector", out var selectorElement))
+            {
+                browserElementSelector = selectorElement.GetString();
+            }
+
             var message = new HelperGuidanceMessage
             {
                 Icon = "",
                 Instructions = instruction,
                 BoundingBox = boundingBox,
+                BrowserElementSelector = browserElementSelector,
                 Buttons = new List<HelperButton>
                 {
                     new HelperButton

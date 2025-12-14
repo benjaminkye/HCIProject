@@ -164,7 +164,7 @@ namespace DigitalHelper.Views
             ChatMessagesPanel.Children.Add(buttonPanel);
             ScrollToBottom();
         }
-        async System.Threading.Tasks.Task GenerateAndDisplayGuide()
+        async Task GenerateAndDisplayGuide()
         {
             try
             {
@@ -253,6 +253,7 @@ namespace DigitalHelper.Views
                 MessageBox.Show("Helper window is not available.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
+            AddHelperMessage("Realtime help started! If this window does not minimize automatically, feel free to minimize it yourself and direct your attention to the helper avatar!");
             Application.Current.MainWindow?.Hide();
             helperWindow.Show();
             helperWindow.Activate();
@@ -261,8 +262,74 @@ namespace DigitalHelper.Views
             {
                 var screenCaptureService = new ScreenCaptureService();
                 var shot = screenCaptureService.Capture1000(scale: false);
-                var step = await LLMService.Instance.AnalyzeScreenshotAsync(shot.png1000, userTask, shot.nativeW, shot.nativeH);
-                helperWindow.DisplayMessage(step);
+                
+                Models.DomSummary? domContext = null;
+                var browserBridge = BrowserBridgeService.Instance;
+                Trace.WriteLine($"[Initial Help] Browser bridge connected: {browserBridge.IsConnected}");
+                if (browserBridge.IsConnected)
+                {
+                    Trace.WriteLine("[Initial Help] Requesting DOM summary from browser...");
+                    domContext = await browserBridge.RequestDomSummaryAsync();
+                    if (domContext != null)
+                    {
+                        Trace.WriteLine($"[Initial Help] DOM summary received: {domContext.Elements.Count} top-level elements from {domContext.Url}");
+                    }
+                    else
+                    {
+                        Trace.WriteLine("[Initial Help] DOM summary returned null (timeout or error)");
+                    }
+                }
+                else
+                {
+                    Trace.WriteLine("[Initial Help] Browser extension not connected - skipping DOM context");
+                }
+                
+                var step = await LLMService.Instance.AnalyzeScreenshotAsync(shot.png1000, userTask, shot.nativeW, shot.nativeH, domContext);
+                
+                if (!string.IsNullOrEmpty(step.BrowserElementSelector) && browserBridge.IsConnected)
+                {
+                    string borderColor = "#00FF00";
+                    if (Application.Current.Resources.Contains("AppBorderColorBrush"))
+                    {
+                        if (Application.Current.Resources["AppBorderColorBrush"] is SolidColorBrush brush)
+                        {
+                            borderColor = $"#{brush.Color.R:X2}{brush.Color.G:X2}{brush.Color.B:X2}";
+                        }
+                    }
+
+                    double borderThickness = 4.0;
+                    if (Application.Current.Properties.Contains("App.BorderThicknessOption"))
+                    {
+                        if (Application.Current.Properties["App.BorderThicknessOption"] is double d)
+                        {
+                            borderThickness = d;
+                        }
+                    }
+
+                    await browserBridge.HighlightElementAsync(
+                        step.BrowserElementSelector,
+                        borderColor,
+                        borderThickness
+                    );
+
+                    var messageWithoutBox = new Models.HelperGuidanceMessage
+                    {
+                        Icon = step.Icon,
+                        Instructions = step.Instructions,
+                        BoundingBox = null,
+                        BrowserElementSelector = step.BrowserElementSelector,
+                        Buttons = step.Buttons
+                    };
+                    helperWindow.DisplayMessage(messageWithoutBox);
+                }
+                else
+                {
+                    if (browserBridge.IsConnected)
+                    {
+                        await browserBridge.ClearHighlightAsync();
+                    }
+                    helperWindow.DisplayMessage(step);
+                }
             }
             catch (ClientError cex)
             {
