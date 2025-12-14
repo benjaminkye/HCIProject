@@ -12,6 +12,7 @@ namespace DigitalHelper.Models
         public string? Icon { get; set; }
         public string Instructions { get; set; } = string.Empty;
         public BoundingBox? BoundingBox { get; set; }
+        public string? BrowserElementSelector { get; set; }
         public List<HelperButton>? Buttons { get; set; }
     }
 

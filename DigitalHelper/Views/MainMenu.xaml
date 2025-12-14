@@ -61,7 +61,7 @@
                            FontSize="{DynamicResource TitleFontSize}" 
                            FontWeight="SemiBold"
                            Foreground="{StaticResource TextDarkBrush}"
-                           Text="Password Vault"/>
+                           Text="Secure Vault"/>
             </StackPanel>
         </Button>
 
@@ -91,7 +91,7 @@
             <StackPanel Orientation="Vertical" >
                 <Image Height="200" Width="200" Stretch="Uniform" Source="pack://application:,,,/DigitalHelper;component/Resources/settings.png"></Image>
                 <TextBlock HorizontalAlignment="Center" FontSize="{DynamicResource TitleFontSize}" FontWeight="SemiBold"
-                               Text="Settings"/>
+                               Text="Preferences"/>
             </StackPanel>
         </Button>
         

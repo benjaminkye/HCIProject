@@ -1,0 +1,25 @@
+/* CSS styling for in-browser overlay */
+
+.digital-helper-highlight {
+  position: absolute;
+  pointer-events: none;
+  z-index: 2147483647;
+  border: 4px solid #00FF00;
+  border-radius: 4px;
+  box-sizing: border-box;
+  background-color: transparent;
+  animation: digital-helper-pulse 1s ease-in-out infinite;
+}
+
+@keyframes digital-helper-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.digital-helper-highlight[style*="border-color"] {
+  animation: digital-helper-pulse 1s ease-in-out infinite;
+}

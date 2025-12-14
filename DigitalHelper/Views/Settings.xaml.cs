@@ -1,7 +1,11 @@
 using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
+using DigitalHelper.Services;
 namespace DigitalHelper.Views
 {
     public partial class Settings : Page
@@ -11,12 +15,21 @@ namespace DigitalHelper.Views
         const string ThemeOptionKey = "App.ThemeOption";
         const string BorderColorOptionKey = "App.BorderColorOption";
         const string BorderThicknessOptionKey = "App.BorderThicknessOption";
+        const string BrowserZoomSyncOptionKey = "App.BrowserZoomSyncOption";
         public Settings()
         {
             _isInitializing = true;
             InitializeComponent();
             InitializeControls();
+            ApplyPulseAnimationToPreview();
             _isInitializing = false;
+        }
+        void ApplySelectedSettingsToResources()
+        {
+            if (FontSizeComboBox != null) ApplyFontSizeFromCombo();
+            if (ThemeComboBox != null) ApplyThemeFromCombo();
+            if (BorderColorComboBox != null) ApplyBorderColorFromCombo();
+            if (BorderThicknessSlider != null) ApplyBorderThicknessFromSlider();
         }
         void InitializeControls()
         {
@@ -62,6 +75,36 @@ namespace DigitalHelper.Views
                     BorderThicknessSlider.Value = 4;
                 }
             }
+            
+            if (BrowserZoomSyncCheckBox != null)
+            {
+                if (Application.Current.Properties.Contains(BrowserZoomSyncOptionKey))
+                {
+                    if (Application.Current.Properties[BrowserZoomSyncOptionKey] is bool b)
+                    {
+                        BrowserZoomSyncCheckBox.IsChecked = b;
+                    }
+                    else
+                    {
+                        BrowserZoomSyncCheckBox.IsChecked = false;
+                    }
+                }
+                else
+                {
+                    BrowserZoomSyncCheckBox.IsChecked = false;
+                }
+            }
+            
+            ApplySelectedSettingsToResources();
+            ApplyThemeFromCombo();
+            ApplyFontSizeFromCombo();
+            ApplyBorderColorFromCombo();
+            ApplyBorderThicknessFromSlider();
+
+            if (PreviewRectangle != null && BorderThicknessSlider != null)
+            {
+                PreviewRectangle.StrokeThickness = BorderThicknessSlider.Value;
+            }
         }
         int FontSizeLabelToIndex(string text)
         {
@@ -106,15 +149,17 @@ namespace DigitalHelper.Views
         }
         void BorderColorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            Trace.WriteLine($"[Settings] BorderColorComboBox_SelectionChanged - IsInitializing: {_isInitializing}");
             if (_isInitializing) return;
             ApplyBorderColorFromCombo();
         }
         void BorderThicknessSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
+            Trace.WriteLine($"[Settings] BorderThicknessSlider_ValueChanged - IsInitializing: {_isInitializing}, Value: {e.NewValue}");
             if (_isInitializing) return;
             ApplyBorderThicknessFromSlider();
         }
-        void ApplyFontSizeFromCombo()
+        async void ApplyFontSizeFromCombo()
         {
             if (FontSizeComboBox.SelectedItem is not ComboBoxItem item) return;
             string text = (item.Content?.ToString() ?? string.Empty).Trim();
@@ -154,6 +199,48 @@ namespace DigitalHelper.Views
             Application.Current.Resources["ButtonIconFontSize"] = body * 1.1;
             
             Application.Current.Properties[FontSizeOptionKey] = text;
+            
+            if (!_isInitializing)
+            {
+                await SyncBrowserZoom(text);
+            }
+        }
+        
+        async void BrowserZoomSyncCheckBox_Changed(object sender, RoutedEventArgs e)
+        {
+            if (_isInitializing) return;
+            
+            bool isChecked = BrowserZoomSyncCheckBox.IsChecked ?? false;
+            Application.Current.Properties[BrowserZoomSyncOptionKey] = isChecked;
+            
+            var browserBridge = BrowserBridgeService.Instance;
+            if (browserBridge.IsConnected)
+            {
+                await browserBridge.SetZoomEnabledAsync(isChecked);
+                
+                if (isChecked && Application.Current.Properties.Contains(FontSizeOptionKey))
+                {
+                    string fontSize = Application.Current.Properties[FontSizeOptionKey] as string ?? "Medium";
+                    await SyncBrowserZoom(fontSize);
+                }
+            }
+        }
+        
+        async Task SyncBrowserZoom(string fontSize)
+        {
+            bool zoomSyncEnabled = false;
+            if (Application.Current.Properties.Contains(BrowserZoomSyncOptionKey))
+            {
+                zoomSyncEnabled = (bool)(Application.Current.Properties[BrowserZoomSyncOptionKey] ?? false);
+            }
+            
+            if (!zoomSyncEnabled) return;
+            
+            var browserBridge = BrowserBridgeService.Instance;
+            if (browserBridge.IsConnected)
+            {
+                await browserBridge.SetZoomAsync(fontSize, true);
+            }
         }
         void ApplyThemeFromCombo()
         {
@@ -201,6 +288,7 @@ namespace DigitalHelper.Views
         {
             if (BorderColorComboBox.SelectedItem is not ComboBoxItem item) return;
             string text = (item.Content?.ToString() ?? string.Empty).Trim();
+            Trace.WriteLine($"[Settings] ApplyBorderColorFromCombo - Color: {text}");
             Application.Current.Properties[BorderColorOptionKey] = text;
             Color borderColor;
             if (string.Equals(text, "Green", StringComparison.OrdinalIgnoreCase)) borderColor = Color.FromRgb(76, 175, 80);
@@ -209,18 +297,59 @@ namespace DigitalHelper.Views
             else if (string.Equals(text, "Orange", StringComparison.OrdinalIgnoreCase)) borderColor = Color.FromRgb(244, 162, 97);
             else borderColor = Color.FromRgb(0, 123, 255);
             SetBrush("AppBorderColorBrush", borderColor);
+            //SetBrush("BorderMediumBrush", borderColor);
+            Trace.WriteLine($"[Settings] Border color set to RGB({borderColor.R}, {borderColor.G}, {borderColor.B}), calling RefreshOverlayIfActive");
             RefreshOverlayIfActive();
         }
         void ApplyBorderThicknessFromSlider()
         {
             double v = BorderThicknessSlider.Value;
+            Trace.WriteLine($"[Settings] ApplyBorderThicknessFromSlider - Thickness: {v}");
             Application.Current.Properties[BorderThicknessOptionKey] = v;
+            //Application.Current.Resources["AppBorderThickness"] = new Thickness(v);
+            
+            if (PreviewRectangle != null)
+            {
+                PreviewRectangle.StrokeThickness = v;
+            }
+            
+            Trace.WriteLine($"[Settings] Border thickness set to {v}, calling RefreshOverlayIfActive");
             RefreshOverlayIfActive();
         }
-        void RefreshOverlayIfActive()
+        async void RefreshOverlayIfActive()
         {
+            Trace.WriteLine($"[Settings] RefreshOverlayIfActive called");
+            Trace.WriteLine($"[Settings] App.HelperWindowInstance is {(App.HelperWindowInstance == null ? "null" : "not null")}");
+            
             App.HelperWindowInstance?.ScreenOverlayInstance?.RefreshBoundingBox();
+            
+            if (App.HelperWindowInstance != null)
+            {
+                Trace.WriteLine($"[Settings] Calling RefreshBrowserHighlightAsync on HelperWindow");
+                await App.HelperWindowInstance.RefreshBrowserHighlightAsync();
+                Trace.WriteLine($"[Settings] RefreshBrowserHighlightAsync completed");
+            }
+            else
+            {
+                Trace.WriteLine($"[Settings] HelperWindow instance is null - cannot refresh browser highlight");
+            }
         }
+        void ApplyPulseAnimationToPreview()
+        {
+            if (PreviewRectangle != null)
+            {
+                var animation = new DoubleAnimation
+                {
+                    From = 1.0,
+                    To = 0.5,
+                    Duration = TimeSpan.FromSeconds(1),
+                    AutoReverse = true,
+                    RepeatBehavior = RepeatBehavior.Forever
+                };
+                PreviewRectangle.BeginAnimation(UIElement.OpacityProperty, animation);
+            }
+        }
+        
         static void SetBrush(string key, Color color)
         {
             object existing = Application.Current.Resources[key];

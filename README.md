@@ -4,15 +4,17 @@
 - Visual Studio (not to be confused with VSCode)
 - .NET 8.0
 - Google Gemini API key
+- Google Chrome Browser (if you want better realtime help performance)
 
 ## Steps to setup project:
 1. Clone repo
 2. Open HCIProject/DigitalHelper/DigitalHelper.sln in Visual Studio
 
 ## Steps to run project
-1. Open DigitalHelper.sln with Visual Studio
-2. Put in your API key in App.xaml.cs
-3. Build and run the project
+1. Load HelperExtension into Chrome as an unpacked extension ([guide here](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked))
+2. Open DigitalHelper.sln with Visual Studio
+3. Put in your API key in App.xaml.cs
+4. Build and run the project
 
 ### Attributions/Learning Resources
 - [Flaticon](https://www.flaticon.com/) - Used icons from Pixel Perfect and Syahrul Hidayatullah

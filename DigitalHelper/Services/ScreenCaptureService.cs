@@ -96,7 +96,7 @@ namespace DigitalHelper.Services
 
             SetWindowDisplayAffinity(helperHandle, 0);
             SetWindowDisplayAffinity(mainHandle, 0);
-            File.WriteAllBytes("debug_capture.png", png); // debug line, remove later
+            //File.WriteAllBytes("debug_capture.png", png); // debug line, remove later
             return new Shot(png, bmp, w, h);
         }
 

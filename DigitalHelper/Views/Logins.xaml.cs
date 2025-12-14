@@ -1,9 +1,11 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using DigitalHelper.Models;
 using DigitalHelper.Services;
+using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 namespace DigitalHelper.Views
 {
@@ -12,6 +14,7 @@ namespace DigitalHelper.Views
     /// </summary>
     public partial class Logins : Page
     {
+        private static bool IsValidEmail(string email) => !string.IsNullOrWhiteSpace(email) && Regex.IsMatch(email, @"^\w+([-+.']\w+)*@(\[*\w+)([-.]\w+)*\.\w+([-.]\w+\])*$");
         private ObservableCollection<LoginItem> filteredLogins;
         private bool isPasswordVisible = false;
         private LoginItem? currentEditingLogin = null;
@@ -35,6 +38,8 @@ namespace DigitalHelper.Views
             SaveButton.Click += SaveButton_Click;
             CancelButton.Click += CancelButton_Click;
             DeleteButton.Click += DeleteButton_Click;
+            EditPasswordTextBox.TextChanged += EditPasswordTextBox_TextChanged;
+            EditRetypePasswordTextBox.TextChanged += EditRetypePasswordTextBox_TextChanged;
             
             // Select first item by default if available
             if (filteredLogins.Count > 0)
@@ -166,6 +171,8 @@ namespace DigitalHelper.Views
             EditUrlTextBox.Text = "";
             EditUsernameTextBox.Text = "";
             EditPasswordTextBox.Text = "";
+            EditRetypePasswordTextBox.Text = "";
+            PasswordMatchError.Visibility = Visibility.Collapsed;
             
             EditTitleTextBlock.Text = "Add New Login";
             DeleteButton.Visibility = Visibility.Collapsed;
@@ -188,6 +195,8 @@ namespace DigitalHelper.Views
                 EditUrlTextBox.Text = selectedLogin.Url;
                 EditUsernameTextBox.Text = selectedLogin.Username;
                 EditPasswordTextBox.Text = selectedLogin.Password;
+                EditRetypePasswordTextBox.Text = selectedLogin.Password;
+                PasswordMatchError.Visibility = Visibility.Collapsed;
                 
                 EditTitleTextBlock.Text = "Edit Login";
                 DeleteButton.Visibility = Visibility.Visible;
@@ -201,69 +210,75 @@ namespace DigitalHelper.Views
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            // Validate input
             if (string.IsNullOrWhiteSpace(EditSiteNameTextBox.Text))
             {
-                MessageBox.Show("Please enter a site name.", "Validation Error", 
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Please enter a site name.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 EditSiteNameTextBox.Focus();
                 return;
             }
-
-            if (string.IsNullOrWhiteSpace(EditUsernameTextBox.Text))
+            var usernameInput = EditUsernameTextBox.Text.Trim();
+            if (string.IsNullOrWhiteSpace(usernameInput))
             {
-                MessageBox.Show("Please enter a username or email.", "Validation Error", 
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Please enter a username.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 EditUsernameTextBox.Focus();
                 return;
             }
-
+            if (usernameInput.Contains("@"))
+            {
+                if(!IsValidEmail(usernameInput))
+                {
+                    var result = MessageBox.Show(
+                        "The username contains an '@' symbol but doesn't appear to be a valid email address. This could be intentional (some usernames contain '@'), or you may have made a typo. Would you like to save anyways?",
+                        "Possible Invalid Email",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question);
+                    
+                    if (result == MessageBoxResult.No)
+                    {
+                        EditUsernameTextBox.Focus();
+                        return;
+                    }
+                }
+            }
             if (string.IsNullOrWhiteSpace(EditPasswordTextBox.Text))
             {
-                MessageBox.Show("Please enter a password.", "Validation Error", 
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Please enter a password.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 EditPasswordTextBox.Focus();
                 return;
             }
-
+            if (EditPasswordTextBox.Text != EditRetypePasswordTextBox.Text)
+            {
+                MessageBox.Show("Passwords do not match.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                EditRetypePasswordTextBox.Focus();
+                return;
+            }
             LoginItem? itemToSelect = null;
-            
             if (isAddingNew)
             {
-                // Create new login
                 var newLogin = new LoginItem
                 {
                     SiteName = EditSiteNameTextBox.Text.Trim(),
                     Url = EditUrlTextBox.Text.Trim(),
-                    Username = EditUsernameTextBox.Text.Trim(),
+                    Username = usernameInput,
                     Password = EditPasswordTextBox.Text
                 };
-                
                 VaultDataService.Instance.Data.Logins.Add(newLogin);
                 RefreshFilteredLogins();
                 SaveData();
-                
                 itemToSelect = newLogin;
             }
             else if (currentEditingLogin != null)
             {
-                // Update existing login
                 currentEditingLogin.SiteName = EditSiteNameTextBox.Text.Trim();
                 currentEditingLogin.Url = EditUrlTextBox.Text.Trim();
-                currentEditingLogin.Username = EditUsernameTextBox.Text.Trim();
+                currentEditingLogin.Username = usernameInput;
                 currentEditingLogin.Password = EditPasswordTextBox.Text;
-                
                 RefreshFilteredLogins();
                 SaveData();
-                
                 itemToSelect = currentEditingLogin;
             }
-            
-            // Switching back to view mode
             ViewPanel.Visibility = Visibility.Visible;
             EditPanel.Visibility = Visibility.Collapsed;
-            
-            // Reselect prev item
             if (itemToSelect != null)
             {
                 LoginListBox.SelectedItem = itemToSelect;
@@ -327,6 +342,35 @@ namespace DigitalHelper.Views
                     
                     UpdateEmptyState();
                 }
+            }
+        }
+
+        private void EditPasswordTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ValidatePasswordMatch();
+        }
+
+        private void EditRetypePasswordTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ValidatePasswordMatch();
+        }
+
+        private void ValidatePasswordMatch()
+        {
+            if (!string.IsNullOrEmpty(EditPasswordTextBox.Text) && !string.IsNullOrEmpty(EditRetypePasswordTextBox.Text))
+            {
+                if (EditPasswordTextBox.Text != EditRetypePasswordTextBox.Text)
+                {
+                    PasswordMatchError.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    PasswordMatchError.Visibility = Visibility.Collapsed;
+                }
+            }
+            else
+            {
+                PasswordMatchError.Visibility = Visibility.Collapsed;
             }
         }
     }
